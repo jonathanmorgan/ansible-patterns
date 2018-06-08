@@ -52,7 +52,7 @@
   become_user: root
   shell: python get-pip.py
   args:
-    chdir: ~/Downloads
+    chdir: /home/{{ansible_user}}/Downloads
 
 # install pip in python 3
 - name: Install pip in python 3
@@ -60,7 +60,7 @@
   become_user: root
   shell: python3 get-pip.py
   args:
-    chdir: ~/Downloads
+    chdir: /home/{{ansible_user}}/Downloads
 
 # ==> virtualenv and virtualenvwrapper in python 3.
 - name: install virtualenv and virtualenvwrapper

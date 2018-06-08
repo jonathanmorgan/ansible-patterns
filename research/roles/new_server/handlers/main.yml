@@ -3,9 +3,13 @@
 # See http://docs.ansible.com/playbooks_intro.html for more information about handlers.
 
 - name: reset ufw
+  become: yes
+  become_user: root
   ufw:
     state: reset
     
 - name: enable ufw
+  become: yes
+  become_user: root
   ufw:
     state: enabled
