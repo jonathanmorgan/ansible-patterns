@@ -8,8 +8,8 @@
 
 * on mac, just do “pip install ansible”.  I did it in a separate conda environment named “ansible”, just so I could keep it separate from other things that I installed with conda.
 
-    * conda create --name ansible python=3
-    * source activate ansible
+    * `conda create --name ansible python=3`
+    * `source activate ansible`
 
 * http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 
@@ -25,21 +25,22 @@
 
 # `research` patterns
 
-Research server patterns are in `ansible-patterns/research`.
+Research server playbook is `research.yml`.
 
 ## `research` quick start
 
 The following steps will install all services on the server whose DNS name is `research.local`:
 
-- go into `ansible-patterns/research/host_vars` and rename `research.local.yml` to `research.local`.  Inside, make sure to set:
+- go into `ansible-patterns/host_vars` and rename `research.local.yml` to `research.local`.  Inside, make sure to set:
 
     - ansible_user
     - ansible_become_password
     - server_ip_address
     - jupyterhub_configproxy_auth_token (32 character random hexadecimal number: `openssl rand -hex 32`)
+    - _update for new required variables_
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
-- in `ansible-patterns/research`, run `ansible-playbook research.yml -i ./hosts.yml`
+- in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
 
 ## `research` notes
 
