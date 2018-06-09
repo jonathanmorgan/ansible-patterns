@@ -1,6 +1,7 @@
 # default variables for host research.local
+python_3_path: /usr/bin/python3
 ansible_user: jonathanmorgan
-ansible_python_interpreter: /usr/bin/python3
+ansible_python_interpreter: "{{ python_3_path }}"
 # ansible_become: yes
 ansible_become_user: root
 ansible_become_password: !vault |
@@ -15,12 +16,20 @@ ansible_become_password: !vault |
 server_name: research.local
 server_ip_address: 172.16.111.134
 server_ubuntu_version_code_name: bionic
+ansible_user_home_folder: /home/{{ ansible_user }}
+work_folder: "{{ ansible_user_home_folder }}/work"
+log_folder: "{{ ansible_user_home_folder }}/logs"
+
+# virtualenvwrapper configuration
+virtualenv_folder: "{{ ansible_user_home_folder }}/.virtualenvs"
+virtualenv_project_folder: "{{ work_folder }}/vew-projects"
 
 # postgresql configuration
 server_pgsql_version: "10"
-server_pgsql_listen_addresses: "localhost,127.0.0.1,{{server_ip_address}}"
-server_pgsql_admin_user: "{{ansible_user}}"
-server_pgsql_admin_password: "{{ansible_become_password}}"
+server_pgsql_listen_addresses: "localhost,127.0.0.1,{{ server_ip_address }}"
+server_pgsql_admin_user: "{{ ansible_user }}"
+server_pgsql_admin_password: "{{ ansible_become_password }}"
+server_pgsql_python_package: psycopg2
 
 # RStudio server configuration
 #rstudio_version: 1.1.453
@@ -28,5 +37,20 @@ server_pgsql_admin_password: "{{ansible_become_password}}"
 # Jupyterhub configuration
 #jupyterhub_config_folder: /etc/jupyterhub
 jupyterhub_configproxy_auth_token: 8da752f8de9494b495aaa619bb5c2c8a7a163a0643b91fb57ec0ff9e0392ec85
-jupyterhub_admin_user_list: "'{{ansible_user}}'"
-jupyterhub_whitelist_list: "'{{ansible_user}}'"
+jupyterhub_admin_user_list: "'{{ ansible_user }}'"
+jupyterhub_whitelist_list: "'{{ ansible_user }}'"
+
+# django project configuration
+django_project_name: research
+django_virtualenv_name: "{{ django_project_name }}"
+django_virtualenv_python: "{{ python_3_path }}"
+django_db_package: "{{ server_pgsql_python_package }}"
+django_project_parent_folder: "{{ work_folder }}/django"
+django_log_file_path: "{{ log_folder }}/django"
+django_db_name: "{{ django_project_name }}"
+django_db_username: "django_user"
+django_db_password: "{{ ansible_become_password }}"
+django_db_host: "localhost"
+django_db_port: "5432"
+django_superuser_username: "{{ ansible_user }}"
+django_superuser_password: "{{ ansible_become_password }}"

@@ -1,5 +1,5 @@
 ---
-# These tasks install http and the php modules.
+# These tasks configure django web applications.
 
 #- name: Install http and php etc
 #  yum: name={{ item }} state=present

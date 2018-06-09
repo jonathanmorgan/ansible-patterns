@@ -1,0 +1,94 @@
+"""
+WSGI config for research project.
+
+It exposes the WSGI callable as a module-level variable named ``application``.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/
+"""
+
+'''
+# Uncomment this and comment out the rest of the file when getting:
+#    "RuntimeError: populate() isn't reentrant"
+import os
+def application(environ, start_response):
+    if environ['mod_wsgi.process_group'] != '': 
+        import signal
+        os.kill(os.getpid(), signal.SIGINT)
+    return ["killed"]
+'''
+
+# imports
+import os
+import sys
+import site
+import six
+
+# declare variables
+django_project_name = ""
+virtualenv_parent_dir = ""
+path_to_django_project_parent = ""
+virtualenv_python2 = ""
+virtualenv_python3 = ""
+python_3_version = ""
+temp_path = ""
+
+# configure
+django_project_name = "{{ django_project_name }}"
+virtualenv_parent_dir = "{{ virtualenv_folder }}"
+path_to_django_project_parent = "{{ django_project_parent_folder }}"
+virtualenv_python2 = None
+virtualenv_python3 = "{{ django_virtualenv_name }}"
+python_3_version = "3.6"
+
+# Add the app's directory to the PYTHONPATH
+temp_path = "{}/{}".format( path_to_django_project_parent, django_project_name )
+sys.path.append( temp_path )
+
+# Set DJANGO_SETTINGS_MODULE
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{}.settings".format( django_project_name ) )
+
+# Activate your virtualenv - controlled by which mod_wsgi is
+#     installed - compiled for Python 2 or for Python 3.
+if ( six.PY2 == True ):
+
+    # Add the site-packages of the desired virtualenv
+    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python2 + "/local/lib/python2.7/site-packages"
+    site.addsitedir( temp_path )
+
+    # Activate your virtualenv
+    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python2 + "/bin/activate_this.py"
+    activate_this = os.path.expanduser( temp_path )
+
+    # in Python 2, just use execfile()
+    execfile( activate_this, dict( __file__ = activate_this ) )
+
+elif ( six.PY3 == True ):
+
+    # Add the site-packages of the desired virtualenv
+    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python3 + "/lib/python" + python_3_version + "/site-packages"
+    site.addsitedir( temp_path )
+
+    # Activate your virtualenv
+    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python3 + "/bin/activate_this.py"
+    activate_this = os.path.expanduser( temp_path )
+
+    # open and execute file manually... cuz Python 3.
+    with open( activate_this ) as activate_this_file:
+
+        # compile code
+        activate_code = compile( activate_this_file.read(), activate_this, 'exec')
+
+        # run the code
+        exec( activate_code, dict( __file__ = activate_this ) )
+
+    #-- END open( activate_this ) --#
+
+#-- END code to deal with execfile() being removed from python 2 --#
+
+# import django stuff - it is installed in your virtualenv, so you must import
+#     after activating virtualenv.
+from django.core.wsgi import get_wsgi_application
+
+# load django application
+application = get_wsgi_application()

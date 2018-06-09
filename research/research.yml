@@ -36,6 +36,11 @@
   roles:
     - rstudio
 
+- name: deploy django project
+  hosts: django_servers
+  roles:
+    - django_project
+
 - name: deploy sourcenet application
   hosts: sourcenet_servers
   roles:

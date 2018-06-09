@@ -38,6 +38,18 @@
       - curl
     state: present
 
+# create work folder "{{ work_folder }}"
+- name: make sure there is a "{{ work_folder }}" folder
+  file:
+    path: "{{ work_folder }}"
+    state: directory
+
+# create log folder "{{ log_folder }}"
+- name: make sure there is a "{{ log_folder }}" folder
+  file:
+    path: "{{ log_folder }}"
+    state: directory
+
 # ==> pip
 
 # download install script
@@ -72,11 +84,55 @@
       - virtualenv
       - virtualenvwrapper
 
-# create default virtaulenv folder "~/.virtualenv" for ansible user.
-- name: make sure there is a ~/.virtualenvs folder in ansible_user
+# create default virtaulenv folder "{{ virtualenv_folder }} for ansible user.
+- name: make sure there is a {{ virtualenv_folder }} folder in ansible_user
   file:
-    path: ~/.virtualenvs
+    path: "{{ virtualenv_folder }}"
     state: directory
+
+# create virtualenvwrapper project folder "~/work/vew-projects" in ansible_user home
+- name: make sure there is a ~/work/vew-projects folder in ansible_user home
+  file:
+    path: "{{ virtualenv_project_folder }}"
+    state: directory
+
+# ==> add virtualenvwrapper stuff to ~/.bashrc for ansible_user
+
+# add empty-ish line
+- name: add empty-ish line
+  lineinfile:
+    path: '~/.bashrc'
+    line: '# --'
+
+# add comment saying we're setting up virtualenvwrapper
+- name: set WORKON_HOME to $HOME/.virtualenvs
+  lineinfile:
+    path: '~/.bashrc'
+    line: '# ==> virtualenvwrapper config'
+
+# set VIRTUALENVWRAPPER_PYTHON to /usr/bin/python3
+- name: set VIRTUALENVWRAPPER_PYTHON to /usr/bin/python3
+  lineinfile:
+    path: '~/.bashrc'
+    line: 'export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3'
+
+# set WORKON_HOME to {{ virtualenv_folder }}
+- name: set WORKON_HOME to {{ virtualenv_folder }}
+  lineinfile:
+    path: '~/.bashrc'
+    line: 'export WORKON_HOME={{ virtualenv_folder }}'
+
+# set PROJECT_HOME to $HOME/work/vew-projects
+- name: set PROJECT_HOME to $HOME/work/vew-projects
+  lineinfile:
+    path: '~/.bashrc'
+    line: 'export PROJECT_HOME=$HOME/work/vew-projects'
+
+# run /usr/local/bin/virtualenvwrapper.sh
+- name: run /usr/local/bin/virtualenvwrapper.sh
+  lineinfile:
+    path: '~/.bashrc'
+    line: 'source /usr/local/bin/virtualenvwrapper.sh'
 
 # install build dependencies for pillow python package
 - name: install pillow build dependencies

@@ -1,3 +1,64 @@
 ---
-- include: install_httpd.yml
-- include: copy_code.yml
+# Install pre-req packages
+- name: install lxml pre-reqs
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - libxml2
+      - libxml2-dev
+      - libxslt1-dev
+      - libyaml-dev
+    state: present
+
+# check if virtualenv already there.
+- name: check if virtualenv exists ({{ virtualenv_folder }}/{{ django_virtualenv_name }})
+  stat:
+    path: '{{ virtualenv_folder }}/{{ django_virtualenv_name }}'
+  register: django_virtualenv
+
+# create virtualenv for django project
+- name: create virtualenv for django project
+  shell: virtualenv {{ django_virtualenv_name }} --no-site-packages --python {{ python_3_path }}
+  args:
+    chdir: "{{ virtualenv_folder }}/"
+  when: django_virtualenv.stat.exists == False
+
+# install django, db package, and other essentials in virtualenv
+- name: install django and db package in virtualenv {{ virtualenv_folder }}/{{ django_virtualenv_name }}
+  pip:
+    virtualenv: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}"
+    name:
+      - django
+      - "{{ django_db_package }}"
+      - ipython
+      - django-ajax-selects
+      - django-taggit
+      - beautifulsoup4
+      - requests
+      - w3lib
+      - six
+    state: latest
+
+# create django project parent folder {{ django_project_parent_folder }}
+- name: create django project parent folder {{ django_project_parent_folder }}
+  file:
+    path: "{{ django_project_parent_folder }}"
+    state: directory
+
+# check if django project already there.
+- name: check if django project already there.
+  stat:
+    path: '{{ django_project_parent_folder }}/{{ django_project_name }}'
+  register: django_project
+
+# create django project
+- name: create django project
+  shell: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}/bin/django-admin.py startproject {{ django_project_name }}"
+  args:
+    chdir: "{{ django_project_parent_folder }}/"
+  when: django_project.stat.exists == False
+
+- include: database_setup.yml
+- include: settings-dot-py.yml
+- include: configure_web_app.yml
