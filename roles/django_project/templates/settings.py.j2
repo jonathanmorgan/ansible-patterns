@@ -21,7 +21,7 @@ import logging
 logging.basicConfig(
     level = logging.INFO,
     format = '%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-    filename = '{{ log_folder }}/django-{{ django_project_name }}.log',
+    filename = '{{ django_log_file_path }}',
     filemode = 'w'
 )
 

@@ -1,3 +1,30 @@
 ---
-
 # Setup database for django.
+
+# create database role/user for django app in postgres
+- name: Create django database user {{ django_db_username }}
+  postgresql_user:
+    login_user: "{{ server_pgsql_admin_user }}"
+    login_password: "{{ server_pgsql_admin_password }}"
+    db: postgres
+    name: '{{ django_db_username }}'
+    password: '{{ django_db_password }}'
+    encrypted: yes
+    role_attr_flags: LOGIN
+
+# create database for django app in postgres
+- name: create postgresql database for django_project named {{ django_db_name }}
+  postgresql_db:
+    login_user: "{{ server_pgsql_admin_user }}"
+    login_password: "{{ server_pgsql_admin_password }}"
+    name: "{{ django_db_name }}"
+    owner: "{{ django_db_username }}"
+
+# run `python manage.py migrate`
+- name: run `python manage.py migrate`
+  shell: "{{ django_virtualenv_bin_folder }}/python manage.py migrate"
+  args:
+    chdir: "{{ django_project_folder }}"
+
+# create django superuser
+

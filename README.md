@@ -454,8 +454,16 @@ Encryption successful
 * Used to create, alter, and remove files and directories.
 * Documentation: https://docs.ansible.com/ansible/latest/modules/file_module.html
 * Examples:
+
     * http://www.mydailytutorials.com/ansible-create-directory/
-* 
+    * `touch` a file:
+
+            # create django log file
+            - name: make sure there is a "{{ django_log_file_path }}" log file.
+            file:
+              path: "{{ django_log_file_path }}"
+              state: touch
+              mode: 0666
 
 ### get_url module
 
@@ -547,10 +555,30 @@ Encryption successful
                 requirements: /my_app/requirements.txt
                 virtualenv: /my_app/venv
 
+### postgresql_db module
+
+- Documentation: [https://docs.ansible.com/ansible/latest/modules/postgresql_db_module.html](https://docs.ansible.com/ansible/latest/modules/postgresql_db_module.html)
+- Examples:
+
+    - create with login username and password (to get around oddness with using postgres user):
+
+            # create database for django app in postgres
+            - name: create postgresql database for django_project named {{ django_db_name }}
+              postgresql_db
+                login_user: "{{ server_pgsql_admin_user }}"
+                login_password: "{{ server_pgsql_admin_password }}"
+                db: postgres
+                name: "{{ django_db_name }}"
+                owner: "{{ django_db_username }}"
+
 ### postgresql_user module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/postgresql_user_module.html
-* requires the psycopg2 module be installed in the python environment that ansible is using to do install tasks.
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/postgresql_user_module.html](https://docs.ansible.com/ansible/latest/modules/postgresql_user_module.html)
+* Notes:
+
+    * requires the psycopg2 module be installed in the python environment that ansible is using to do install tasks.
+    * requires encrypted passwords in PostgreSQL 10 - not sure of implications of this.
+
 * Errors:
 
     * on ubuntu, if you get error: FAILED! => {"changed": false, "msg": "unable to connect to database: FATAL: Peer authentication failed for user \"postgres\"\n"}
@@ -565,10 +593,12 @@ Encryption successful
                     name: '{{server_pgsql_admin_user}}'
                     password: '{{server_pgsql_admin_password}}'
                     role_attr_flags: SUPERUSER
+                    encrypted: yes
                   when:
                     - server_pgsql_admin_user != ""
                     - server_pgsql_admin_password != ""
                             * Alternative (not pretty, but it works):
+
                 # create non-postgres admin user?
                 - name: Create non-postgres admin user
                   become: yes
@@ -577,6 +607,7 @@ Encryption successful
                   when:
                     - server_pgsql_admin_user != ""
                     - server_pgsql_admin_password != “"
+
 ### service module
 
 * Documentation: https://docs.ansible.com/ansible/latest/modules/service_module.html#service-module

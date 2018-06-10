@@ -54,11 +54,26 @@
 
 # create django project
 - name: create django project
-  shell: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}/bin/django-admin.py startproject {{ django_project_name }}"
+  shell: "{{ django_virtualenv_bin_folder }}/django-admin.py startproject {{ django_project_name }}"
   args:
     chdir: "{{ django_project_parent_folder }}/"
   when: django_project.stat.exists == False
 
+# put settings.py in place
+- name: put settings.py in place
+  template:
+    src: settings.py.j2
+    dest: '{{ django_project_parent_folder }}/{{ django_project_name }}/{{ django_project_name }}/settings.py'
+
+# create django log file
+- name: make sure there is a "{{ django_log_file_path }}" log file.
+  file:
+    path: "{{ django_log_file_path }}"
+    state: touch
+    mode: 0666
+
+# set up database.
 - include: database_setup.yml
-- include: settings-dot-py.yml
+
+# configure the django web app.
 - include: configure_web_app.yml
