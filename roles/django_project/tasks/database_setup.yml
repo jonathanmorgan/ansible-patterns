@@ -21,10 +21,13 @@
     owner: "{{ django_db_username }}"
 
 # run `python manage.py migrate`
+#- name: run `python manage.py migrate`
+#  shell: "{{ django_virtualenv_bin_folder_path }}/python manage.py migrate"
+#  args:
+#    chdir: "{{ django_project_folder_path }}"
+
 - name: run `python manage.py migrate`
-  shell: "{{ django_virtualenv_bin_folder }}/python manage.py migrate"
-  args:
-    chdir: "{{ django_project_folder }}"
-
-# create django superuser
-
+  django_manage:
+    app_path: "{{ django_project_folder_path }}"
+    command: migrate
+    virtualenv: "{{ django_virtualenv_path }}"

@@ -12,9 +12,9 @@
     state: present
 
 # check if virtualenv already there.
-- name: check if virtualenv exists ({{ virtualenv_folder }}/{{ django_virtualenv_name }})
+- name: check if virtualenv exists ({{ django_virtualenv_path }})
   stat:
-    path: '{{ virtualenv_folder }}/{{ django_virtualenv_name }}'
+    path: '{{ django_virtualenv_path }}'
   register: django_virtualenv
 
 # create virtualenv for django project
@@ -25,9 +25,9 @@
   when: django_virtualenv.stat.exists == False
 
 # install django, db package, and other essentials in virtualenv
-- name: install django and db package in virtualenv {{ virtualenv_folder }}/{{ django_virtualenv_name }}
+- name: install django and db package in virtualenv {{ django_virtualenv_path }}
   pip:
-    virtualenv: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}"
+    virtualenv: "{{ django_virtualenv_path }}"
     name:
       - django
       - "{{ django_db_package }}"
@@ -40,30 +40,30 @@
       - six
     state: latest
 
-# create django project parent folder {{ django_project_parent_folder }}
-- name: create django project parent folder {{ django_project_parent_folder }}
+# create django project parent folder {{ django_project_parent_folder_path }}
+- name: create django project parent folder {{ django_project_parent_folder_path }}
   file:
-    path: "{{ django_project_parent_folder }}"
+    path: "{{ django_project_parent_folder_path }}"
     state: directory
 
 # check if django project already there.
 - name: check if django project already there.
   stat:
-    path: '{{ django_project_parent_folder }}/{{ django_project_name }}'
+    path: '{{ django_project_folder_path }}'
   register: django_project
 
 # create django project
 - name: create django project
-  shell: "{{ django_virtualenv_bin_folder }}/django-admin.py startproject {{ django_project_name }}"
+  shell: "{{ django_virtualenv_bin_path }}/django-admin.py startproject {{ django_project_name }}"
   args:
-    chdir: "{{ django_project_parent_folder }}/"
+    chdir: "{{ django_project_parent_folder_path }}/"
   when: django_project.stat.exists == False
 
 # put settings.py in place
 - name: put settings.py in place
   template:
     src: settings.py.j2
-    dest: '{{ django_project_parent_folder }}/{{ django_project_name }}/{{ django_project_name }}/settings.py'
+    dest: '{{ django_project_folder_path }}/{{ django_project_name }}/settings.py'
 
 # create django log file
 - name: make sure there is a "{{ django_log_file_path }}" log file.
@@ -72,8 +72,64 @@
     state: touch
     mode: 0666
 
-# set up database.
+#===============================================================================
+# ==> set up database.
 - include: database_setup.yml
 
-# configure the django web app.
+# create django superuser
+
+# from gist: https://gist.github.com/elleryq/9c70e08b1b2cecc636d6
+
+# trying something different - having ipython as shell breaks it.
+
+# check if superuser user exists.
+#- name: super user {{ django_superuser_username }} exists?
+#  command: echo "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(username='{{ django_superuser_username }}').count()>0)" | {{ django_virtualenv_bin_path }}/python ./manage.py shell -i python
+#  args:
+#    chdir: "{{ django_project_folder_path }}"
+#  environment:
+#    DJANGO_SETTINGS_MODULE: "{{ django_settings_import }}"
+#  register: superuser_existed
+
+# if no super user, create.
+#- name: If no super user {{ django_superuser_username }}, create super user
+#  django_manage:
+#    command: "createsuperuser --noinput --username={{ django_superuser_username }} --email={{ admin_email }}"
+#    app_path: "{{ django_project_folder_path }}"
+#    virtualenv: "{{ django_virtualenv_path }}"
+#    settings: "{{ django_settings_import }}"
+#  when: not superuser_existed
+
+# check if superuser user exists, if not, create user.
+- name: Check if superuser user exists, if not, create user.
+  django_manage:
+    command: shell -c "from django.contrib.auth import get_user_model; MyUser = get_user_model(); MyUser.objects.filter( username__exact = '{{ django_superuser_username }}' ).count() == 0 or exit(); new_super_user = MyUser( username = '{{ django_superuser_username }}', password='{{ django_superuser_password }}', email='{{ django_superuser_email }}', is_superuser = True, is_staff = True ); new_super_user.save();"
+    app_path: "{{ django_project_folder_path }}"
+    virtualenv: "{{ django_virtualenv_path }}"
+
+# set admin password
+
+# place script to update password.
+- name: Change password tricks
+  template:
+    src: changepassword.sh.j2
+    dest: "{{ django_project_folder_path }}/changepassword.sh"
+    mode: 0755
+
+# set password.
+- name: Change password
+  command: "{{ django_project_folder_path }}/changepassword.sh"
+  args:
+    chdir: "{{ django_project_folder_path }}"
+  environment:
+    DJANGO_SETTINGS_MODULE: "{{ django_settings_import }}"
+
+# remove script to update password.
+- name: remove changepassword.sh
+  file:
+    path: "{{ django_project_folder_path }}/changepassword.sh"
+    state: absent
+
+#===============================================================================
+# ==> configure the django web app.
 - include: configure_web_app.yml

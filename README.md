@@ -449,6 +449,48 @@ Encryption successful
 * Documentation: https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module
 * 
 
+### django\_manage module
+
+- Documentation:
+
+    - [https://docs.ansible.com/ansible/latest/modules/django_manage_module.html](https://docs.ansible.com/ansible/latest/modules/django_manage_module.html)
+    - ansible bug - django_manage createsuperuser does not seem idempotent: [django_manage createsuperuser does not seem idempotent](django_manage createsuperuser does not seem idempotent)
+    - * gist - only create superuser if doesn't already exist: [https://gist.github.com/elleryq/9c70e08b1b2cecc636d6](https://gist.github.com/elleryq/9c70e08b1b2cecc636d6)
+
+        - includes better way in last comment.
+
+    - stackoverflow superuser create: [https://stackoverflow.com/questions/45915174/how-to-create-django-superuser-in-ansible-in-idempotent-way](https://stackoverflow.com/questions/45915174/how-to-create-django-superuser-in-ansible-in-idempotent-way)
+
+- Examples:
+
+    - idempotent superuser create (only if doesn't already exist):
+
+        - [https://gist.github.com/elleryq/9c70e08b1b2cecc636d6](https://gist.github.com/elleryq/9c70e08b1b2cecc636d6)
+        - and, see the `django_project` role in [https://github.com/jonathanmorgan/ansible-patterns](https://github.com/jonathanmorgan/ansible-patterns).
+
+                # check if superuser user exists, if not, create user.
+                - name: Check if superuser user exists, if not, create user.
+                  django_manage:
+                    command: shell -c "from django.contrib.auth import get_user_model; MyUser = get_user_model(); MyUser.objects.filter( username__exact = '{{ django_superuser_username }}' ).count() == 0 or exit(); new_super_user = MyUser( username = '{{ django_superuser_username }}', password='{{ django_superuser_password }}', email='{{ django_superuser_email }}', is_superuser = True, is_staff = True ); new_super_user.save();"
+                    app_path: "{{ django_project_folder_path }}"
+                    virtualenv: "{{ django_virtualenv_path }}"
+
+    - migrate without `django_manage`:
+
+            # run `python manage.py migrate`
+            - name: run `python manage.py migrate`
+              shell: "{{ django_virtualenv_bin_folder }}/python manage.py migrate"
+              args:
+                chdir: "{{ django_project_folder }}"
+
+    - migrate with `django_manage`:
+
+            - name: run `python manage.py migrate`
+              django_manage:
+                app_path: "{{ django_project_folder_path }}"
+                command: migrate
+                virtualenv: "{{ django_virtualenv_path }}"
+
 ### file module
 
 * Used to create, alter, and remove files and directories.

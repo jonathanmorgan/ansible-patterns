@@ -1,16 +1,17 @@
 WSGIApplicationGroup %{GLOBAL}
-WSGIDaemonProcess {{ django_project_name }}-1 threads=10 display-name=%{GROUP} python-home={{ virtualenv_folder }}/{{ django_virtualenv_name }} python-path={{ django_project_parent_folder }}/{{ django_project_name }} 
+WSGIDaemonProcess {{ django_project_name }}-1 threads=10 display-name=%{GROUP} python-home={{ django_virtualenv_path }} python-path={{ django_project_folder_path }} 
 
-# set python path as part of WSGIDaemonProcess --> WSGIDaemonProcess {{ django_project_name }}-1 ... python-path=
-# no virtualenv
-# ... python-path={{ django_project_parent_folder }}/{{ django_project_name }}
-# virtualenv, place the root of the virtualenv in a separate python-home property:
-# ... python-home={{ virtualenv_folder }}/{{ django_virtualenv_name }} python-path={{ django_project_parent_folder }}/{{ django_project_name }}
+# set python path as part of WSGIDaemonProcess -->
+# WSGIDaemonProcess {{ django_project_name }}-1 ... python-path=
+# - no virtualenv:
+#     ... python-path={{ django_project_folder_path }}
+# - virtualenv, place the root of the virtualenv in a separate python-home property:
+#     ... python-home={{ django_virtualenv_path }} python-path={{ django_project_folder_path }}
 
 WSGIProcessGroup {{ django_project_name }}-1
-WSGIScriptAlias /{{ django_project_name }} {{ django_project_parent_folder }}/{{ django_project_name }}/{{ django_project_name }}/wsgi.py process-group={{ django_project_name }}-1
+WSGIScriptAlias /{{ django_project_name }} {{ django_project_folder_path }}/{{ django_project_name }}/wsgi.py process-group={{ django_project_name }}-1
         
-<Directory {{ django_project_parent_folder }}/{{ django_project_name }}/{{ django_project_name }}>
+<Directory {{ django_project_folder_path }}/{{ django_project_name }}>
     <Files wsgi.py>
         # apache 2.4:
         Require all granted

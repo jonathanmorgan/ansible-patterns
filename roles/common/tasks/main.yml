@@ -36,6 +36,7 @@
       - libxslt1-dev
       - libyaml-dev
       - curl
+      - expect
     state: present
 
 # create work folder "{{ work_folder }}"
