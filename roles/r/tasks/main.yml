@@ -7,7 +7,7 @@
   become_user: root
   template:
     src: CRAN-R.list.j2
-    dest: /etc/apt/sources.list.d
+    dest: /etc/apt/sources.list.d/CRAN-R.list
 
 # Add apt key for CRAN R source
 - name: Add an apt key by id from a keyserver
