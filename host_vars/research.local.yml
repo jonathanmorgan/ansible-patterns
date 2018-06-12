@@ -19,9 +19,11 @@ server_ubuntu_version_code_name: bionic
 ansible_user_home_folder: /home/{{ ansible_user }}
 work_folder: "{{ ansible_user_home_folder }}/work"
 log_folder: "{{ ansible_user_home_folder }}/logs"
+server_webroot_folder: /var/www/html
 
 # virtualenvwrapper configuration
-virtualenv_folder: "{{ ansible_user_home_folder }}/.virtualenvs"
+virtualenv_parent_folder: "{{ ansible_user_home_folder }}"
+virtualenv_folder: "{{ virtualenv_parent_folder }}/.virtualenvs"
 virtualenv_project_folder: "{{ work_folder }}/vew-projects"
 
 # postgresql configuration
@@ -50,6 +52,7 @@ django_db_package: "{{ server_pgsql_python_package }}"
 django_project_parent_folder_path: "{{ work_folder }}/django"
 django_project_folder_path: "{{ django_project_parent_folder_path }}/{{ django_project_name }}"
 django_log_file_path: "{{ log_folder }}/django-{{ django_project_name }}.log"
+django_static_folder_path: "{{ server_webroot_folder }}/static"
 django_settings_import: "{{ django_project_name }}.settings"
 django_db_name: "{{ django_project_name }}"
 django_db_username: "django_user"

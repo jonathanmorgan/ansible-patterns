@@ -65,6 +65,18 @@
     src: settings.py.j2
     dest: '{{ django_project_folder_path }}/{{ django_project_name }}/settings.py'
 
+# put wsgi.py in place
+- name: put wsgi.py in place
+  template:
+    src: wsgi.py.j2
+    dest: '{{ django_project_folder_path }}/{{ django_project_name }}/wsgi.py'
+
+# put urls.py in place
+- name: put urls.py in place
+  template:
+    src: urls.py.j2
+    dest: '{{ django_project_folder_path }}/{{ django_project_name }}/urls.py'
+
 # create django log file
 - name: make sure there is a "{{ django_log_file_path }}" log file.
   file:

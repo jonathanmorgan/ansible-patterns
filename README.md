@@ -374,15 +374,15 @@ Encryption successful
 
 * Documentation:
 
-    * module index: https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
-    * network modules: http://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html
+    * module index: [https://docs.ansible.com/ansible/latest/modules/modules_by_category.html](https://docs.ansible.com/ansible/latest/modules/modules_by_category.html)
+    * network modules: [https://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html](https://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html)
 
 ### apache2_module module
 
-* Documentation: http://docs.ansible.com/ansible/latest/modules/apache2_module_module.html
+* Documentation: [http://docs.ansible.com/ansible/latest/modules/apache2_module_module.html](http://docs.ansible.com/ansible/latest/modules/apache2_module_module.html)
 * Examples:
 
-    * https://thornelabs.net/2014/06/02/manage-apache-virtualhosts-and-mod-rewrite-rules-with-ansible.html
+    * [https://thornelabs.net/2014/06/02/manage-apache-virtualhosts-and-mod-rewrite-rules-with-ansible.html](https://thornelabs.net/2014/06/02/manage-apache-virtualhosts-and-mod-rewrite-rules-with-ansible.html)
 
 * Lets you enable and disable installed apache modules.
 * Example: mod_wsgi
@@ -397,7 +397,7 @@ Encryption successful
 
 ### apt module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/apt_module.html
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/apt_module.html](https://docs.ansible.com/ansible/latest/modules/apt_module.html)
 
     * Install one:
 

@@ -1,6 +1,59 @@
 ---
 # These tasks configure django web applications.
 
+# put wsgi.py in place
+- name: put wsgi.py in place
+  template:
+    src: wsgi.py.j2
+    dest: '{{ django_project_folder_path }}/{{ django_project_name }}/wsgi.py'
+
+# put urls.py in place
+- name: put urls.py in place
+  template:
+    src: urls.py.j2
+    dest: '{{ django_project_folder_path }}/{{ django_project_name }}/urls.py'
+
+# add django app to apache conf.
+- name: add django app to apache conf.
+  become: yes
+  become_user: root
+  template:
+    src: django-research.conf.j2
+    dest: '/etc/apache2/conf-available/django-{{ django_project_name }}.conf'
+
+# enable django_research.conf.
+- name: call a2enconf to enable django-{{ django_project_name }}.conf
+  become: yes
+  become_user: root
+  shell: a2enconf django-{{ django_project_name }}
+  notify: restart apache2
+
+# --> static files
+
+# create static folder
+- name: make sure there is a static folder
+  become: yes
+  become_user: root
+  file:
+    path: "{{ django_static_folder_path }}"
+    state: directory
+    mode: 0777
+
+# collect static
+- name: run `python manage.py collectstatic`
+  django_manage:
+    app_path: "{{ django_project_folder_path }}"
+    command: collectstatic --noinput
+    virtualenv: "{{ django_virtualenv_path }}"
+
+# touch wsgi.py to restart wsgi
+- name: touch wsgi.py to restart wsgi
+  become: yes
+  become_user: root
+  file:
+    path: "{{ django_project_folder_path }}/{{ django_project_name }}/wsgi.py"
+    state: touch
+
 #- name: Install http and php etc
 #  yum: name={{ item }} state=present
 #  with_items:

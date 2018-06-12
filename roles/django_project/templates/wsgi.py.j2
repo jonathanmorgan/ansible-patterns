@@ -35,8 +35,9 @@ temp_path = ""
 
 # configure
 django_project_name = "{{ django_project_name }}"
-virtualenv_parent_dir = "{{ virtualenv_folder }}"
-path_to_django_project_parent = "{{ django_project_parent_folder }}"
+virtualenv_parent_dir = "{{ virtualenv_parent_folder }}"
+virtualenv_folder_path = "{{ virtualenv_folder }}"
+path_to_django_project_parent = "{{ django_project_parent_folder_path }}"
 virtualenv_python2 = None
 virtualenv_python3 = "{{ django_virtualenv_name }}"
 python_3_version = "3.6"
@@ -53,11 +54,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{}.settings".format( django_pro
 if ( six.PY2 == True ):
 
     # Add the site-packages of the desired virtualenv
-    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python2 + "/local/lib/python2.7/site-packages"
+    temp_path = virtualenv_folder_path + "/" + virtualenv_python2 + "/local/lib/python2.7/site-packages"
     site.addsitedir( temp_path )
 
     # Activate your virtualenv
-    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python2 + "/bin/activate_this.py"
+    temp_path = virtualenv_folder_path + "/" + virtualenv_python2 + "/bin/activate_this.py"
     activate_this = os.path.expanduser( temp_path )
 
     # in Python 2, just use execfile()
@@ -66,11 +67,11 @@ if ( six.PY2 == True ):
 elif ( six.PY3 == True ):
 
     # Add the site-packages of the desired virtualenv
-    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python3 + "/lib/python" + python_3_version + "/site-packages"
+    temp_path = virtualenv_folder_path + "/" + virtualenv_python3 + "/lib/python" + python_3_version + "/site-packages"
     site.addsitedir( temp_path )
 
     # Activate your virtualenv
-    temp_path = virtualenv_parent_dir + "/.virtualenvs/" + virtualenv_python3 + "/bin/activate_this.py"
+    temp_path = virtualenv_folder_path + "/" + virtualenv_python3 + "/bin/activate_this.py"
     activate_this = os.path.expanduser( temp_path )
 
     # open and execute file manually... cuz Python 3.
