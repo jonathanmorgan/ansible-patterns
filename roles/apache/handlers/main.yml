@@ -2,5 +2,10 @@
 # Handler for the webtier: handlers are called by other plays.
 # See http://docs.ansible.com/playbooks_intro.html for more information about handlers.
 
-#- name: restart iptables
-#  service: name=iptables state=restarted
+# restart apache2
+- name: restart apache2
+  become: yes
+  become_user: root
+  service:
+    name: apache2
+    state: restarted

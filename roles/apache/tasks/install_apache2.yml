@@ -17,14 +17,35 @@
   apache2_module:
     state: present
     name: wsgi
+  notify: restart apache2
 
-# restart apache
-- name: restart apache2
+# ==> HTTPS
+# from: https://www.evernote.com/l/AGUb2u876oVNyozlxLmrJ6c5qWjvn062el4
+
+# Enable ssl
+- name: Enable ssl module.
   become: yes
   become_user: root
-  service:
-    name: apache2
-    state: restarted
+  apache2_module:
+    state: present
+    name: ssl
+  notify: restart apache2
+
+# enable default-ssl site
+- name: call a2ensite to enable default-ssl site
+  become: yes
+  become_user: root
+  shell: a2ensite default-ssl
+  notify: restart apache2
+
+# update the 000-default.conf site file to redirect all traffic to HTTPS.
+- name: update the 000-default.conf site file to redirect all traffic to HTTPS.
+  become: yes
+  become_user: root
+  template:
+    src: 000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+  notify: restart apache2
 
 # open firewall for http and https  
 - name: Allow HTTP ports
