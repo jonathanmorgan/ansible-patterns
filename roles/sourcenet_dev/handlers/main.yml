@@ -1,0 +1,10 @@
+---
+# Handler for the webtier: handlers are called by other plays.
+# See http://docs.ansible.com/playbooks_intro.html for more information about handlers.
+
+# touch wsgi.py to reload mod_wsgi.
+- name: touch wsgi.py
+  file:
+    path: "{{ django_project_folder_path }}/{{ django_project_name }}/wsgi.py"
+    state: touch
+  

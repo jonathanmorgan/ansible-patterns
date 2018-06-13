@@ -1,0 +1,7 @@
+---
+# This playbook deploys the whole research application stack.
+
+- name: deploy R
+  hosts: r_servers
+  roles:
+    - r

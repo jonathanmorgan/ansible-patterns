@@ -296,10 +296,10 @@ Encryption successful
 
 ## Variables
 
-* Documentation: http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html
+* Documentation: [http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html](http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html)
 * Examples:
 
-    * http://www.dasblinkenlichten.com/ansible-roles-and-variables/
+    * [http://www.dasblinkenlichten.com/ansible-roles-and-variables/](http://www.dasblinkenlichten.com/ansible-roles-and-variables/)
     * 
 
 ## Tasks:
@@ -328,47 +328,47 @@ Encryption successful
 
     * Documentation:
 
-        * https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html
-        * comparison operators: http://jinja.pocoo.org/docs/dev/templates/#comparisons
+        * [https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html](https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html)
+        * comparison operators: [http://jinja.pocoo.org/docs/dev/templates/#comparisons](http://jinja.pocoo.org/docs/dev/templates/#comparisons)
 
     * Example:
     * 
 
-* module index: https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+* module index: [https://docs.ansible.com/ansible/latest/modules/modules_by_category.html](https://docs.ansible.com/ansible/latest/modules/modules_by_category.html)
 * network
 
-    * http://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html
-    * get_url - http://docs.ansible.com/ansible/latest/modules/get_url_module.html#get-url-module
-    * uri - http://docs.ansible.com/ansible/latest/modules/uri_module.html#uri-module
+    * [http://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html](http://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html)
+    * get_url - [http://docs.ansible.com/ansible/latest/modules/get_url_module.html](http://docs.ansible.com/ansible/latest/modules/get_url_module.html)
+    * uri - [http://docs.ansible.com/ansible/latest/modules/uri_module.html](http://docs.ansible.com/ansible/latest/modules/uri_module.html)
 
-* managing SSH: https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/\
+* managing SSH: [https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
 * deploying keys from encrypted files in ansible:
 
-    * https://opensource.com/article/16/12/devops-security-ansible-vault
+    * [https://opensource.com/article/16/12/devops-security-ansible-vault](https://opensource.com/article/16/12/devops-security-ansible-vault)
 
 * SSL certs/keys:
 
     * openssl_* modules (see below, also):
 
-        *  Documentation: https://docs.ansible.com/ansible/latest/modules/list_of_crypto_modules.html 
-        * openssl_* modules for creating keys: https://www.jeffgeerling.com/blog/2017/generating-self-signed-openssl-certs-ansible-24s-crypto-modules
+        *  Documentation: [https://docs.ansible.com/ansible/latest/modules/list_of_crypto_modules.html](https://docs.ansible.com/ansible/latest/modules/list_of_crypto_modules.html) 
+        * openssl_* modules for creating keys: [https://www.jeffgeerling.com/blog/2017/generating-self-signed-openssl-certs-ansible-24s-crypto-modules](https://www.jeffgeerling.com/blog/2017/generating-self-signed-openssl-certs-ansible-24s-crypto-modules)
 
     * created using shell and openssl command:
 
-        * https://www.jeffgeerling.com/blog/2017/self-signed-certificates-ansible-local-testing-nginx
-        * https://serialized.net/2013/04/simply-generating-self-signed-ssl-certs-with-ansible/
+        * [https://www.jeffgeerling.com/blog/2017/self-signed-certificates-ansible-local-testing-nginx](https://www.jeffgeerling.com/blog/2017/self-signed-certificates-ansible-local-testing-nginx)
+        * [https://serialized.net/2013/04/simply-generating-self-signed-ssl-certs-with-ansible/](https://serialized.net/2013/04/simply-generating-self-signed-ssl-certs-with-ansible/)
 
-* generate /etc/hosts with ansible: https://gist.github.com/rothgar/8793800
-* security: https://ryaneschinger.com/blog/securing-a-server-with-ansible/
+* generate /etc/hosts with ansible: [https://gist.github.com/rothgar/8793800](https://gist.github.com/rothgar/8793800)
+* security: [https://ryaneschinger.com/blog/securing-a-server-with-ansible/](https://ryaneschinger.com/blog/securing-a-server-with-ansible/)
 * database:
 
-    * postgresql: https://docs.ansible.com/ansible/latest/modules/list_of_database_modules.html#postgresql
+    * postgresql: [https://docs.ansible.com/ansible/latest/modules/list_of_database_modules.html#postgresql](https://docs.ansible.com/ansible/latest/modules/list_of_database_modules.html#postgresql)
 
 * text file lines:
 
-    * https://stackoverflow.com/questions/29075287/ansible-insert-line-if-not-exists
-    * https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file
-    * http://www.mydailytutorials.com/ansible-add-line-to-file/
+    * [https://stackoverflow.com/questions/29075287/ansible-insert-line-if-not-exists](https://stackoverflow.com/questions/29075287/ansible-insert-line-if-not-exists)
+    * [https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file](https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file)
+    * [http://www.mydailytutorials.com/ansible-add-line-to-file/](http://www.mydailytutorials.com/ansible-add-line-to-file/)
 
 ## Task Modules
 
@@ -440,13 +440,13 @@ Encryption successful
 
 ### apt_key module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/apt_key_module.html
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/apt_key_module.html](https://docs.ansible.com/ansible/latest/modules/apt_key_module.html)
 * 
 
 ### copy module
 
 * Copy files.
-* Documentation: https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module](https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module)
 * 
 
 ### django\_manage module
@@ -494,10 +494,10 @@ Encryption successful
 ### file module
 
 * Used to create, alter, and remove files and directories.
-* Documentation: https://docs.ansible.com/ansible/latest/modules/file_module.html
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/file_module.html](https://docs.ansible.com/ansible/latest/modules/file_module.html)
 * Examples:
 
-    * http://www.mydailytutorials.com/ansible-create-directory/
+    * [http://www.mydailytutorials.com/ansible-create-directory/](http://www.mydailytutorials.com/ansible-create-directory/)
     * `touch` a file:
 
             # create django log file
@@ -509,36 +509,52 @@ Encryption successful
 
 ### get_url module
 
-* Documentation: http://docs.ansible.com/ansible/latest/modules/get_url_module.html#get-url-module
+* Documentation: [http://docs.ansible.com/ansible/latest/modules/get_url_module.html](http://docs.ansible.com/ansible/latest/modules/get_url_module.html)
+
+### git module
+
+* Used to interact with git repositories.
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/git_module.html](https://docs.ansible.com/ansible/latest/modules/git_module.html)
+* Examples:
+
+    * `clone` a repository:
+
+            # prerequisite: python_utilities
+            # - https://github.com/jonathanmorgan/python_utilities.git
+            # - git@github.com:jonathanmorgan/python_utilities.git
+            - name: clone python_utilities
+              git:
+                repo: https://github.com/jonathanmorgan/python_utilities.git
+                dest: "{{ django_project_folder_path }}/python_utilities"
 
 ### lineinfile module
 
-* Documentation: http://docs.ansible.com/ansible/latest/modules/lineinfile_module.html
+* Documentation: [http://docs.ansible.com/ansible/latest/modules/lineinfile_module.html](http://docs.ansible.com/ansible/latest/modules/lineinfile_module.html)
 * Examples:
-    * append to end of file: https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file
-    * http://www.mydailytutorials.com/ansible-add-line-to-file/
+    * append to end of file: [https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file](https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file)
+    * [http://www.mydailytutorials.com/ansible-add-line-to-file/](http://www.mydailytutorials.com/ansible-add-line-to-file/)
 
 ### npm module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/npm_module.html
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/npm_module.html](https://docs.ansible.com/ansible/latest/modules/npm_module.html)
 * 
 
 ### openssl_* modules
 
 * Documentation:
 
-    * https://docs.ansible.com/ansible/latest/modules/list_of_crypto_modules.html
-    * openssl_certificate: https://docs.ansible.com/ansible/latest/modules/openssl_certificate_module.html#openssl-certificate-module
-    * openssl_csr: https://docs.ansible.com/ansible/latest/modules/openssl_csr_module.html#openssl-csr-module
-    * openssl_dhparam: https://docs.ansible.com/ansible/latest/modules/openssl_dhparam_module.html#openssl-dhparam-module
-    * openssl_privatekey: https://docs.ansible.com/ansible/latest/modules/openssl_privatekey_module.html#openssl-privatekey-module
-    * openssl_publickey: https://docs.ansible.com/ansible/latest/modules/openssl_publickey_module.html#openssl-publickey-module
+    * [https://docs.ansible.com/ansible/latest/modules/list_of_crypto_modules.html](https://docs.ansible.com/ansible/latest/modules/list_of_crypto_modules.html)
+    * openssl_certificate: [https://docs.ansible.com/ansible/latest/modules/openssl_certificate_module.html](https://docs.ansible.com/ansible/latest/modules/openssl_certificate_module.html)
+    * openssl_csr: [https://docs.ansible.com/ansible/latest/modules/openssl_csr_module.html](https://docs.ansible.com/ansible/latest/modules/openssl_csr_module.html)
+    * openssl_dhparam: [https://docs.ansible.com/ansible/latest/modules/openssl_dhparam_module.html](https://docs.ansible.com/ansible/latest/modules/openssl_dhparam_module.html)
+    * openssl_privatekey: [https://docs.ansible.com/ansible/latest/modules/openssl_privatekey_module.html](https://docs.ansible.com/ansible/latest/modules/openssl_privatekey_module.html)
+    * openssl_publickey: [https://docs.ansible.com/ansible/latest/modules/openssl_publickey_module.html](https://docs.ansible.com/ansible/latest/modules/openssl_publickey_module.html)
 
 * Examples:
 
     * create self-signed certificate:
 
-        * From: https://www.jeffgeerling.com/blog/2017/generating-self-signed-openssl-certs-ansible-24s-crypto-modules
+        * From: [https://www.jeffgeerling.com/blog/2017/generating-self-signed-openssl-certs-ansible-24s-crypto-modules](https://www.jeffgeerling.com/blog/2017/generating-self-signed-openssl-certs-ansible-24s-crypto-modules)
         * 1) make private key with `openssl_privatekey`.
         * 2) generate CSR with `openssl_csr`.
         * 3) generate certificate using `openssl_certificate`.
@@ -571,9 +587,9 @@ Encryption successful
 
 ### pip module
 
-* Documentation: http://docs.ansible.com/ansible/latest/modules/pip_module.html
+* Documentation: [http://docs.ansible.com/ansible/latest/modules/pip_module.html](http://docs.ansible.com/ansible/latest/modules/pip_module.html)
 * Examples:
-    * https://stackoverflow.com/questions/31396130/ansible-install-multiple-python-packages-on-a-single-session
+    * [https://stackoverflow.com/questions/31396130/ansible-install-multiple-python-packages-on-a-single-session](https://stackoverflow.com/questions/31396130/ansible-install-multiple-python-packages-on-a-single-session)
 * can run a particular pip executable
     * under pip, include “executable: <path_to_pip>”.  This could be just “pip3”, or could be something like “/usr/bin/pip3”.
     * Example:
@@ -652,10 +668,10 @@ Encryption successful
 
 ### service module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/service_module.html#service-module
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/service_module.html](https://docs.ansible.com/ansible/latest/modules/service_module.html)
 * Notes:
 
-    * under the hood, for systemd systems, implemented using systemd module: https://docs.ansible.com/ansible/latest/modules/systemd_module.html
+    * under the hood, for systemd systems, implemented using systemd module: [https://docs.ansible.com/ansible/latest/modules/systemd_module.html](https://docs.ansible.com/ansible/latest/modules/systemd_module.html)
 
 * Examples:
 
@@ -696,13 +712,13 @@ Encryption successful
 
 ### shell module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/shell_module.html#shell-module
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/shell_module.html](https://docs.ansible.com/ansible/latest/modules/shell_module.html)
 * execute raw shell commands.
 
 ### stat module
 
 * Lets you check the state of file or directory on the file system.
-* Documentation: https://docs.ansible.com/ansible/latest/modules/stat_module.html
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/stat_module.html](https://docs.ansible.com/ansible/latest/modules/stat_module.html)
 * Notes:
 * Examples:
     * look for file /etc/foo.conf, store details in variable named “st”:
@@ -712,7 +728,7 @@ Encryption successful
 
 ### template module
 
-* Documentation: https://docs.ansible.com/ansible/latest/modules/template_module.html#template-module
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/template_module.html](https://docs.ansible.com/ansible/latest/modules/template_module.html)
 * Examples:
     * CRAN R apt source:
             # Add apt source for CRAN R.
@@ -720,20 +736,22 @@ Encryption successful
               template:
                 src: CRAN-R.list.j2
                 dest: /etc/apt/sources.list.d
+
 ### ufw module
-    * Documentation: https://docs.ansible.com/ansible/latest/modules/ufw_module.html
-    * Examples:
-        * https://github.com/Oefenweb/ansible-ufw
+
+* Documentation: [https://docs.ansible.com/ansible/latest/modules/ufw_module.html](https://docs.ansible.com/ansible/latest/modules/ufw_module.html)
+* Examples:
+    * [https://github.com/Oefenweb/ansible-ufw](https://github.com/Oefenweb/ansible-ufw)
 
 ### uri module
 
-* Documentation - http://docs.ansible.com/ansible/latest/modules/uri_module.html#uri-module
+* Documentation - [http://docs.ansible.com/ansible/latest/modules/uri_module.html](http://docs.ansible.com/ansible/latest/modules/uri_module.html)
 
 # ansible modules:
 
-* from https://stackoverflow.com/questions/42836598/how-to-download-and-install-ansible-modules:
+* from [https://stackoverflow.com/questions/42836598/how-to-download-and-install-ansible-modules](https://stackoverflow.com/questions/42836598/how-to-download-and-install-ansible-modules):
 
-    * An excellent general guide to writing modules (I've no connection to the author) can be found here: http://blog.toast38coza.me/custom-ansible-module-hello-world/
+    * An excellent general guide to writing modules (I've no connection to the author) can be found here: [http://blog.toast38coza.me/custom-ansible-module-hello-world/](http://blog.toast38coza.me/custom-ansible-module-hello-world/)
     * The quickest way is to simply have a folder called library/ in the same folder as your playbook. Inside this folder, place the python script for the Ansible Module. You should now have a corresponding task available to your playbook.
     * If you want to share your module across multiple projects, then you can add an entry to /etc/ansible/ansible.cfg pointing to a shared library location, eg:
 
