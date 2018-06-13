@@ -2,7 +2,7 @@
 
 # clone the required git repos
 
-# prerequisite: python_utilities
+# ==> prerequisite: python_utilities
 # - https://github.com/jonathanmorgan/python_utilities.git
 # - git@github.com:jonathanmorgan/python_utilities.git
 - name: clone python_utilities
@@ -10,7 +10,7 @@
     repo: https://github.com/jonathanmorgan/python_utilities.git
     dest: "{{ django_project_folder_path }}/python_utilities"
 
-# prerequisite: django_config
+# ==> prerequisite: django_config
 # - https://github.com/jonathanmorgan/django_config.git
 # - git@github.com:jonathanmorgan/django_config.git
 - name: clone django_config
@@ -18,7 +18,14 @@
     repo: https://github.com/jonathanmorgan/django_config.git
     dest: "{{ django_project_folder_path }}/django_config"
 
-# prerequisite: django_messages
+# add to INSTALLED_APPS 
+- name: add django_config to INSTALLED_APPS in settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: INSTALLED_APPS.append( 'django_config.apps.Django_ConfigConfig' )
+  notify: touch wsgi.py
+
+# ==> prerequisite: django_messages
 # - https://github.com/jonathanmorgan/django_messages.git
 # - git@github.com:jonathanmorgan/django_messages.git
 - name: clone django_messages
@@ -26,7 +33,14 @@
     repo: https://github.com/jonathanmorgan/django_messages.git
     dest: "{{ django_project_folder_path }}/django_messages"
 
-# sourcenet
+# add to INSTALLED_APPS 
+- name: add django_messages to INSTALLED_APPS in settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: INSTALLED_APPS.append( 'django_messages.apps.DjangoMessagesConfig' )
+  notify: touch wsgi.py
+
+# ==> sourcenet
 # - https://github.com/jonathanmorgan/sourcenet.git
 # - git@github.com:jonathanmorgan/sourcenet.git
 - name: clone sourcenet
@@ -34,7 +48,21 @@
     repo: https://github.com/jonathanmorgan/sourcenet.git
     dest: "{{ django_project_folder_path }}/sourcenet"
 
-# sourcenet_analysis
+# add to INSTALLED_APPS 
+- name: add sourcenet to INSTALLED_APPS in settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: INSTALLED_APPS.append( 'sourcenet.apps.SourcenetConfig' )
+  notify: touch wsgi.py
+
+# add to urls.py 
+- name: add sourcenet to urls.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/urls.py'
+    line: urlpatterns.append( path( 'sourcenet/', include( 'sourcenet.urls' ) ) )
+  notify: touch wsgi.py
+
+# ==> sourcenet_analysis
 # - https://github.com/jonathanmorgan/sourcenet_analysis.git
 # - git@github.com:jonathanmorgan/sourcenet_analysis.git
 - name: clone sourcenet_analysis
@@ -42,13 +70,28 @@
     repo: https://github.com/jonathanmorgan/sourcenet_analysis.git
     dest: "{{ django_project_folder_path }}/sourcenet_analysis"
 
+# add to INSTALLED_APPS 
+- name: add sourcenet_analysis to INSTALLED_APPS in settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: INSTALLED_APPS.append( 'sourcenet_analysis.apps.Sourcenet_AnalysisConfig' )
+  notify: touch wsgi.py
+
+# add to urls.py 
+- name: add sourcenet_analysis to urls.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/urls.py'
+    line: urlpatterns.append( path( 'sourcenet/analysis/', include( 'sourcenet_analysis.urls' ) ) )
+  notify: touch wsgi.py
+
+# ==> msu_phd_work
 # create work folder "{{ django_project_folder_path }}/msu_phd_work"
 - name: make sure there is a "{{ django_project_folder_path }}/msu_phd_work" folder
   file:
     path: "{{ django_project_folder_path }}/work"
     state: directory
 
-# msu_phd_work
+# clone git repo.
 # - https://github.com/jonathanmorgan/msu_phd_work.git
 # - git@github.com:jonathanmorgan/msu_phd_work.git
 - name: clone msu_phd_work
@@ -58,6 +101,6 @@
 
 # install requirements
 
-# update settings.py --> INSTALLED_APPS
+# update the database
 
 # touch mod.wsgi to reload everything.
