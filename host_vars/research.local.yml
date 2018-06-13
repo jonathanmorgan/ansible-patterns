@@ -33,6 +33,10 @@ server_pgsql_admin_user: "{{ ansible_user }}"
 server_pgsql_admin_password: "{{ ansible_become_password }}"
 server_pgsql_python_package: psycopg2
 
+# R configuration
+#r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran35"
+r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
+
 # RStudio server configuration
 #rstudio_version: 1.1.453
 

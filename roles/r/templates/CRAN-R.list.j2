@@ -1,12 +1,18 @@
 # R-Project.org
-deb https://cran.r-project.org/bin/linux/ubuntu {{server_ubuntu_version_code_name}}/
+#deb https://cran.r-project.org/bin/linux/ubuntu {{ r_apt_deb_ubuntu_version_path }}/
 
 # Mirrors
-# deb http://cran.rstudio.com/bin/linux/ubuntu {{server_ubuntu_version_code_name}}/ # R - CRAN mirror - rstudio.com
-# deb http://ftp.ussg.iu.edu/CRAN/bin/linux/ubuntu {{server_ubuntu_version_code_name}}/ # R - CRAN mirror - ftp.ussg.iu.edu
-# deb http://cran.case.edu/bin/linux/ubuntu {{server_ubuntu_version_code_name}}/ # R - CRAN mirror - cran.case.edu
-# deb https://cran.revolutionanalytics.com/bin/linux/ubuntu {{server_ubuntu_version_code_name}}/ # R - CRAN mirror - revolution analytics (Microsoft)
+# deb http://cran.rstudio.com/bin/linux/ubuntu {{ r_apt_deb_ubuntu_version_path }}/ # R - CRAN mirror - rstudio.com
+# deb http://ftp.ussg.iu.edu/CRAN/bin/linux/ubuntu {{ r_apt_deb_ubuntu_version_path }}/ # R - CRAN mirror - ftp.ussg.iu.edu
+# deb http://cran.case.edu/bin/linux/ubuntu {{ r_apt_deb_ubuntu_version_path }}/ # R - CRAN mirror - cran.case.edu
+# deb https://cran.revolutionanalytics.com/bin/linux/ubuntu {{ r_apt_deb_ubuntu_version_path }}/ # R - CRAN mirror - revolution analytics (Microsoft)
 
 # Dev Package Channel
-# deb http://ppa.launchpad.net/marutter/rrutter/ubuntu {{server_ubuntu_version_code_name}} main
-# deb-src http://ppa.launchpad.net/marutter/rrutter/ubuntu {{server_ubuntu_version_code_name}} main
+# deb http://ppa.launchpad.net/marutter/rrutter/ubuntu {{ r_apt_deb_ubuntu_version_path }} main
+# deb-src http://ppa.launchpad.net/marutter/rrutter/ubuntu {{ r_apt_deb_ubuntu_version_path }} main
+
+# Dev 3.5 Package Channel
+# - Updates: http://rubuntu.netlify.com/
+# - http://rubuntu.netlify.com/post/2018-06-11-r-3.5-on-debian-and-ubuntu-update/
+deb http://ppa.launchpad.net/marutter/rrutter3.5/ubuntu {{ r_apt_deb_ubuntu_version_path }} main 
+deb-src http://ppa.launchpad.net/marutter/rrutter3.5/ubuntu {{ r_apt_deb_ubuntu_version_path }} main 
