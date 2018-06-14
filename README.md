@@ -6,10 +6,11 @@
 
 ## Ansible - Installation on control machine
 
-* on mac, just do “pip install ansible”.  I did it in a separate conda environment named “ansible”, just so I could keep it separate from other things that I installed with conda.
+* on mac, just do `pip install ansible`.  I did it in a separate conda environment named `ansible`, just so I could keep it separate from other things that I installed with conda.
 
     * `conda create --name ansible python=3`
     * `source activate ansible`
+    * `pip install ansible`
 
 * [http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
@@ -20,8 +21,8 @@
 * make sure that python 2 or 3 are installed.  From installation guide:
 
     * By default, Ansible uses the python interpreter located at /usr/bin/python to run its modules. However, some Linux distributions may only have a Python 3 interpreter installed to /usr/bin/python3 by default. On those systems, you may see an error like:
-    * "module_stdout": "/bin/sh: /usr/bin/python: No such file or directory\r\n"
-    * you can either set the ansible_python_interpreter inventory variable (see Working with Inventory) to point at your interpreter or you can install a Python 2 interpreter for modules to use. You will still need to set ansible_python_interpreter if the Python 2 interpreter is not installed to /usr/bin/python.
+    * `"module_stdout": "/bin/sh: /usr/bin/python: No such file or directory\r\n"`
+    * you can either set the `ansible_python_interpreter` inventory variable (see Working with Inventory) to point at your interpreter or you can install a Python 2 interpreter for modules to use. You will still need to set `ansible_python_interpreter` if the Python 2 interpreter is not installed to `/usr/bin/python`.
 
 # `research` patterns
 
@@ -33,10 +34,10 @@ The following steps will install all services on the server whose DNS name is `r
 
 - go into `ansible-patterns/host_vars` and rename `research.local.yml` to `research.local`.  Inside, make sure to set:
 
-    - ansible_user
-    - ansible_become_password
-    - server_ip_address
-    - jupyterhub_configproxy_auth_token (32 character random hexadecimal number: `openssl rand -hex 32`)
+    - `ansible_user`
+    - `ansible_become_password`
+    - `server_ip_address`
+    - `jupyterhub_configproxy_auth_token` (32 character random hexadecimal number: `openssl rand -hex 32`)
     - _update for new required variables_
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
