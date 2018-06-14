@@ -202,8 +202,8 @@ The following steps will install all services on the server whose DNS name is `r
 * running a playbook:
 
     * `ansible-playbook <playbook-file-name>`
-    * with inventory file: `ansible-playbook <playbook-file-name> -i ./hosts.yaml`
-    * and with vault id: `ansible-playbook research.yaml -i ./hosts.yaml --vault-id dev@~/.ansible_vault`
+    * with inventory file: `ansible-playbook <playbook-file-name> -i ./hosts.yml`
+    * and with vault id: `ansible-playbook research.yml -i ./hosts.yml --vault-id dev@~/.ansible_vault`
 
 * variables:
 
