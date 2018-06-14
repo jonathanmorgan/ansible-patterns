@@ -11,12 +11,12 @@
     * `conda create --name ansible python=3`
     * `source activate ansible`
 
-* http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+* [http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ## Ansible - Installation on a target
 
-* http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html
-* put your control machine’s SSH public key in ~/.ssh/authorized_keys on the target machine. (~/.ssh folder should be 700).
+* [http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html](http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html)
+* put your control machine’s SSH public key in `~/.ssh/authorized_keys` on the target machine. (`~/.ssh` folder should be 700).
 * make sure that python 2 or 3 are installed.  From installation guide:
 
     * By default, Ansible uses the python interpreter located at /usr/bin/python to run its modules. However, some Linux distributions may only have a Python 3 interpreter installed to /usr/bin/python3 by default. On those systems, you may see an error like:
