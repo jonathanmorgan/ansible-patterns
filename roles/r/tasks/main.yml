@@ -18,10 +18,10 @@
     id: E084DAB9
 
 # Add R 3.5 throwaway PPA.
-#- name: Add R 3.5 throwaway PPA.
-#  become: yes
-#  become_user: root
-#  shell: add-apt-repository ppa:marutter/rrutter3.5
+- name: Add R 3.5 throwaway PPA.
+  become: yes
+  become_user: root
+  shell: add-apt-repository ppa:marutter/rrutter3.5
 
 # update apt cache
 - name: Update apt cache
