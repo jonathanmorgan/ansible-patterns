@@ -37,8 +37,8 @@ The following steps will install all services on the server whose DNS name is `r
     - `ansible_user`
     - `ansible_become_password`
     - `server_ip_address`
+    - `server_webroot_folder` (defaults to ubuntu default of `/var/www/html`)
     - `jupyterhub_configproxy_auth_token` (32 character random hexadecimal number: `openssl rand -hex 32`)
-    - _update for new required variables_
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
 - in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
@@ -201,9 +201,9 @@ The following steps will install all services on the server whose DNS name is `r
 
 * running a playbook:
 
-    * ansible-playbook <playbook-file-name>
-    * with inventory file: ansible-playbook <playbook-file-name> -i ./hosts.yaml
-    * and with vault id: ansible-playbook research.yaml -i ./hosts.yaml --vault-id dev@~/.ansible_vault
+    * `ansible-playbook <playbook-file-name>`
+    * with inventory file: `ansible-playbook <playbook-file-name> -i ./hosts.yaml`
+    * and with vault id: `ansible-playbook research.yaml -i ./hosts.yaml --vault-id dev@~/.ansible_vault`
 
 * variables:
 
