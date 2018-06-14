@@ -41,7 +41,3 @@
   roles:
     - django_project
 
-- name: deploy sourcenet application
-  hosts: sourcenet_servers
-  roles:
-    - sourcenet_dev
