@@ -10,6 +10,20 @@
     repo: https://github.com/jonathanmorgan/python_utilities.git
     dest: "{{ django_project_folder_path }}/python_utilities"
 
+# install python_utilities requirements
+- name: install python_utilities requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/python_utilities/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
+
+# install python_utilities potgresql-specific requirements
+- name: install python_utilities potgresql-specific requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/python_utilities/requirements_pgsql.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
+
 # ==> prerequisite: django_config
 # - https://github.com/jonathanmorgan/django_config.git
 # - git@github.com:jonathanmorgan/django_config.git
@@ -25,6 +39,13 @@
     line: INSTALLED_APPS.append( 'django_config.apps.Django_ConfigConfig' )
   notify: touch wsgi.py
 
+# install django_config requirements
+- name: install django_config requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/django_config/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
+
 # ==> prerequisite: django_messages
 # - https://github.com/jonathanmorgan/django_messages.git
 # - git@github.com:jonathanmorgan/django_messages.git
@@ -38,6 +59,13 @@
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
     line: INSTALLED_APPS.append( 'django_messages.apps.DjangoMessagesConfig' )
+  notify: touch wsgi.py
+
+# install django_messages requirements
+- name: install django_messages requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/django_messages/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
 # ==> sourcenet
@@ -62,6 +90,13 @@
     line: urlpatterns.append( path( 'sourcenet/', include( 'sourcenet.urls' ) ) )
   notify: touch wsgi.py
 
+# install sourcenet requirements
+- name: install sourcenet requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/sourcenet/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
+
 # ==> sourcenet_analysis
 # - https://github.com/jonathanmorgan/sourcenet_analysis.git
 # - git@github.com:jonathanmorgan/sourcenet_analysis.git
@@ -84,6 +119,13 @@
     line: urlpatterns.append( path( 'sourcenet/analysis/', include( 'sourcenet_analysis.urls' ) ) )
   notify: touch wsgi.py
 
+# install sourcenet_analysis requirements
+- name: install sourcenet_analysis requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/sourcenet_analysis/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
+
 # ==> msu_phd_work
 # create work folder "{{ django_project_folder_path }}/msu_phd_work"
 - name: make sure there is a "{{ django_project_folder_path }}/msu_phd_work" folder
@@ -99,8 +141,65 @@
     repo: https://github.com/jonathanmorgan/msu_phd_work.git
     dest: "{{ django_project_folder_path }}/work/msu_phd_work"
 
-# install requirements
+# ==> update the database
+- name: run `python manage.py migrate`
+  django_manage:
+    app_path: "{{ django_project_folder_path }}"
+    command: migrate
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
 
-# update the database
+# collect static
+- name: run `python manage.py collectstatic`
+  django_manage:
+    app_path: "{{ django_project_folder_path }}"
+    command: collectstatic --noinput
+    virtualenv: "{{ django_virtualenv_path }}"
 
-# touch mod.wsgi to reload everything.
+# ==> update settings to include login variables
+
+# add leading comment
+- name: add sourcenet leading comment to settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: '# login configuration'
+  notify: touch wsgi.py
+
+# add LOGIN_URL
+- name: add LOGIN_URL to settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: "LOGIN_URL = '/{{ django_project_name }}/sourcenet/accounts/login/'"
+  notify: touch wsgi.py
+
+# add LOGIN_REDIRECT_URL
+- name: add LOGIN_REDIRECT_URL to settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: "LOGIN_REDIRECT_URL = '/{{ django_project_name }}/sourcenet/output/network/'"
+  notify: touch wsgi.py
+
+# add LOGOUT_URL
+- name: add LOGOUT_URL to settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: "LOGOUT_URL = '/'"
+  notify: touch wsgi.py
+
+# should end up touch-ing wsgi.py to reload everything.
+
+# new index.html
+- name: add index.html to webroot
+  become: yes
+  become_user: root
+  template:
+    src: index.html.j2
+    dest: '/var/www/html/index.html'
+
+# also add python_resources.html
+- name: add python_resources.html to webroot
+  become: yes
+  become_user: root
+  template:
+    src: python_resources.html.j2
+    dest: '/var/www/html/python_resources.html'

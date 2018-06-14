@@ -449,7 +449,7 @@ Encryption successful
 * Documentation: [https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module](https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module)
 * 
 
-### django\_manage module
+### django_manage module
 
 - Documentation:
 
