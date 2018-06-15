@@ -761,3 +761,11 @@ The following steps will install all services on the server whose DNS name is `r
     * If you want to share your module across multiple projects, then you can add an entry to `/etc/ansible/ansible.cfg` pointing to a shared library location, eg:
 
         * `library        = /usr/share/ansible/library`
+
+# TODO
+
+todo:
+
+- look for "sourcenet/sourcenet" in source
+- look for "sourcenet/django" in source
+- look for "data.jrn.cas.msu.edu/sourcenet/sourcenet" in source
