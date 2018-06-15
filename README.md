@@ -28,6 +28,8 @@
 
 Research server playbook is `research.yml`.
 
+To fire up a sourcenet server, do the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook.
+
 ## `research` quick start
 
 The following steps will install all services on the server whose DNS name is `research.local`:
@@ -76,10 +78,10 @@ The following steps will install all services on the server whose DNS name is `r
         - one way to store a single vault password is to store its location in ansible config, in  `vault_password_file`.
         - default locations:
 
-            - /etc/ansible/ansible.cfg
-            - ~/.ansible.cfg
+            - `/etc/ansible/ansible.cfg`
+            - `~/.ansible.cfg`
 
-    - if installing rstudio, roles/rstudio/tasks/rstudio_variables.yml
+    - if installing rstudio, `roles/rstudio/tasks/rstudio_variables.yml`
 
         - add rstudio version to download (will have latest as of last changes to that file, might be outdated).
 
@@ -87,26 +89,26 @@ The following steps will install all services on the server whose DNS name is `r
 
 ## Getting started
 
-* Ansible documentation: http://docs.ansible.com/ansible/latest/index.html
+* Ansible documentation: [http://docs.ansible.com/ansible/latest/index.html](http://docs.ansible.com/ansible/latest/index.html)
 
-    * https://www.ansible.com/resources/get-started
-    * http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
-    * http://docs.ansible.com/ansible/latest/user_guide/modules.html
-    * http://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html
+    * [https://www.ansible.com/resources/get-started](https://www.ansible.com/resources/get-started)
+    * [http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html](http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
+    * [http://docs.ansible.com/ansible/latest/user_guide/modules.html](http://docs.ansible.com/ansible/latest/user_guide/modules.html)
+    * [http://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html](http://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html)
 
 * Playbook examples:
 
-    * https://github.com/ansible/ansible-examples
-    * https://dotlayer.com/how-to-use-an-ansible-playbook-to-install-wordpress/
+    * [https://github.com/ansible/ansible-examples](https://github.com/ansible/ansible-examples)
+    * [https://dotlayer.com/how-to-use-an-ansible-playbook-to-install-wordpress/](https://dotlayer.com/how-to-use-an-ansible-playbook-to-install-wordpress/)
 
 ## inventory file
 
 * Inventory file is where ansible looks to see which servers it is controlling.
-* default location is /etc/ansible/hosts
+* default location is `/etc/ansible/hosts`
 
-    * on work computer, mine is in “/Users/jonathanmorgan/Documents/work/ansible/research"
+    * on work computer, mine is in `/Users/jonathanmorgan/Documents/work/ansible/research`
 
-* when you run ansible, you can specify a different file with the “-i <inventory_file_path>” command.
+* when you run ansible, you can specify a different file with the `-i <inventory_file_path>` command.
 * ansible inventory and playbook files are generally implemented in YAML.  Example simple inventory:
 
         all:
@@ -140,7 +142,7 @@ The following steps will install all services on the server whose DNS name is `r
                 ansible_become_user: root
                 ansible_become_password: today123
 
-* details: http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
+* details: [http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html](http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 
 ## ansible command basics
 
@@ -151,8 +153,8 @@ The following steps will install all services on the server whose DNS name is `r
 
 * options:
 
-    * -i <inventory_file_path>
-    * -u <username> (on remote machine)
+    * `-i <inventory_file_path>`
+    * `-u <username>` (on remote machine)
 
 * sudo examples:
 
@@ -169,24 +171,24 @@ The following steps will install all services on the server whose DNS name is `r
         # as bruce, sudoing to batman
         $ ansible all -m ping -u bruce -b --become-user batman
     
-    * From: http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html
+    * From: [http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html](http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html)
 
 ## overview
 
 * hosts, and then you have a single playbook, with different sets of tasks broken out into roles.
-* good simple example (lamp stack): https://github.com/ansible/ansible-examples/tree/master/lamp_simple
+* good simple example (lamp stack): [https://github.com/ansible/ansible-examples/tree/master/lamp_simple](https://github.com/ansible/ansible-examples/tree/master/lamp_simple)
 
 ## configuration
 
-* Overview: https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html
-* Config parameter documentation: https://docs.ansible.com/ansible/latest/reference_appendices/config.html
+* Overview: [https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html](https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html)
+* Config parameter documentation: [https://docs.ansible.com/ansible/latest/reference_appendices/config.html](https://docs.ansible.com/ansible/latest/reference_appendices/config.html)
 
     * Notable examples:
 
-        * vault_password_file - path to vault password file (https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-vault-password-file)
+        * vault_password_file - path to vault password file ([https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-vault-password-file](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-vault-password-file))
 
-* Example INI file: https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg
-* Command to view config: http://docs.ansible.com/ansible/latest/cli/ansible-config.html
+* Example INI file: [https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg](https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg)
+* Command to view config: [http://docs.ansible.com/ansible/latest/cli/ansible-config.html](http://docs.ansible.com/ansible/latest/cli/ansible-config.html)
 * Default INI-format ansible.cfg file locations:
 
         /etc/ansible/ansible.cfg
@@ -196,8 +198,8 @@ The following steps will install all services on the server whose DNS name is `r
 
 * documentation:
 
-    * doc overview: http://docs.ansible.com/ansible/latest/user_guide/playbooks.html
-    * playbook intro: http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+    * doc overview: [http://docs.ansible.com/ansible/latest/user_guide/playbooks.html](http://docs.ansible.com/ansible/latest/user_guide/playbooks.html)
+    * playbook intro: [http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html](http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
 
 * running a playbook:
 
@@ -207,9 +209,9 @@ The following steps will install all services on the server whose DNS name is `r
 
 * variables:
 
-    * https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#playbooks-variables
+    * [https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#playbooks-variables](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#playbooks-variables)
 
-* privilege escalation: http://docs.ansible.com/ansible/latest/user_guide/become.html
+* privilege escalation: [http://docs.ansible.com/ansible/latest/user_guide/become.html](http://docs.ansible.com/ansible/latest/user_guide/become.html)
 
     * example in a host’s variables to tell it, by default, to elevate (by default using sudo), to root, using password:
 
@@ -220,7 +222,7 @@ The following steps will install all services on the server whose DNS name is `r
 
 ## Roles
 
-* Documentation: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#roles
+* Documentation: [https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#roles](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#roles)
 * Roles are sets of tasks that can be combined in different ways to create various configurations on a particular server or set of servers.
 * Roles by default are stored in a folder named “roles” in the directory where your playbook lives.  Each role’s folder includes:
 
@@ -247,53 +249,55 @@ The following steps will install all services on the server whose DNS name is `r
               roles:
                 - new_server
 
-        * This combination will cause the tasks in ./roles/new_server/tasks/main.yml to be run against the hosts in group “new_servers”, so in this example, just the host “research.local”.
+        * This combination will cause the tasks in `./roles/new_server/tasks/main.yml` to be run against the hosts in group “new_servers”, so in this example, just the host “research.local”.
 
 ## Vault
 
 * Allows you to encrypt either variable values or files using a passphrase.
-* General vault documentation: http://docs.ansible.com/ansible/latest/user_guide/vault.html
-* ansible-vault command (https://docs.ansible.com/ansible/latest/cli/ansible-vault.html) lets you encrypt files or variable values within a value based on a secret encryption password.
+* General vault documentation: [http://docs.ansible.com/ansible/latest/user_guide/vault.html](http://docs.ansible.com/ansible/latest/user_guide/vault.html)
+* ansible-vault command ([https://docs.ansible.com/ansible/latest/cli/ansible-vault.html](https://docs.ansible.com/ansible/latest/cli/ansible-vault.html)) lets you encrypt files or variable values within a value based on a secret encryption password.
 * to start, you need a vault password.  This can be provided on the command line, or stored in a file.
 
     * all share same password:
 
         * command line (all share same password):
 
-            * ansible-playbook site.yml --vault-id ~/.ansible_vault
+            * `ansible-playbook site.yml --vault-id ~/.ansible_vault`
 
-        * in config INI-format file (either /etc/ansible/ansible.cfg or ~/.ansible.cfg by default, or provided by the -c option):
+        * in config INI-format file (either `/etc/ansible/ansible.cfg` or `~/.ansible.cfg` by default, or provided by the -c option):
 
-            * vault_password_file=/Users/jonathanmorgan/.ansible_vault
+            * `vault_password_file=/Users/jonathanmorgan/.ansible_vault`
 
     * different password per ID (command line only):
 
-        * ansible-playbook site.yml --vault-id dev@~/.ansible_vault --vault-id prod@~/.ansible_prod_vault
+        * `ansible-playbook site.yml --vault-id dev@~/.ansible_vault --vault-id prod@~/.ansible_prod_vault`
 
 * basics:
 
-    * https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html
+    * [https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html](https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html)
     * encrypt a value to include in a YAML file variable:
-        * http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string
-        * ansible-vault encrypt_string --vault-id <path_to_password_file> '<string_to_encrypt>' --name '<variable_name>'
-        * example: ansible-vault encrypt_string --vault-id ~/.ansible_vault 'today123' --name 'the_dev_secret'
+        * [http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string](http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string)
+        * `ansible-vault encrypt_string --vault-id <path_to_password_file> '<string_to_encrypt>' --name '<variable_name>'`
+        * Example: `ansible-vault encrypt_string --vault-id ~/.ansible_vault 'today123' --name 'the_dev_secret'`
         * Example output:
-the_dev_secret: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          35633331303937613165656461336336343638643562383435383162303662663634366337353730
-          3535666630666130656238313630363662383766303131350a303031613934646339313836393932
-          30353838646265663535653036353339633664383033623338316236353439613930396335653634
-          6332653732643937330a336532363265313731636538646438396162656666366439303561316465
-          6265
-Encryption successful
+
+                the_dev_secret: !vault |
+                $ANSIBLE_VAULT;1.1;AES256
+                35633331303937613165656461336336343638643562383435383162303662663634366337353730
+                3535666630666130656238313630363662383766303131350a303031613934646339313836393932
+                30353838646265663535653036353339633664383033623338316236353439613930396335653634
+                6332653732643937330a336532363265313731636538646438396162656666366439303561316465
+                6265 
+                Encryption successful
+
 * multiple vault passwords:
     * you can assign IDs when you encrypt, then specify where to get passwords for each ID in your playbook command.
-        * https://docs.ansible.com/ansible/2.4/vault.html#providing-vault-passwords
-        * id “dev”, from a file “~/.ansible_vault": ansible-playbook research.yaml -i ./hosts.yaml --vault-id dev@~/.ansible_vault
+        * [https://docs.ansible.com/ansible/2.4/vault.html#providing-vault-passwords](https://docs.ansible.com/ansible/2.4/vault.html#providing-vault-passwords)
+        * id “dev”, from a file “`~/.ansible_vault`": `ansible-playbook research.yaml -i ./hosts.yaml --vault-id dev@~/.ansible_vault`
     * encrypt a value to include in a YAML file variable, using a particular ID:
-        * http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string
-        * ansible-vault encrypt_string '<string_to_encrypt>' --name '<variable_name>' --vault-id <id_name>@<where_to_get_password> --encrypt-vault-id <id_name>
-        * example: ansible-vault encrypt_string 'today123' --name 'the_dev_secret' --vault-id dev@~/.ansible_vault --encrypt-vault-id dev
+        * [http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string](http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string)
+        * `ansible-vault encrypt_string '<string_to_encrypt>' --name '<variable_name>' --vault-id <id_name>@<where_to_get_password> --encrypt-vault-id <id_name>`
+        * example: `ansible-vault encrypt_string 'today123' --name 'the_dev_secret' --vault-id dev@~/.ansible_vault --encrypt-vault-id dev`
 
 ## Variables
 
@@ -301,7 +305,6 @@ Encryption successful
 * Examples:
 
     * [http://www.dasblinkenlichten.com/ansible-roles-and-variables/](http://www.dasblinkenlichten.com/ansible-roles-and-variables/)
-    * 
 
 ## Tasks:
 
@@ -442,13 +445,11 @@ Encryption successful
 ### apt_key module
 
 * Documentation: [https://docs.ansible.com/ansible/latest/modules/apt_key_module.html](https://docs.ansible.com/ansible/latest/modules/apt_key_module.html)
-* 
 
 ### copy module
 
 * Copy files.
 * Documentation: [https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module](https://docs.ansible.com/ansible/latest/modules/copy_module.html#copy-module)
-* 
 
 ### django_manage module
 
@@ -464,7 +465,7 @@ Encryption successful
 
 - Examples:
 
-    - idempotent superuser create (only if doesn't already exist):
+    - idempotent (only if doesn't already exist) superuser create:
 
         - [https://gist.github.com/elleryq/9c70e08b1b2cecc636d6](https://gist.github.com/elleryq/9c70e08b1b2cecc636d6)
         - and, see the `django_project` role in [https://github.com/jonathanmorgan/ansible-patterns](https://github.com/jonathanmorgan/ansible-patterns).
@@ -538,7 +539,6 @@ Encryption successful
 ### npm module
 
 * Documentation: [https://docs.ansible.com/ansible/latest/modules/npm_module.html](https://docs.ansible.com/ansible/latest/modules/npm_module.html)
-* 
 
 ### openssl_* modules
 
@@ -592,7 +592,7 @@ Encryption successful
 * Examples:
     * [https://stackoverflow.com/questions/31396130/ansible-install-multiple-python-packages-on-a-single-session](https://stackoverflow.com/questions/31396130/ansible-install-multiple-python-packages-on-a-single-session)
 * can run a particular pip executable
-    * under pip, include “executable: <path_to_pip>”.  This could be just “pip3”, or could be something like “/usr/bin/pip3”.
+    * under pip, include `executable: <path_to_pip>`.  This could be just `pip3`, or could be something like `/usr/bin/pip3`.
     * Example:
 
             # ==> virtualenv and virtualenvwrapper
@@ -723,15 +723,19 @@ Encryption successful
 * Notes:
 * Examples:
     * look for file /etc/foo.conf, store details in variable named “st”:
-        - stat:
-            path: /etc/foo.conf
-          register: st
+
+            - name: check if /etc/foo.conf exists
+              stat:
+                path: /etc/foo.conf
+                register: st
 
 ### template module
 
 * Documentation: [https://docs.ansible.com/ansible/latest/modules/template_module.html](https://docs.ansible.com/ansible/latest/modules/template_module.html)
 * Examples:
+
     * CRAN R apt source:
+
             # Add apt source for CRAN R.
             - name: Create APT source for CRAN R.
               template:
@@ -754,6 +758,6 @@ Encryption successful
 
     * An excellent general guide to writing modules (I've no connection to the author) can be found here: [http://blog.toast38coza.me/custom-ansible-module-hello-world/](http://blog.toast38coza.me/custom-ansible-module-hello-world/)
     * The quickest way is to simply have a folder called library/ in the same folder as your playbook. Inside this folder, place the python script for the Ansible Module. You should now have a corresponding task available to your playbook.
-    * If you want to share your module across multiple projects, then you can add an entry to /etc/ansible/ansible.cfg pointing to a shared library location, eg:
+    * If you want to share your module across multiple projects, then you can add an entry to `/etc/ansible/ansible.cfg` pointing to a shared library location, eg:
 
-        * library        = /usr/share/ansible/library
+        * `library        = /usr/share/ansible/library`
