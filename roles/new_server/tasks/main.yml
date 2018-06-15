@@ -98,3 +98,11 @@
   file:
     path: ~/Downloads
     state: directory
+
+# create /mnt/cdrom folder.
+- name: make sure there is a Downloads folder in ansible_user
+  become: yes
+  become_user: root
+  file:
+    path: /media/cdrom
+    state: directory
