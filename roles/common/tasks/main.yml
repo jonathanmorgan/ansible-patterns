@@ -85,6 +85,7 @@
     name:
       - virtualenv
       - virtualenvwrapper
+      - ipykernel
 
 # create default virtaulenv folder "{{ virtualenv_folder }} for ansible user.
 - name: make sure there is a {{ virtualenv_folder }} folder in ansible_user

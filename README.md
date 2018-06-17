@@ -766,6 +766,6 @@ The following steps will install all services on the server whose DNS name is `r
 
 todo:
 
-- look for "sourcenet/sourcenet" in source
-- look for "sourcenet/django" in source
-- look for "data.jrn.cas.msu.edu/sourcenet/sourcenet" in source
+- jupyter kernel-ize research virtualenv.
+- git config
+- set up one or more standard users, including git config, Downloads folder, etc.

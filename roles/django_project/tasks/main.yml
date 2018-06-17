@@ -32,6 +32,7 @@
       - django
       - "{{ django_db_package }}"
       - ipython
+      - ipykernel
       - django-ajax-selects
       - django-taggit
       - beautifulsoup4
@@ -39,6 +40,12 @@
       - w3lib
       - six
     state: latest
+
+# install virtualenv as jupyter kernel
+- name: make {{ django_project_name }} project virtualenv a kernel
+  become: yes
+  become_user: root
+  shell: '{{ django_virtualenv_bin_path }}/python -m ipykernel install --name {{ django_project_name }} --display-name "{{ django_project_name }}_virtualenv"'
 
 # create django project parent folder {{ django_project_parent_folder_path }}
 - name: create django project parent folder {{ django_project_parent_folder_path }}
