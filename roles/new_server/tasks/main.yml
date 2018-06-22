@@ -1,6 +1,26 @@
 ---
 # This playbook contains common plays that will be run on all nodes.
 
+# set hostname
+
+# in /etc/hostname
+- name: Put desired host name in /etc/hostname ( {{ server_host_name }} )
+  become: yes
+  become_user: root
+  template:
+    src: etc_hostname.j2
+    dest: /etc/hostname
+
+# add to end of 127.0.0.1 line in /etc/hosts
+- name: Add host name ( {{ server_host_name }} ) to /etc/hosts.
+  become: yes
+  become_user: root
+  lineinfile:
+    dest: /etc/hosts
+    backrefs: yes
+    regexp: '^(127\.0\.0\.1(?!.*\b{{ server_host_name }}\b).*)'
+    line: '\1\t{{ server_host_name }}'
+
 # ==> SSH sanity check.
 
 # update apt cache

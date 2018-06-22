@@ -13,7 +13,8 @@ ansible_become_password: !vault |
           3863
 
 # configuration
-server_name: research.local
+server_host_name: research
+server_name: "{{ server_host_name }}.local"
 server_ip_address: 172.16.111.134
 server_ubuntu_version_code_name: bionic
 ansible_user_home_folder: /home/{{ ansible_user }}
