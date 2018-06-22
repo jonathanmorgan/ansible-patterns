@@ -535,6 +535,25 @@ The following steps will install all services on the server whose DNS name is `r
 * Examples:
     * append to end of file: [https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file](https://stackoverflow.com/questions/19688885/in-ansible-how-do-i-add-a-line-to-the-end-of-a-file)
     * [http://www.mydailytutorials.com/ansible-add-line-to-file/](http://www.mydailytutorials.com/ansible-add-line-to-file/)
+    * update matching row within a file (using backrefs and regex):
+        * syntax:
+
+            * [https://stackoverflow.com/a/40789373/2237054](https://stackoverflow.com/a/40789373/2237054)
+            * [http://daveops.co.uk/2014/05/using-ansible-to-append-a-string-to-the-end-of-a-line/](http://daveops.co.uk/2014/05/using-ansible-to-append-a-string-to-the-end-of-a-line/)
+
+        * regular expression: [https://stackoverflow.com/a/31465939/2237054](https://stackoverflow.com/a/31465939/2237054)
+        * add or append: [https://stackoverflow.com/questions/39834862/ansible-lineinfile-add-new-line-with-path-or-append-to-existing-line-with](https://stackoverflow.com/questions/39834862/ansible-lineinfile-add-new-line-with-path-or-append-to-existing-line-with)
+        * Example adding host to 127.0.0.1 line in /etc/hosts:
+
+                # add to end of 127.0.0.1 line in /etc/hosts
+                - name: Add host name ( {{ server_host_name }} ) to /etc/hosts.
+                  become: yes
+                  become_user: root
+                  lineinfile:
+                    dest: /etc/hosts
+                    backrefs: yes
+                    regexp: '^(127\.0\.0\.1(?!.*\b{{ server_host_name }}\b).*)'
+                    line: '\1\t{{ server_host_name }}'
 
 ### npm module
 
