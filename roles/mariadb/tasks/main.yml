@@ -1,0 +1,90 @@
+---
+# This playbook will install and configure mariadb.
+
+# Install MariaDB
+- name: Install MariaDB packages
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - mariadb-server
+      - mariadb-client
+      - libmariadbd-dev
+      - libmysqlclient-dev
+
+# install python libraries for MySQL in python 3.
+- name: install python libraries for MySQL
+  become: yes
+  become_user: root
+  pip:
+    executable: pip3
+    name:
+      - mysqlclient
+      - PyMySQL
+
+# set to listen on defined bind-address.
+- name: Set bind-address to {{ server_mariadb_bind_address }} for MariaDB
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '/etc/mysql/mariadb.conf.d/50-server.cnf'
+    line: "bind-address = {{ server_mariadb_bind_address }}"
+  notify: restart mysql
+
+# ==> secure database
+
+# This command will fail when the root password was set previously
+# from: https://github.com/bertvv/ansible-role-mariadb/blob/master/tasks/root-password.yml
+- name: Check if root password is set
+  shell: >
+    mysqladmin -u root status
+  changed_when: false
+  failed_when: false
+  register: root_pwd_check
+  tags: mariadb
+
+- name: Set MariaDB root password for the first time (root@localhost)
+  mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    host: localhost
+    state: present
+  when: root_pwd_check.rc == 0
+  tags: mariadb
+
+- name: Set MariaDB root password for 127.0.0.1, ::1
+  mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    host: "{{ item }}"
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    state: present
+  with_items:
+    - ::1
+    - 127.0.0.1
+tags: mariadb
+
+# More here - https://stackoverflow.com/questions/25136498/ansible-answers-to-mysql-secure-installation
+
+# open firewall for MySQL
+- name: Allow mysql/mariadb ports
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
+    port: mysql
+
+# create non-postgres admin user?
+- name: Create non-postgres admin user
+  become: yes
+  become_user: root
+  #postgresql_user:
+  #  #login_host: localhost
+  #  name: '{{server_pgsql_admin_user}}'
+  #  password: '{{server_pgsql_admin_password}}'
+  #  role_attr_flags: SUPERUSER
+  shell: sudo -u postgres psql -c "DO \$do\$ BEGIN IF NOT EXISTS( SELECT * FROM pg_catalog.pg_roles WHERE rolname = '{{server_pgsql_admin_user}}') THEN CREATE USER {{server_pgsql_admin_user}} WITH PASSWORD '{{server_pgsql_admin_password}}' SUPERUSER; END IF; END \$do\$;"
+  when:
+    - server_pgsql_admin_user != ""
+    - server_pgsql_admin_password != ""
