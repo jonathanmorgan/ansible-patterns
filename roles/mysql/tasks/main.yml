@@ -1,17 +1,17 @@
 ---
-# This playbook will install and configure mariadb.
+# This playbook will install and configure MySQL.
 
-# Install MariaDB
-- name: Install MariaDB packages
+# Install MySQL
+- name: Install MySQL packages
   become: yes
   become_user: root
   apt:
     name:
-      - mariadb-server
-      - mariadb-client
-      - libmariadbd-dev
-      - libmariadbclient-dev
-  tags: mariadb
+      - mysql-server
+      - mysql-client
+      - libmysqld-dev
+      - libmysqlclient-dev
+  tags: mysql
 
 # install python libraries for MySQL in python 3.
 - name: install python libraries for MySQL
@@ -22,108 +22,108 @@
     name:
       - mysqlclient
       - PyMySQL
-  tags: mariadb
+  tags: mysql
 
 # set to listen on defined bind-address.
-- name: Set bind-address to {{ server_mariadb_bind_address }} for MariaDB
+- name: Set bind-address to {{ server_mysql_bind_address }} for MySQL
   become: yes
   become_user: root
   lineinfile:
-    path: '/etc/mysql/mariadb.conf.d/50-server.cnf'
-    line: "bind-address = {{ server_mariadb_bind_address }}"
+    path: '/etc/mysql/my.cnf'
+    line: "bind-address = {{ server_mysql_bind_address }}"
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
 # ==> secure database - equivalent to `mysql_secure_installation` script
 
 # This command will fail when the root password was set previously
-# from: https://github.com/bertvv/ansible-role-mariadb/blob/master/tasks/root-password.yml
+# from: https://github.com/bertvv/ansible-role-mysql/blob/master/tasks/root-password.yml
 #- name: Check if root password is set
 #  shell: >
 #    mysqladmin -u root status
 #  changed_when: false
 #  failed_when: false
 #  register: root_pwd_check
-#  tags: mariadb
+#  tags: mysql
 
-- name: Set MariaDB root password for the first time (root@localhost)
+- name: Set MySQL root password for the first time (root@localhost)
   become: yes
   become_user: root
-  shell: mysql -u root --execute="UPDATE mysql.user SET plugin = '', password = PASSWORD( '{{ server_mariadb_root_password }}' ) WHERE user='root';"
-#  shell: mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ server_mariadb_root_password }}';"
+  #shell: mysql -u root --execute="UPDATE mysql.user SET plugin = '', password = PASSWORD( '{{ server_mysql_root_password }}' ) WHERE user='root';"
+  shell: mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ server_mysql_root_password }}';"
 #  mysql_user:
 #    login_user: root
 #    name: root
-#    password: "{{ server_mariadb_root_password }}"
+#    password: "{{ server_mysql_root_password }}"
 #    host: localhost
 #    state: present
 #  when: root_pwd_check.rc == 0
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
-- name: MariaDB - set root password - flush privileges
+- name: MySQL - set root password - flush privileges
   become: yes
   become_user: root
   shell: mysql -u root --execute="FLUSH PRIVILEGES;"
 #  when: root_pwd_check.rc == 0
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
-- name: Set MariaDB root password for 127.0.0.1, ::1
+- name: Set MySQL root password for 127.0.0.1, ::1
   mysql_user:
     login_user: root
-    login_password: "{{ server_mariadb_root_password }}"
+    login_password: "{{ server_mysql_root_password }}"
     name: root
-    password: "{{ server_mariadb_root_password }}"
+    password: "{{ server_mysql_root_password }}"
     host: "{{ item }}"
     state: present
   with_items:
     - ::1
     - 127.0.0.1
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
 # Delete anonymous users
 - name: Deletes anonymous server user
   mysql_user:
     login_user: root
-    login_password: "{{ server_mariadb_root_password }}"
+    login_password: "{{ server_mysql_root_password }}"
     name: ""
     host_all: yes
     state: absent
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
 # remove test database.
 - name: Removes the test database
   mysql_db:
     login_user: root
-    login_password: "{{ server_mariadb_root_password }}"
+    login_password: "{{ server_mysql_root_password }}"
     db: test
     state: absent
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
 # More here - https://stackoverflow.com/questions/25136498/ansible-answers-to-mysql-secure-installation
 
 # open firewall for MySQL
-- name: Allow mysql/mariadb ports
+- name: Allow mysql/mysql ports
   become: yes
   become_user: root
   ufw:
     rule: allow
     port: mysql
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
 
 # create non-root admin user?
-# Creates database user {{ server_mariadb_admin_user }} and password {{ server_mariadb_admin_password }} with all database privileges and 'WITH GRANT OPTION'
-- name: Create non-root admin user {{ server_mariadb_admin_user }}
+# Creates database user {{ server_mysql_admin_user }} and password {{ server_mysql_admin_password }} with all database privileges and 'WITH GRANT OPTION'
+- name: Create non-root admin user {{ server_mysql_admin_user }}
   mysql_user:
     login_user: root
-    login_password: "{{ server_mariadb_root_password }}"
-    name: "{{ server_mariadb_admin_user }}"
-    password: "{{ server_mariadb_admin_password }}"
+    login_password: "{{ server_mysql_root_password }}"
+    name: "{{ server_mysql_admin_user }}"
+    password: "{{ server_mysql_admin_password }}"
     host: "{{ item }}"
     priv: '*.*:ALL,GRANT'
     state: present
@@ -133,7 +133,7 @@
     - 127.0.0.1
     - localhost
   when:
-    - server_mariadb_admin_user != ""
-    - server_mariadb_admin_password != ""
+    - server_mysql_admin_user != ""
+    - server_mysql_admin_password != ""
   notify: restart mysql
-  tags: mariadb
+  tags: mysql
