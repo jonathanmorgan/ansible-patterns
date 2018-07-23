@@ -1,7 +1,20 @@
 ---
 # This playbook will install and configure MySQL.
 
-# Install MySQL
+# Install MariaDB?
+- name: Install MariaDB packages
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - mariadb-server
+      - mariadb-client
+      - libmariadbd-dev
+      - libmariadbclient-dev
+  when:
+    - server_mysql_type == "mariadb"
+  tags: mariadb
+
 - name: Install MySQL packages
   become: yes
   become_user: root
@@ -11,6 +24,8 @@
       - mysql-client
       - libmysqld-dev
       - libmysqlclient-dev
+  when:
+    - server_mysql_type == "mysql"
   tags: mysql
 
 # install python libraries for MySQL in python 3.
@@ -24,7 +39,19 @@
       - PyMySQL
   tags: mysql
 
-# set to listen on defined bind-address.
+# set to listen on defined bind-address - MariaDB
+- name: Set bind-address to {{ server_mariadb_bind_address }} for MariaDB
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '/etc/mysql/mariadb.conf.d/50-server.cnf'
+    line: "bind-address = {{ server_mariadb_bind_address }}"
+  notify: restart mysql
+  when:
+    - server_mysql_type == "mariadb"
+  tags: mariadb
+
+# set to listen on defined bind-address - MySQL
 - name: Set bind-address to {{ server_mysql_bind_address }} for MySQL
   become: yes
   become_user: root
@@ -32,6 +59,8 @@
     path: '/etc/mysql/my.cnf'
     line: "bind-address = {{ server_mysql_bind_address }}"
   notify: restart mysql
+  when:
+    - server_mysql_type == "mysql"
   tags: mysql
 
 # ==> secure database - equivalent to `mysql_secure_installation` script
@@ -46,6 +75,15 @@
 #  register: root_pwd_check
 #  tags: mysql
 
+- name: Set MariaDB root password for the first time (root@localhost)
+  become: yes
+  become_user: root
+  shell: mysql -u root --execute="UPDATE mysql.user SET plugin = '', password = PASSWORD( '{{ server_mariadb_root_password }}' ) WHERE user='root';"
+  notify: restart mysql
+  when:
+    - server_mysql_type == "mariadb"
+  tags: mariadb
+
 - name: Set MySQL root password for the first time (root@localhost)
   become: yes
   become_user: root
@@ -59,6 +97,8 @@
 #    state: present
 #  when: root_pwd_check.rc == 0
   notify: restart mysql
+  when:
+    - server_mysql_type == "mysql"
   tags: mysql
 
 - name: MySQL - set root password - flush privileges
