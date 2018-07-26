@@ -48,6 +48,7 @@
       - jupyterhub
       - ipython[notebook]
       - jupyterhub-systemdspawner
+      - jupyter_contrib_nbextensions
     state: latest
 
 # ==> configuration
@@ -209,3 +210,7 @@
   ufw:
     rule: allow
     port: 8000
+
+# add turning on nbextensions
+# (sudo -H) jupyter contrib nbextension install --system --symlink
+# (sudo -H) jupyter nbextensions_configurator enable --system

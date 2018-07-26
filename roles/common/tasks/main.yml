@@ -37,6 +37,8 @@
       - libyaml-dev
       - curl
       - expect
+      - libcairo2-dev
+      - libgirepository1.0-dev
     state: present
 
 # create work folder "{{ work_folder }}"
