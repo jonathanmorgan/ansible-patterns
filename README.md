@@ -66,6 +66,12 @@ The following steps will install all services on the server whose DNS name is `r
             - server_ip_address
             - jupyterhub_configproxy_auth_token (32 character random hexadecimal number: `openssl rand -hex 32`)
 
+        - Notes on specific variables:
+
+            - django_superuser_password: The command that sets the django superuser password uses a shell script, and so the password value here can't contain:
+                - "$"
+                - open square bracket without closed square bracket ("[").
+
     - vault password(s)
 
         - if you want to encrypt either files or variable values within yml files, you'll need to have one or more vault passwords to use as the symmetric encryption key.

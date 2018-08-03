@@ -38,6 +38,15 @@
     name: cython
     state: latest
 
+# pyOpenSSL in python 3.
+- name: install pyOpenSSL
+  become: yes
+  become_user: root
+  pip:
+    executable: pip3
+    name: pyOpenSSL
+    state: latest
+
 # install jupyterhub and ipython notebook in python 3.
 - name: install jupyterhub and ipython notebook
   become: yes
