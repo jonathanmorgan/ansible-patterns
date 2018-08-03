@@ -19,6 +19,16 @@
       - libzmq3-dev
     state: present
 
+# install ubuntu 16.04 jupyterhub depenencies
+- name: install ubuntu 16.04 jupyterhub dependencies
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - nodejs-legacy
+    state: present
+  when: server_ubuntu_version == "16.04"
+
 # install proxy using npm
 #     sudo npm install -g configurable-http-proxy
 - name: install configurable-http-proxy (npm)
