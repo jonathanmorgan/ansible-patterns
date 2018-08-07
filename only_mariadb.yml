@@ -1,0 +1,7 @@
+---
+# This playbook deploys the whole research application stack.
+
+- name: deploy mariadb
+  hosts: mariadb_servers
+  roles:
+    - mariadb

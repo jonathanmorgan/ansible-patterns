@@ -66,6 +66,12 @@ The following steps will install all services on the server whose DNS name is `r
             - server_ip_address
             - jupyterhub_configproxy_auth_token (32 character random hexadecimal number: `openssl rand -hex 32`)
 
+        - Notes on specific variables:
+
+            - django_superuser_password: The command that sets the django superuser password uses a shell script, and so the password value here can't contain:
+                - "$"
+                - open square bracket without closed square bracket ("[").
+
     - vault password(s)
 
         - if you want to encrypt either files or variable values within yml files, you'll need to have one or more vault passwords to use as the symmetric encryption key.
@@ -554,6 +560,65 @@ The following steps will install all services on the server whose DNS name is `r
                     backrefs: yes
                     regexp: '^(127\.0\.0\.1(?!.*\b{{ server_host_name }}\b).*)'
                     line: '\1\t{{ server_host_name }}'
+
+### mysql_db module
+
+* Documentation: https://docs.ansible.com/ansible/latest/modules/mysql_db_module.html#mysql-db-module
+* Example:
+
+    * remove test database:
+
+            # remove test database.
+            - name: Removes the test database
+              mysql_db:
+                login_user: root
+                login_password: "{{ server_mariadb_root_password }}"
+                db: test
+                state: absent
+              notify: restart mysql
+              tags: mariadb
+
+### mysql_user module
+
+* Documentation: https://docs.ansible.com/ansible/latest/modules/mysql_user_module.html#mysql-user-module
+* Example:
+
+    * delete all anonymous users (all hosts):
+
+            # Delete anonymous users
+            - name: Deletes anonymous server user
+              mysql_user:
+                login_user: root
+                login_password: "{{ server_mariadb_root_password }}"
+                name: ""
+                host_all: yes
+                state: absent
+              notify: restart mysql
+              tags: mariadb
+
+    * create new non-root admin user:
+
+            # create non-root admin user?
+            # Creates database user {{ server_mariadb_admin_user }} and password {{ server_mariadb_admin_password }} with all database privileges and 'WITH GRANT OPTION'
+            - name: Create non-root admin user {{ server_mariadb_admin_user }}
+              mysql_user:
+                login_user: root
+                login_password: "{{ server_mariadb_root_password }}"
+                name: "{{ server_mariadb_admin_user }}"
+                password: "{{ server_mariadb_admin_password }}"
+                host: "{{ item }}"
+                priv: '*.*:ALL,GRANT'
+                state: present
+              with_items:
+                - "%"
+                - ::1
+                - 127.0.0.1
+                - localhost
+              when:
+                - server_mariadb_admin_user != ""
+                - server_mariadb_admin_password != ""
+              notify: restart mysql
+              tags: mariadb
 
 ### npm module
 

@@ -1,0 +1,179 @@
+---
+# This playbook will install and configure MySQL.
+
+# Install MariaDB?
+- name: Install MariaDB packages
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - mariadb-server
+      - mariadb-client
+      - libmariadbd-dev
+      - libmariadbclient-dev
+  when:
+    - server_mysql_type == "mariadb"
+  tags: mariadb
+
+- name: Install MySQL packages
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - mysql-server
+      - mysql-client
+      - libmysqld-dev
+      - libmysqlclient-dev
+  when:
+    - server_mysql_type == "mysql"
+  tags: mysql
+
+# install python libraries for MySQL in python 3.
+- name: install python libraries for MySQL
+  become: yes
+  become_user: root
+  pip:
+    executable: pip3
+    name:
+      - mysqlclient
+      - PyMySQL
+  tags: mysql
+
+# set to listen on defined bind-address - MariaDB
+- name: Set bind-address to {{ server_mariadb_bind_address }} for MariaDB
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '/etc/mysql/mariadb.conf.d/50-server.cnf'
+    line: "bind-address = {{ server_mariadb_bind_address }}"
+  notify: restart mysql
+  when:
+    - server_mysql_type == "mariadb"
+  tags: mariadb
+
+# set to listen on defined bind-address - MySQL
+- name: Set bind-address to {{ server_mysql_bind_address }} for MySQL
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '/etc/mysql/my.cnf'
+    line: "bind-address = {{ server_mysql_bind_address }}"
+  notify: restart mysql
+  when:
+    - server_mysql_type == "mysql"
+  tags: mysql
+
+# ==> secure database - equivalent to `mysql_secure_installation` script
+
+# This command will fail when the root password was set previously
+# from: https://github.com/bertvv/ansible-role-mysql/blob/master/tasks/root-password.yml
+#- name: Check if root password is set
+#  shell: >
+#    mysqladmin -u root status
+#  changed_when: false
+#  failed_when: false
+#  register: root_pwd_check
+#  tags: mysql
+
+- name: Set MariaDB root password for the first time (root@localhost)
+  become: yes
+  become_user: root
+  shell: mysql -u root --execute="UPDATE mysql.user SET plugin = '', password = PASSWORD( '{{ server_mariadb_root_password }}' ) WHERE user='root';"
+  notify: restart mysql
+  when:
+    - server_mysql_type == "mariadb"
+  tags: mariadb
+
+- name: Set MySQL root password for the first time (root@localhost)
+  become: yes
+  become_user: root
+  #shell: mysql -u root --execute="UPDATE mysql.user SET plugin = '', password = PASSWORD( '{{ server_mysql_root_password }}' ) WHERE user='root';"
+  shell: mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ server_mysql_root_password }}';"
+#  mysql_user:
+#    login_user: root
+#    name: root
+#    password: "{{ server_mysql_root_password }}"
+#    host: localhost
+#    state: present
+#  when: root_pwd_check.rc == 0
+  notify: restart mysql
+  when:
+    - server_mysql_type == "mysql"
+  tags: mysql
+
+- name: MySQL - set root password - flush privileges
+  become: yes
+  become_user: root
+  shell: mysql -u root --execute="FLUSH PRIVILEGES;"
+#  when: root_pwd_check.rc == 0
+  notify: restart mysql
+  tags: mysql
+
+- name: Set MySQL root password for 127.0.0.1, ::1
+  mysql_user:
+    login_user: root
+    login_password: "{{ server_mysql_root_password }}"
+    name: root
+    password: "{{ server_mysql_root_password }}"
+    host: "{{ item }}"
+    state: present
+  with_items:
+    - ::1
+    - 127.0.0.1
+  notify: restart mysql
+  tags: mysql
+
+# Delete anonymous users
+- name: Deletes anonymous server user
+  mysql_user:
+    login_user: root
+    login_password: "{{ server_mysql_root_password }}"
+    name: ""
+    host_all: yes
+    state: absent
+  notify: restart mysql
+  tags: mysql
+
+# remove test database.
+- name: Removes the test database
+  mysql_db:
+    login_user: root
+    login_password: "{{ server_mysql_root_password }}"
+    db: test
+    state: absent
+  notify: restart mysql
+  tags: mysql
+
+# More here - https://stackoverflow.com/questions/25136498/ansible-answers-to-mysql-secure-installation
+
+# open firewall for MySQL
+- name: Allow mysql/mysql ports
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
+    port: mysql
+  notify: restart mysql
+  tags: mysql
+
+# create non-root admin user?
+# Creates database user {{ server_mysql_admin_user }} and password {{ server_mysql_admin_password }} with all database privileges and 'WITH GRANT OPTION'
+- name: Create non-root admin user {{ server_mysql_admin_user }}
+  mysql_user:
+    login_user: root
+    login_password: "{{ server_mysql_root_password }}"
+    name: "{{ server_mysql_admin_user }}"
+    password: "{{ server_mysql_admin_password }}"
+    host: "{{ item }}"
+    priv: '*.*:ALL,GRANT'
+    state: present
+  with_items:
+    - "%"
+    - ::1
+    - 127.0.0.1
+    - localhost
+  when:
+    - server_mysql_admin_user != ""
+    - server_mysql_admin_password != ""
+  notify: restart mysql
+  tags: mysql

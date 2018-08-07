@@ -34,6 +34,20 @@ server_pgsql_admin_user: "{{ ansible_user }}"
 server_pgsql_admin_password: "{{ ansible_become_password }}"
 server_pgsql_python_package: psycopg2
 
+# MariaDB configuration
+server_mariadb_bind_address: "::"
+server_mariadb_root_password: "{{ ansible_become_password }}"
+server_mariadb_admin_user: "{{ ansible_user }}"
+server_mariadb_admin_password: "{{ ansible_become_password }}"
+
+# MySQL configuration
+# server type can be "mariadb" or ""
+server_mysql_type: "mariadb"
+server_mysql_bind_address: "::"
+server_mysql_root_password: "{{ ansible_become_password }}"
+server_mysql_admin_user: "{{ ansible_user }}"
+server_mysql_admin_password: "{{ ansible_become_password }}"
+
 # R configuration
 #r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran35"
 r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"

@@ -19,6 +19,16 @@
       - libzmq3-dev
     state: present
 
+# install ubuntu 16.04 jupyterhub depenencies
+- name: install ubuntu 16.04 jupyterhub dependencies
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - nodejs-legacy
+    state: present
+  when: server_ubuntu_version == "16.04"
+
 # install proxy using npm
 #     sudo npm install -g configurable-http-proxy
 - name: install configurable-http-proxy (npm)
@@ -36,6 +46,15 @@
   pip:
     executable: pip3
     name: cython
+    state: latest
+
+# pyOpenSSL in python 3.
+- name: install pyOpenSSL
+  become: yes
+  become_user: root
+  pip:
+    executable: pip3
+    name: pyOpenSSL
     state: latest
 
 # install jupyterhub and ipython notebook in python 3.
@@ -212,13 +231,17 @@
     rule: allow
     port: 8000
 
+# add turning on nbextensions
+
 # install juptyer nbextensions
+# (sudo -H) jupyter contrib nbextension install --system --symlink
 - name: install juptyer nbextensions
   become: yes
   become_user: root
   shell: jupyter contrib nbextension install --system --symlink
 
 # enable nbextensions_configurator.
+# (sudo -H) jupyter nbextensions_configurator enable --system
 - name: enable nbextensions_configurator
   become: yes
   become_user: root

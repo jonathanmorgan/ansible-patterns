@@ -1,0 +1,12 @@
+---
+# Handler to handle DB tier notifications
+
+- name: restart mysql
+  become: yes
+  become_user: root
+  service:
+    name: mysql
+    state: restarted
+#
+#- name: restart iptables
+#  service: name=iptables state=restarted
