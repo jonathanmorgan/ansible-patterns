@@ -39,6 +39,7 @@
       - expect
       - libcairo2-dev
       - libgirepository1.0-dev
+      - uchardet
     state: present
 
 # create work folder "{{ work_folder }}"
