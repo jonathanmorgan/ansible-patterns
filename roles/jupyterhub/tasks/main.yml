@@ -69,6 +69,7 @@
       - jupyterhub-systemdspawner
       - jupyter_contrib_nbextensions
       - jupyter_nbextensions_configurator
+      - jupyterlab
     state: latest
 
 # ==> configuration
