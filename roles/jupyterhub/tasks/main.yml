@@ -247,3 +247,10 @@
   become: yes
   become_user: root
   shell: jupyter nbextensions_configurator enable --system
+
+# and install table of contents in jupyterlab.
+# (sudo -H) jupyter labextension install jupyterlab-toc
+- name: install jupyterlab extension jupyterlab-toc
+  become: yes
+  become_user: root
+  shell: jupyter labextension install jupyterlab-toc
