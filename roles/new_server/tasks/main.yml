@@ -111,6 +111,7 @@
       - libxml2-dev
       - libffi-dev
       - acl
+      - reptyr
     state: present
 
 # create Downloads folder in ansible_user home if one not already present.
