@@ -226,6 +226,11 @@ The following steps will install all services on the server whose DNS name is `r
             ansible_become_user: root
             ansible_become_password: today123
 
+* Playbooks for anaconda python (coming soon to this repo!)
+
+    * https://github.com/andrewrothstein
+    * https://github.com/andrewrothstein/ansible-anaconda
+
 ## Roles
 
 * Documentation: [https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#roles](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#roles)
