@@ -114,6 +114,12 @@
       - reptyr
     state: present
 
+# in ~ of ansible user: .vimrc for syntax highlighting, tabs as spaces instead of tabs.
+- name: Put .vimrc in place
+  template:
+    src: template.vimrc.j2
+    dest: '/home/{{ ansible_user }}/.vimrc'
+
 # create Downloads folder in ansible_user home if one not already present.
 - name: make sure there is a Downloads folder in ansible_user
   file:
