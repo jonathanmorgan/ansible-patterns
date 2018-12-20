@@ -254,3 +254,38 @@
   become: yes
   become_user: root
   shell: jupyter labextension install jupyterlab-toc
+
+# if R installed, should also install R jupyter kernel.
+
+# sudo -E apt-get install build-essential gfortran libcurl4-gnutls-dev;
+# install R jupyter kernel dependencies
+#- name: install R jupyter kernel dependencies
+#  become: yes
+#  become_user: root
+#  apt:
+#    name:
+#     - build-essential 
+#     - nodejs
+#      - libzmq3-dev
+#    state: present
+
+# install R packages.
+# sudo -E R -e "install.packages( c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), c( '/usr/local/lib/R/site-library'), repos='http://cran.us.r-project.org')"
+#- name: install R packages required for R jupyter kernel
+#  become: yes
+#  become_user: root
+#  shell: R -e "install.packages( c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), c( '/usr/local/lib/R/site-library'), repos='http://cran.us.r-project.org')"
+
+# install IRKernel R package
+# sudo -E R -e "devtools::install_github('IRkernel/IRkernel')"
+#- name: install IRKernel R package for R jupyter kernel
+#  become: yes
+#  become_user: root
+#  shell: R -e "devtools::install_github('IRkernel/IRkernel')"
+
+# install R jupyter kernel
+# sudo -E R -e "IRkernel::installspec(user = FALSE)"
+#- name: install R jupyter kernel
+#  become: yes
+#  become_user: root
+#  shell: R -e "IRkernel::installspec(user = FALSE)"
