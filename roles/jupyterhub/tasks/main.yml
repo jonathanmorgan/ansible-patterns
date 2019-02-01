@@ -196,6 +196,27 @@
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'"
 
+# FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'
+# If you run jupyterhub on startup with systemd, and it won't start, and you encounter the following error when you run "sudo service jupyterhub status":
+#   File "/usr/lib/python3.6/subprocess.py", line 1344, in _execute_child
+#     raise child_exception_type( errno_num, err_msg, err_filename )
+# "FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'"
+# It is likely that the proxy executable is not on systemd's PATH.
+# Try making a link to the file  /usr/local/bin/configurable-http-proxy in /usr/bin: 
+#     sudo ln -s /usr/local/bin/configurable-http-proxy /usr/bin/configurable-http-proxy
+# If this fixes it, you should remove that symbolic link and specify the path in your jupyter_config.py:
+# "You can also set an absolute path in jupyterhub_config.py: `c.ConfigurableHTTPProxy.command = '/usr/local/bin/configurable-http-proxy'`, but there's a very good chance that there could be other PATH-related issues as well."
+# - from https://github.com/jupyterhub/jupyterhub/issues/930
+
+# configure jupyterhub with full path to configurable-http-proxy.
+- name: configure jupyterhub with full path to configurable-http-proxy.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    line: "#c.ConfigurableHTTPProxy.command = '{{jupyterhub_proxy_command_path}}'"
+  when: jupyterhub_proxy_command_path != ""
+
 # ==> systemd service
 
 # Create systemd service for jupyterhub.
@@ -289,12 +310,3 @@
 #  become: yes
 #  become_user: root
 #  shell: R -e "IRkernel::installspec(user = FALSE)"
-
-# had to do the following on a server after a recent ubuntu update:
-#FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'
-#If you see this message when you do "sudo service jupyterhub status":
-#  File "/usr/lib/python3.6/subprocess.py", line 1344, in _execute_child
-#    raise child_exception_type( errno_num, err_msg, err_filename )
-#"FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'"
-#Try making a link to the file  /usr/local/bin/configurable-http-proxy in /usr/bin: 
-#sudo ln -s /usr/local/bin/configurable-http-proxy /usr/bin/configurable-http-proxy
