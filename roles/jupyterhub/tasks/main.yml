@@ -289,3 +289,12 @@
 #  become: yes
 #  become_user: root
 #  shell: R -e "IRkernel::installspec(user = FALSE)"
+
+# had to do the following on a server after a recent ubuntu update:
+#FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'
+#If you see this message when you do "sudo service jupyterhub status":
+#  File "/usr/lib/python3.6/subprocess.py", line 1344, in _execute_child
+#    raise child_exception_type( errno_num, err_msg, err_filename )
+#"FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'"
+#Try making a link to the file  /usr/local/bin/configurable-http-proxy in /usr/bin: 
+#sudo ln -s /usr/local/bin/configurable-http-proxy /usr/bin/configurable-http-proxy
