@@ -97,6 +97,21 @@
     chdir: "{{jupyterhub_config_folder}}"
   when: jupyterhub_config.stat.exists == False
 
+# check if environment file already there.
+- name: check if jupyterhub_environment exists
+  stat:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_environment'
+  register: jupyterhub_environment
+
+# Create jupyterhub_environment if not already there.
+- name:  Create jupyterhub_environment if not already there
+  become: yes
+  become_user: root
+  template:
+    src: jupyterhub_environment.j2
+    dest: /etc/jupyterhub/jupyterhub_environment
+  when: jupyterhub_environment.stat.exists == False
+
 # add a token (no default - have to set this yourself)
 - name: Add proxy token value.
   become: yes
