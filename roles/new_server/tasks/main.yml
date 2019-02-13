@@ -115,6 +115,26 @@
       - mosh
     state: present
 
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60000-60010 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
+    to_port: 60000
+    to_port: 60001
+    to_port: 60002
+    to_port: 60003
+    to_port: 60004
+    to_port: 60005
+    to_port: 60006
+    to_port: 60007
+    to_port: 60008
+    to_port: 60009
+    to_port: 60010
+    proto: udp
+  notify: enable ufw
+
 # in ~ of ansible user: .vimrc for syntax highlighting, tabs as spaces instead of tabs.
 - name: Put .vimrc in place
   template:
