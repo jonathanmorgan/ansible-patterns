@@ -112,6 +112,7 @@
       - libffi-dev
       - acl
       - reptyr
+      - mosh
     state: present
 
 # in ~ of ansible user: .vimrc for syntax highlighting, tabs as spaces instead of tabs.
