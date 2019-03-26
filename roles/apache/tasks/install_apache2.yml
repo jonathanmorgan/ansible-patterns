@@ -31,12 +31,23 @@
     name: ssl
   notify: restart apache2
 
-# enable default-ssl site
-- name: call a2ensite to enable default-ssl site
+# update the SSL site configuration if cert and key paths are specified.
+- name: update the SSL site configuration if cert and key paths are specified.
   become: yes
   become_user: root
-  shell: a2ensite default-ssl
+  template:
+    src: 000-default-le-ssl.conf.j2
+    dest: /etc/apache2/sites-available/{{ apache_server_ssl_site_config }}.conf
   notify: restart apache2
+  when: server_ssl_certificate_path != "" and server_ssl_private_key_path != "" and apache_server_ssl_site_config != ""
+
+# enable SSL site configuration
+- name: call a2ensite to enable {{ apache_server_ssl_site_config }} site
+  become: yes
+  become_user: root
+  shell: a2ensite {{ apache_server_ssl_site_config }}
+  notify: restart apache2
+  when: apache_server_ssl_site_config != ""
 
 # update the 000-default.conf site file to redirect all traffic to HTTPS.
 - name: update the 000-default.conf site file to redirect all traffic to HTTPS.
@@ -46,6 +57,7 @@
     src: 000-default.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
   notify: restart apache2
+  when: apache_server_ssl_site_config != ""
 
 # open firewall for http and https  
 - name: Allow HTTP ports
@@ -61,3 +73,4 @@
   ufw:
     rule: allow
     port: https
+  when: apache_server_ssl_site_config != ""

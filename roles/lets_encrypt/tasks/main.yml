@@ -56,10 +56,11 @@
 # ==> run certbot
 
 # Tell certbot to create and install a certificate.
+# - https://certbot.eff.org/docs/using.html
 - name: Tell certbot to create and install a certificate.
   become: yes
   become_user: root
-  shell: certbot --apache
+  shell: certbot --apache --non-interactive --domain {{ server_name }} --agree-tos
 
 # if jupyterhub installed, also update its configuration to point at the new certs.
 # stores debug in: Saving debug log to /var/log/letsencrypt/letsencrypt.log

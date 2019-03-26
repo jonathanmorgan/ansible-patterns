@@ -139,6 +139,24 @@
     line: "c.Authenticator.whitelist = [ {{jupyterhub_whitelist_list}} ]"
   when: jupyterhub_whitelist_list != ""
 
+# add certificate to jupyterhub config.
+- name: add certificate to jupyterhub config.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    line: "c.JupyterHub.ssl_cert = '{{ jupyterhub_ssl_certificate_path }}'"
+  when: jupyterhub_ssl_certificate_path != ""
+  
+# add private key to jupyterhub configuration.
+- name: Add private key to jupyterhub configuration.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    line: "c.JupyterHub.ssl_key = '{{ jupyterhub_ssl_private_key_path }}'"
+  when: jupyterhub_ssl_private_key_path != ""
+
 # copy default SSL cert and key to jupyterhub config folder.
 #- name: initialize jupyterhub configuration
 #  become: yes
@@ -167,6 +185,7 @@
   become_user: root
   openssl_privatekey:
     path: "{{ jupyterhub_config_folder }}/jupyterhub_key.pem"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # create certificate signing request (CSR)
 - name: Generate an OpenSSL CSR.
@@ -176,6 +195,7 @@
     path: "{{ jupyterhub_config_folder }}/jupyterhub.csr"
     privatekey_path: "{{ jupyterhub_config_folder }}/jupyterhub_key.pem"
     common_name: "{{ server_name }}"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # generate certificate
 - name: Generate a Self-Signed OpenSSL certificate.
@@ -186,14 +206,16 @@
     privatekey_path: "{{ jupyterhub_config_folder }}/jupyterhub_key.pem"
     csr_path: "{{ jupyterhub_config_folder }}/jupyterhub.csr"
     provider: selfsigned
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
-# add public key to jupyterhub config.
-- name: add public key to jupyterhub config.
+# add certificate to jupyterhub config.
+- name: add certificate to jupyterhub config.
   become: yes
   become_user: root
   lineinfile:
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.JupyterHub.ssl_cert = '{{jupyterhub_config_folder}}/jupyterhub_cert.pem'"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # add private key to jupyterhub configuration.
 - name: Add private key to jupyterhub configuration.
@@ -202,6 +224,7 @@
   lineinfile:
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.JupyterHub.ssl_key = '{{jupyterhub_config_folder}}/jupyterhub_key.pem'"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # configure jupyterhub to use systemd spawner.
 - name: configure jupyterhub to use systemd spawner.
