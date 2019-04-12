@@ -155,7 +155,7 @@
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
-# ==> msu_phd_work
+# ==> phd_work
 # create work folder "{{ django_project_folder_path }}/work"
 - name: make sure there is a "{{ django_project_folder_path }}/work" folder
   file:
@@ -163,12 +163,12 @@
     state: directory
 
 # clone git repo.
-# - https://github.com/jonathanmorgan/msu_phd_work.git
-# - git@github.com:jonathanmorgan/msu_phd_work.git
-- name: clone msu_phd_work
+# - https://github.com/jonathanmorgan/phd_work.git
+# - git@github.com:jonathanmorgan/phd_work.git
+- name: clone phd_work
   git:
-    repo: https://github.com/jonathanmorgan/msu_phd_work.git
-    dest: "{{ django_project_folder_path }}/work/msu_phd_work"
+    repo: https://github.com/jonathanmorgan/phd_work.git
+    dest: "{{ django_project_folder_path }}/work/phd_work"
 
 # ==> update the database
 - name: run `python manage.py migrate`
