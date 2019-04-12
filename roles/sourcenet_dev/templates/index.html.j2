@@ -10,9 +10,10 @@
                 if (target.tagName.toLowerCase() == 'a')
                 {
                     var port = target.getAttribute('href').match(/^:(\d+)(.*)/);
+                    // alert( "port: " + port + ";\nhref: " + window.location.origin )
                     if (port)
                     {
-                        target.href = window.location.origin;
+                        target.href = window.location.origin + port[ 0 ];
                         target.port = port[1];
                     }
                 }
