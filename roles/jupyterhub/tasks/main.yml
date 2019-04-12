@@ -97,6 +97,21 @@
     chdir: "{{jupyterhub_config_folder}}"
   when: jupyterhub_config.stat.exists == False
 
+# check if environment file already there.
+- name: check if jupyterhub_environment exists
+  stat:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_environment'
+  register: jupyterhub_environment
+
+# Create jupyterhub_environment if not already there.
+- name:  Create jupyterhub_environment if not already there
+  become: yes
+  become_user: root
+  template:
+    src: jupyterhub_environment.j2
+    dest: /etc/jupyterhub/jupyterhub_environment
+  when: jupyterhub_environment.stat.exists == False
+
 # add a token (no default - have to set this yourself)
 - name: Add proxy token value.
   become: yes
@@ -123,6 +138,24 @@
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.Authenticator.whitelist = [ {{jupyterhub_whitelist_list}} ]"
   when: jupyterhub_whitelist_list != ""
+
+# add certificate to jupyterhub config.
+- name: add certificate to jupyterhub config.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    line: "c.JupyterHub.ssl_cert = '{{ jupyterhub_ssl_certificate_path }}'"
+  when: jupyterhub_ssl_certificate_path != ""
+  
+# add private key to jupyterhub configuration.
+- name: Add private key to jupyterhub configuration.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    line: "c.JupyterHub.ssl_key = '{{ jupyterhub_ssl_private_key_path }}'"
+  when: jupyterhub_ssl_private_key_path != ""
 
 # copy default SSL cert and key to jupyterhub config folder.
 #- name: initialize jupyterhub configuration
@@ -152,6 +185,7 @@
   become_user: root
   openssl_privatekey:
     path: "{{ jupyterhub_config_folder }}/jupyterhub_key.pem"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # create certificate signing request (CSR)
 - name: Generate an OpenSSL CSR.
@@ -161,6 +195,7 @@
     path: "{{ jupyterhub_config_folder }}/jupyterhub.csr"
     privatekey_path: "{{ jupyterhub_config_folder }}/jupyterhub_key.pem"
     common_name: "{{ server_name }}"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # generate certificate
 - name: Generate a Self-Signed OpenSSL certificate.
@@ -171,14 +206,16 @@
     privatekey_path: "{{ jupyterhub_config_folder }}/jupyterhub_key.pem"
     csr_path: "{{ jupyterhub_config_folder }}/jupyterhub.csr"
     provider: selfsigned
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
-# add public key to jupyterhub config.
-- name: add public key to jupyterhub config.
+# add certificate to jupyterhub config.
+- name: add certificate to jupyterhub config.
   become: yes
   become_user: root
   lineinfile:
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.JupyterHub.ssl_cert = '{{jupyterhub_config_folder}}/jupyterhub_cert.pem'"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # add private key to jupyterhub configuration.
 - name: Add private key to jupyterhub configuration.
@@ -187,6 +224,7 @@
   lineinfile:
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.JupyterHub.ssl_key = '{{jupyterhub_config_folder}}/jupyterhub_key.pem'"
+  when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
 # configure jupyterhub to use systemd spawner.
 - name: configure jupyterhub to use systemd spawner.
@@ -195,6 +233,27 @@
   lineinfile:
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
     line: "c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'"
+
+# FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'
+# If you run jupyterhub on startup with systemd, and it won't start, and you encounter the following error when you run "sudo service jupyterhub status":
+#   File "/usr/lib/python3.6/subprocess.py", line 1344, in _execute_child
+#     raise child_exception_type( errno_num, err_msg, err_filename )
+# "FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'"
+# It is likely that the proxy executable is not on systemd's PATH.
+# Try making a link to the file  /usr/local/bin/configurable-http-proxy in /usr/bin: 
+#     sudo ln -s /usr/local/bin/configurable-http-proxy /usr/bin/configurable-http-proxy
+# If this fixes it, you should remove that symbolic link and specify the path in your jupyter_config.py:
+# "You can also set an absolute path in jupyterhub_config.py: `c.ConfigurableHTTPProxy.command = '/usr/local/bin/configurable-http-proxy'`, but there's a very good chance that there could be other PATH-related issues as well."
+# - from https://github.com/jupyterhub/jupyterhub/issues/930
+
+# configure jupyterhub with full path to configurable-http-proxy.
+- name: configure jupyterhub with full path to configurable-http-proxy.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    line: "#c.ConfigurableHTTPProxy.command = '{{jupyterhub_proxy_command_path}}'"
+  when: jupyterhub_proxy_command_path != ""
 
 # ==> systemd service
 

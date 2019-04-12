@@ -21,6 +21,11 @@ ansible_user_home_folder: /home/{{ ansible_user }}
 work_folder: "{{ ansible_user_home_folder }}/work"
 log_folder: "{{ ansible_user_home_folder }}/logs"
 server_webroot_folder: /var/www/html
+server_ssl_certificate_path: ""
+server_ssl_private_key_path: ""
+
+# apache configuration
+apache_server_ssl_site_config: default-ssl
 
 # virtualenvwrapper configuration
 virtualenv_parent_folder: "{{ ansible_user_home_folder }}"
@@ -60,6 +65,10 @@ r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
 jupyterhub_configproxy_auth_token: 8da752f8de9494b495aaa619bb5c2c8a7a163a0643b91fb57ec0ff9e0392ec85
 jupyterhub_admin_user_list: "'{{ ansible_user }}'"
 jupyterhub_whitelist_list: "'{{ ansible_user }}'"
+jupyterhub_ssl_certificate_path: "{{ server_ssl_certificate_path }}"
+jupyterhub_ssl_private_key_path: "{{ server_ssl_private_key_path }}"
+
+#jupyterhub_proxy_command_path: "/usr/local/bin/configurable-http-proxy"
 
 # django project configuration
 django_project_name: research

@@ -68,6 +68,28 @@
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
+# ==> prerequisite: context
+# - https://github.com/jonathanmorgan/context.git
+# - git@github.com:jonathanmorgan/context.git
+- name: clone context
+  git:
+    repo: https://github.com/jonathanmorgan/context.git
+    dest: "{{ django_project_folder_path }}/context"
+
+# add to INSTALLED_APPS 
+- name: add context to INSTALLED_APPS in settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: INSTALLED_APPS.append( 'context.apps.ContextConfig' )
+  notify: touch wsgi.py
+
+# install django_config requirements
+- name: install context requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/context/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
+
 # ==> sourcenet
 # - https://github.com/jonathanmorgan/sourcenet.git
 # - git@github.com:jonathanmorgan/sourcenet.git

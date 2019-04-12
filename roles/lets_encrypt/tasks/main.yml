@@ -1,0 +1,66 @@
+---
+# This playbook contains plays to create and install an SSL certificate from Let's Encrypt.
+# based on:
+# - https://letsencrypt.org/getting-started/
+# - https://certbot.eff.org/lets-encrypt/ubuntubionic-apache
+
+# ==> Install certbot
+
+# update apt cache
+- name: Update apt cache
+  become: yes
+  become_user: root
+  apt:
+    update_cache: yes
+
+# make sure that software-properties-common is installed
+- name: install software-properties-common
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - software-properties-common
+    state: present
+
+# enable universe repository
+- name: Enable universe repository
+  apt_repository:
+    repo: "{{ item }}"
+  loop:
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ server_ubuntu_version_code_name }} universe"
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ server_ubuntu_version_code_name }}-updates universe"
+    - "deb http://security.ubuntu.com/ubuntu/ {{ server_ubuntu_version_code_name }}-security universe"
+
+# Add certbot PPA
+- name: Add certbot PPA
+  apt_repository:
+    repo: ppa:certbot/certbot
+
+# update apt cache again
+- name: Update apt cache again 
+  become: yes
+  become_user: root
+  apt:
+    update_cache: yes
+
+# Install certbot and python-certbot-apache
+- name: Install certbot and python-certbot-apache
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - certbot
+      - python-certbot-apache
+    state: present
+
+# ==> run certbot
+
+# Tell certbot to create and install a certificate.
+# - https://certbot.eff.org/docs/using.html
+- name: Tell certbot to create and install a certificate.
+  become: yes
+  become_user: root
+  shell: certbot --apache --non-interactive --domain {{ server_name }} --agree-tos
+
+# if jupyterhub installed, also update its configuration to point at the new certs.
+# stores debug in: Saving debug log to /var/log/letsencrypt/letsencrypt.log
