@@ -90,90 +90,90 @@
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
-# ==> sourcenet
-# - https://github.com/jonathanmorgan/sourcenet.git
-# - git@github.com:jonathanmorgan/sourcenet.git
-- name: clone sourcenet
+# ==> context_text
+# - https://github.com/jonathanmorgan/context_text.git
+# - git@github.com:jonathanmorgan/context_text.git
+- name: clone context_text
   git:
-    repo: https://github.com/jonathanmorgan/sourcenet.git
-    dest: "{{ django_project_folder_path }}/sourcenet"
+    repo: https://github.com/jonathanmorgan/context_text.git
+    dest: "{{ django_project_folder_path }}/context_text"
 
 # add to INSTALLED_APPS 
-- name: add sourcenet to INSTALLED_APPS in settings.py
+- name: add context_text to INSTALLED_APPS in settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: INSTALLED_APPS.append( 'sourcenet.apps.SourcenetConfig' )
+    line: INSTALLED_APPS.append( 'context_text.apps.Context_TextConfig' )
   notify: touch wsgi.py
 
 # add to urls.py 
 - name: add sourcenet to urls.py
   lineinfile:
     path: '{{ django_config_folder_path }}/urls.py'
-    line: urlpatterns.append( path( 'sourcenet/', include( 'sourcenet.urls' ) ) )
+    line: urlpatterns.append( path( 'context/text/', include( 'context_text.urls' ) ) )
   notify: touch wsgi.py
 
-# install sourcenet requirements
-- name: install sourcenet requirements
+# install context_text requirements
+- name: install context_text requirements
   pip:
-    requirements: "{{ django_project_folder_path }}/sourcenet/requirements.txt"
+    requirements: "{{ django_project_folder_path }}/context_text/requirements.txt"
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
-# ==> sourcenet_analysis
-# - https://github.com/jonathanmorgan/sourcenet_analysis.git
-# - git@github.com:jonathanmorgan/sourcenet_analysis.git
-- name: clone sourcenet_analysis
+# ==> context_analysis
+# - https://github.com/jonathanmorgan/context_analysis.git
+# - git@github.com:jonathanmorgan/context_analysis.git
+- name: clone context_analysis
   git:
-    repo: https://github.com/jonathanmorgan/sourcenet_analysis.git
-    dest: "{{ django_project_folder_path }}/sourcenet_analysis"
+    repo: https://github.com/jonathanmorgan/context_analysis.git
+    dest: "{{ django_project_folder_path }}/context_analysis"
 
 # add to INSTALLED_APPS 
-- name: add sourcenet_analysis to INSTALLED_APPS in settings.py
+- name: add context_analysis to INSTALLED_APPS in settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: INSTALLED_APPS.append( 'sourcenet_analysis.apps.Sourcenet_AnalysisConfig' )
+    line: INSTALLED_APPS.append( 'context_analysis.apps.Context_AnalysisConfig' )
   notify: touch wsgi.py
 
 # add to urls.py 
-- name: add sourcenet_analysis to urls.py
+- name: add context_analysis to urls.py
   lineinfile:
     path: '{{ django_config_folder_path }}/urls.py'
-    line: urlpatterns.append( path( 'sourcenet/analysis/', include( 'sourcenet_analysis.urls' ) ) )
+    line: urlpatterns.append( path( 'context/analysis/', include( 'context_analysis.urls' ) ) )
   notify: touch wsgi.py
 
-# install sourcenet_analysis requirements
-- name: install sourcenet_analysis requirements
+# install context_analysis requirements
+- name: install context_analysis requirements
   pip:
-    requirements: "{{ django_project_folder_path }}/sourcenet_analysis/requirements.txt"
+    requirements: "{{ django_project_folder_path }}/context_analysis/requirements.txt"
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
-# ==> sourcenet_datasets
-# - https://github.com/jonathanmorgan/sourcenet_datasets.git
-# - git@github.com:jonathanmorgan/sourcenet_datasets.git
-- name: clone sourcenet_datasets
+# ==> context_data
+# - https://github.com/jonathanmorgan/context_data.git
+# - git@github.com:jonathanmorgan/context_data.git
+- name: clone context_data
   git:
-    repo: https://github.com/jonathanmorgan/sourcenet_datasets.git
-    dest: "{{ django_project_folder_path }}/sourcenet_datasets"
+    repo: https://github.com/jonathanmorgan/context_data.git
+    dest: "{{ django_project_folder_path }}/context_data"
 
 # add to INSTALLED_APPS 
-- name: add sourcenet_datasets to INSTALLED_APPS in settings.py
+- name: add context_data to INSTALLED_APPS in settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: INSTALLED_APPS.append( 'sourcenet_datasets.apps.SourcenetDatasetsConfig' )
+    line: INSTALLED_APPS.append( 'context_data.apps.ContextDataConfig' )
   notify: touch wsgi.py
 
 # add to urls.py 
-- name: add sourcenet_datasets to urls.py
+- name: add context_data to urls.py
   lineinfile:
     path: '{{ django_config_folder_path }}/urls.py'
-    line: urlpatterns.append( path( 'sourcenet/datasets/', include( 'sourcenet_datasets.urls' ) ) )
+    line: urlpatterns.append( path( 'context/data/', include( 'context_data.urls' ) ) )
   notify: touch wsgi.py
 
-# install sourcenet_datasets requirements
-- name: install sourcenet_datasets requirements
+# install context_data requirements
+- name: install context_data requirements
   pip:
-    requirements: "{{ django_project_folder_path }}/sourcenet_datasets/requirements.txt"
+    requirements: "{{ django_project_folder_path }}/context_data/requirements.txt"
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
@@ -220,14 +220,14 @@
 - name: add LOGIN_URL to settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: "LOGIN_URL = '/{{ django_project_name }}/sourcenet/accounts/login/'"
+    line: "LOGIN_URL = '/{{ django_project_name }}/context/text/accounts/login/'"
   notify: touch wsgi.py
 
 # add LOGIN_REDIRECT_URL
 - name: add LOGIN_REDIRECT_URL to settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: "LOGIN_REDIRECT_URL = '/{{ django_project_name }}/sourcenet/output/network/'"
+    line: "LOGIN_REDIRECT_URL = '/{{ django_project_name }}/context/text/output/network/'"
   notify: touch wsgi.py
 
 # add LOGOUT_URL
