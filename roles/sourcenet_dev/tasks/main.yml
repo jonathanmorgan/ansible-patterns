@@ -83,6 +83,13 @@
     line: INSTALLED_APPS.append( 'context.apps.ContextConfig' )
   notify: touch wsgi.py
 
+# add to urls.py 
+- name: add sourcenet to urls.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/urls.py'
+    line: urlpatterns.append( path( 'context/', include( 'context.urls' ) ) )
+  notify: touch wsgi.py
+
 # install django_config requirements
 - name: install context requirements
   pip:
@@ -220,14 +227,14 @@
 - name: add LOGIN_URL to settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: "LOGIN_URL = '/{{ django_project_name }}/context/text/accounts/login/'"
+    line: "LOGIN_URL = '/{{ django_project_name }}/context/accounts/login/'"
   notify: touch wsgi.py
 
 # add LOGIN_REDIRECT_URL
 - name: add LOGIN_REDIRECT_URL to settings.py
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
-    line: "LOGIN_REDIRECT_URL = '/{{ django_project_name }}/context/text/output/network/'"
+    line: "LOGIN_REDIRECT_URL = '/{{ django_project_name }}/context/index'"
   notify: touch wsgi.py
 
 # add LOGOUT_URL
