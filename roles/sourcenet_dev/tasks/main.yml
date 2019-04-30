@@ -68,7 +68,7 @@
     virtualenv: "{{ django_virtualenv_path }}"
   notify: touch wsgi.py
 
-# ==> prerequisite: context
+# ==> context
 # - https://github.com/jonathanmorgan/context.git
 # - git@github.com:jonathanmorgan/context.git
 - name: clone context
@@ -81,6 +81,13 @@
   lineinfile:
     path: '{{ django_config_folder_path }}/settings.py'
     line: INSTALLED_APPS.append( 'context.apps.ContextConfig' )
+  notify: touch wsgi.py
+
+# add django_json_widget to INSTALLED_APPS 
+- name: add django_json_widget to INSTALLED_APPS in settings.py
+  lineinfile:
+    path: '{{ django_config_folder_path }}/settings.py'
+    line: INSTALLED_APPS.append( 'django_json_widget' )
   notify: touch wsgi.py
 
 # add to urls.py 
