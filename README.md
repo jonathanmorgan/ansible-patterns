@@ -45,7 +45,8 @@ The following steps will install all services on the server whose DNS name is `r
     - `jupyterhub_configproxy_auth_token` (32 character random hexadecimal number: `openssl rand -hex 32`)
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
-- in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
+- run the "research.yml" playbook: in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
+- To also install the `context` set of applications, run the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook: `ansible-playbook only_sourcenet_dev.yml -i ./hosts.yml`
 
 This quick start assumes that you are making a server whose DNS name is "research.local".  If you want a different DNS name, for example "test.local":
 
@@ -56,8 +57,6 @@ This quick start assumes that you are making a server whose DNS name is "researc
     - set `server_name` to your server's DNS name for external connections - "test.local" in this example.
 
 - Update the file `hosts.yml` to substitute your preferred DNS name ("test.local" in this example) for all mentions of "research.local".
-
-That should be all you need to do.
 
 ## `research` notes
 
