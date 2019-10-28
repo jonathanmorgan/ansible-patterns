@@ -205,6 +205,7 @@
   git:
     repo: https://github.com/jonathanmorgan/phd_work.git
     dest: "{{ django_project_folder_path }}/work/phd_work"
+  when: ( include_phd_work is defined ) and ( include_phd_work|bool == True )
 
 # ==> update the database
 - name: run `python manage.py migrate`

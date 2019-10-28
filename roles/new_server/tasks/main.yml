@@ -116,21 +116,111 @@
     state: present
 
 # ufw - Allow UDP 60000-60010 for mosh
-- name: Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60000 for mosh
   become: yes
   become_user: root
   ufw:
     rule: allow
     to_port: 60000
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60001 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60001
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60002 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60002
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60003 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60003
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60004 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60004
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60005 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60005
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60006 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60006
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60007 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60007
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60008 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60008
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60009 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60009
+    proto: udp
+  notify: enable ufw
+
+# ufw - Allow UDP 60000-60010 for mosh
+- name: Allow UDP 60010 for mosh
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
     to_port: 60010
     proto: udp
   notify: enable ufw

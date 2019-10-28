@@ -16,6 +16,7 @@ ansible_become_password: !vault |
 server_host_name: research
 server_name: "{{ server_host_name }}.local"
 server_ip_address: 172.16.111.134
+server_ubuntu_version: "18.04"
 server_ubuntu_version_code_name: bionic
 ansible_user_home_folder: /home/{{ ansible_user }}
 work_folder: "{{ ansible_user_home_folder }}/work"
@@ -63,6 +64,7 @@ r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
 # Jupyterhub configuration
 #jupyterhub_config_folder: /etc/jupyterhub
 jupyterhub_configproxy_auth_token: 8da752f8de9494b495aaa619bb5c2c8a7a163a0643b91fb57ec0ff9e0392ec85
+jupyterhub_proxy_command_path: ""
 jupyterhub_admin_user_list: "'{{ ansible_user }}'"
 jupyterhub_whitelist_list: "'{{ ansible_user }}'"
 jupyterhub_ssl_certificate_path: "{{ server_ssl_certificate_path }}"
@@ -91,3 +93,6 @@ django_db_port: "5432"
 django_superuser_username: "{{ ansible_user }}"
 django_superuser_password: "{{ ansible_become_password }}"
 django_superuser_email: ""
+
+# phd work
+#include_phd_work: false
