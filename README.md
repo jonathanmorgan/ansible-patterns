@@ -47,6 +47,18 @@ The following steps will install all services on the server whose DNS name is `r
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
 - in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
 
+This quick start assumes that you are making a server whose DNS name is "research.local".  If you want a different DNS name, for example "test.local":
+
+- when you copy `research.local.yml`, name the copy the DNS name you want (`test.local`).
+- Inside your copy of `research.local.yml` (named `test.local` for this example):
+
+    - set `server_host_name` to your server's internal host name - "test"?
+    - set `server_name` to your server's DNS name for external connections - "test.local" in this example.
+
+- Update the file `hosts.yml` to substitute your preferred DNS name ("test.local" in this example) for all mentions of "research.local".
+
+That should be all you need to do.
+
 ## `research` notes
 
 - must update:

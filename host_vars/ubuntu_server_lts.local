@@ -1,0 +1,87 @@
+# default variables for host ubuntu_server_lts.local
+python_3_path: /usr/bin/python3
+ansible_user: jonathanmorgan
+ansible_python_interpreter: "{{ python_3_path }}"
+# ansible_become: yes
+ansible_become_user: root
+ansible_become_password: today123
+
+# configuration
+server_host_name: ubuntu_server_lts
+server_name: "{{ server_host_name }}.local"
+server_ip_address: 192.168.0.168
+server_ubuntu_version_code_name: bionic
+ansible_user_home_folder: /home/{{ ansible_user }}
+work_folder: "{{ ansible_user_home_folder }}/work"
+log_folder: "{{ ansible_user_home_folder }}/logs"
+server_webroot_folder: /var/www/html
+server_ssl_certificate_path: ""
+server_ssl_private_key_path: ""
+
+# apache configuration
+apache_server_ssl_site_config: default-ssl
+
+# virtualenvwrapper configuration
+virtualenv_parent_folder: "{{ ansible_user_home_folder }}"
+virtualenv_folder: "{{ virtualenv_parent_folder }}/.virtualenvs"
+virtualenv_project_folder: "{{ work_folder }}/vew-projects"
+
+# postgresql configuration
+server_pgsql_version: "10"
+server_pgsql_listen_addresses: "localhost,127.0.0.1,{{ server_ip_address }},{{ server_name }}"
+server_pgsql_admin_user: "{{ ansible_user }}"
+server_pgsql_admin_password: "{{ ansible_become_password }}"
+server_pgsql_python_package: psycopg2
+
+# MariaDB configuration
+server_mariadb_bind_address: "::"
+server_mariadb_root_password: "{{ ansible_become_password }}"
+server_mariadb_admin_user: "{{ ansible_user }}"
+server_mariadb_admin_password: "{{ ansible_become_password }}"
+
+# MySQL configuration
+# server type can be "mariadb" or ""
+server_mysql_type: "mariadb"
+server_mysql_bind_address: "::"
+server_mysql_root_password: "{{ ansible_become_password }}"
+server_mysql_admin_user: "{{ ansible_user }}"
+server_mysql_admin_password: "{{ ansible_become_password }}"
+
+# R configuration
+#r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran35"
+r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
+
+# RStudio server configuration
+#rstudio_version: 1.1.453
+
+# Jupyterhub configuration
+#jupyterhub_config_folder: /etc/jupyterhub
+jupyterhub_configproxy_auth_token: 8da752f8de9494b495aaa619bb5c2c8a7a163a0643b91fb57ec0ff9e0392ec85
+jupyterhub_admin_user_list: "'{{ ansible_user }}'"
+jupyterhub_whitelist_list: "'{{ ansible_user }}'"
+jupyterhub_ssl_certificate_path: "{{ server_ssl_certificate_path }}"
+jupyterhub_ssl_private_key_path: "{{ server_ssl_private_key_path }}"
+
+#jupyterhub_proxy_command_path: "/usr/local/bin/configurable-http-proxy"
+
+# django project configuration
+django_project_name: research
+django_virtualenv_name: "{{ django_project_name }}"
+django_virtualenv_python: "{{ python_3_path }}"
+django_virtualenv_path: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}"
+django_virtualenv_bin_path: "{{ django_virtualenv_path }}/bin"
+django_db_package: "{{ server_pgsql_python_package }}"
+django_project_parent_folder_path: "{{ work_folder }}/django"
+django_project_folder_path: "{{ django_project_parent_folder_path }}/{{ django_project_name }}"
+django_config_folder_path: "{{ django_project_folder_path }}/{{ django_project_name }}"
+django_log_file_path: "{{ log_folder }}/django-{{ django_project_name }}.log"
+django_static_folder_path: "{{ server_webroot_folder }}/static"
+django_settings_import: "{{ django_project_name }}.settings"
+django_db_name: "{{ django_project_name }}"
+django_db_username: "django_user"
+django_db_password: "{{ ansible_become_password }}"
+django_db_host: "localhost"
+django_db_port: "5432"
+django_superuser_username: "{{ ansible_user }}"
+django_superuser_password: "{{ ansible_become_password }}"
+django_superuser_email: ""
