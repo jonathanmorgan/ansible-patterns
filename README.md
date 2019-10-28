@@ -6,14 +6,15 @@
 
 ## Ansible - Installation on control machine
 
-* on mac, just do `pip install ansible`.  I did it in a separate conda environment named `ansible`, just so I could keep it separate from other things that I installed with conda.
+* on mac or linux, do `pip install ansible`.
+* For any OS with anaconda Python distribution, make a separate conda environment named `ansible`, since it requires pip to install, so you keep it separate from other things that I installed with conda.
 
     * if on catalina, might need to open `bash` from `zsh` shell, and if so, will likely also need to move your anaconda init from `~/.bash_profile` to `~/.bashrc`.
     * `conda create --name ansible python=3`
     * `conda activate ansible`
     * `pip install ansible`
 
-* [http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+* for other ways to install: [http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ## Ansible - Installation on a target
 
