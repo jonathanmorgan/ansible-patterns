@@ -26,6 +26,12 @@
     * `"module_stdout": "/bin/sh: /usr/bin/python: No such file or directory\r\n"`
     * you can either set the `ansible_python_interpreter` inventory variable (see Working with Inventory) to point at your interpreter or you can install a Python 2 interpreter for modules to use. You will still need to set `ansible_python_interpreter` if the Python 2 interpreter is not installed to `/usr/bin/python`.
 
+- if it is a new installation, also update `/etc/hosts` so that it includes your host name in the entry for “127.0.0.1” (example of having added hostname “research”):
+    - `127.0.0.1 localhost.localdomain localhost research`
+    - NOTE: if your hostname (run `hostname` to see what it is) isn’t a for-real DNS name, if you don’t update `/etc/hosts` to include your server name (example: “research”) in your set of DNS names for 127.0.0.1, sudo will be SLOW: https://ubuntuforums.org/showthread.php?t=1155261
+
+- And, a random note: If you are installing on a local VM where you'll assign an IP address (I ran into it in VMWare Fusion), but have no DNS name, but you want to make a DNS name by adding it to `/etc/hosts` on your host computer, don't put underscores in the host name you make up.  Far as I can tell, Apache 2.4 will not accept requests to the hostname with underscores in it, but will accept requests to the IP address of the VM, and will accept requests to hostnames with no underscores.  There might be a way to get this to work, but I do not know it.
+
 # `research` patterns
 
 Research server playbook is `research.yml`.

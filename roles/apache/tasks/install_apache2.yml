@@ -19,6 +19,14 @@
     name: wsgi
   notify: restart apache2
 
+# open firewall for http
+- name: Allow HTTP ports
+  become: yes
+  become_user: root
+  ufw:
+    rule: allow
+    port: http
+
 # ==> HTTPS
 # from: https://www.evernote.com/l/AGUb2u876oVNyozlxLmrJ6c5qWjvn062el4
 
@@ -47,7 +55,7 @@
   become_user: root
   shell: a2ensite {{ apache_server_ssl_site_config }}
   notify: restart apache2
-  when: apache_server_ssl_site_config != ""
+  when: ( apache_server_ssl_site_config is defined ) and ( apache_server_ssl_site_config != "" )
 
 # update the 000-default.conf site file to redirect all traffic to HTTPS.
 - name: update the 000-default.conf site file to redirect all traffic to HTTPS.
@@ -57,20 +65,13 @@
     src: 000-default.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
   notify: restart apache2
-  when: apache_server_ssl_site_config != ""
+  when: ( apache_server_ssl_site_config is defined ) and ( apache_server_ssl_site_config != "" )
 
-# open firewall for http and https  
-- name: Allow HTTP ports
-  become: yes
-  become_user: root
-  ufw:
-    rule: allow
-    port: http
-
+# open firewall for https
 - name: Allow HTTPS port
   become: yes
   become_user: root
   ufw:
     rule: allow
     port: https
-  when: apache_server_ssl_site_config != ""
+  when: ( apache_server_ssl_site_config is defined ) and ( apache_server_ssl_site_config != "" )
