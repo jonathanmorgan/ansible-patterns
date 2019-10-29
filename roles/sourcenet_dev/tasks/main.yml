@@ -91,7 +91,7 @@
   notify: touch wsgi.py
 
 # add to urls.py 
-- name: add sourcenet to urls.py
+- name: add context to urls.py
   lineinfile:
     path: '{{ django_config_folder_path }}/urls.py'
     line: urlpatterns.append( path( 'context/', include( 'context.urls' ) ) )
@@ -120,7 +120,7 @@
   notify: touch wsgi.py
 
 # add to urls.py 
-- name: add sourcenet to urls.py
+- name: add context_text to urls.py
   lineinfile:
     path: '{{ django_config_folder_path }}/urls.py'
     line: urlpatterns.append( path( 'context/text/', include( 'context_text.urls' ) ) )
