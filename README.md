@@ -7,7 +7,7 @@
 ## Ansible - Installation on control machine
 
 * on mac or linux, do `pip install ansible`.
-* For any OS with anaconda Python distribution, make a separate conda environment named `ansible`, since it requires pip to install, so you keep it separate from other things that I installed with conda.
+* For any OS with anaconda Python distribution, I make a separate conda environment named `ansible`, since it requires pip to install, so you keep it separate from other packages installed with conda (mixing conda and pip generally means trouble over time).
 
     * if on catalina, might need to open `bash` from `zsh` shell, and if so, will likely also need to move your anaconda init from `~/.bash_profile` to `~/.bashrc`.
     * `conda create --name ansible python=3`
@@ -19,7 +19,7 @@
 ## Ansible - Installation on a target
 
 * [http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html](http://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html)
-* put your control machine’s SSH public key in `~/.ssh/authorized_keys` on the target machine. (`~/.ssh` folder should be 700).
+* put your control machine’s SSH public key in `~/.ssh/authorized_keys` on the target machine in the home folder of the user you'll use to run ansible commands on the target. (permissions: `~/.ssh` folder should be 700; `authorized_keys` should be 600).
 * make sure that python 2 or 3 are installed.  From installation guide:
 
     * By default, Ansible uses the python interpreter located at /usr/bin/python to run its modules. However, some Linux distributions may only have a Python 3 interpreter installed to /usr/bin/python3 by default. On those systems, you may see an error like:
@@ -30,7 +30,10 @@
     - `127.0.0.1 localhost.localdomain localhost research`
     - NOTE: if your hostname (run `hostname` to see what it is) isn’t a for-real DNS name, if you don’t update `/etc/hosts` to include your server name (example: “research”) in your set of DNS names for 127.0.0.1, sudo will be SLOW: https://ubuntuforums.org/showthread.php?t=1155261
 
-- And, a random note: If you are installing on a local VM where you'll assign an IP address (I ran into it in VMWare Fusion), but have no DNS name, but you want to make a DNS name by adding it to `/etc/hosts` on your host computer, don't put underscores in the host name you make up.  Far as I can tell, Apache 2.4 will not accept requests to the hostname with underscores in it, but will accept requests to the IP address of the VM, and will accept requests to hostnames with no underscores.  There might be a way to get this to work, but I do not know it.
+- And, a random note: If you are installing on a local VM where you'll assign an IP address (I ran into it in VMWare Fusion), but have no DNS name, but you want to make a DNS name by adding it to `/etc/hosts` on your host computer, don't put underscores in the host name you make up.  Far as I can tell, Apache 2.4 will not accept requests to the hostname with underscores in it, but will accept requests to the IP address of the VM, and will accept requests to hostnames with no underscores.  There might be a way to get this to work, but I do not know it. So, for example:
+
+    - GOOD: `ubuntu.local`
+    - BAD: `ubuntu_server_lts.local`
 
 # `research` patterns
 
@@ -54,15 +57,15 @@ The following steps will install all services on the server whose DNS name is `r
 - run the "research.yml" playbook: in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
 - To also install the `context` set of applications, run the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook: `ansible-playbook only_sourcenet_dev.yml -i ./hosts.yml`
 
-This quick start assumes that you are making a server whose DNS name is "research.local".  If you want a different DNS name, for example "test.local":
+This quick start assumes that you are making a server whose DNS name is "research.local".  If you want a different DNS name, for example "ubuntu.local":
 
-- when you copy `research.local.yml`, name the copy the DNS name you want (`test.local`).
-- Inside your copy of `research.local.yml` (named `test.local` for this example):
+- when you copy `research.local.yml`, name the copy the DNS name you want (`ubuntu.local`).
+- Inside your copy of `research.local.yml` (named `ubuntu.local` for this example):
 
-    - set `server_host_name` to your server's internal host name - "test"?
-    - set `server_name` to your server's DNS name for external connections - "test.local" in this example.
+    - set `server_host_name` to your server's internal host name - "ubuntu"?
+    - set `server_name` to your server's DNS name for external connections - "ubuntu.local" in this example.
 
-- Update the file `hosts.yml` to substitute your preferred DNS name ("test.local" in this example) for all mentions of "research.local".
+- Update the file `hosts.yml` to substitute your preferred DNS name ("ubuntu.local" in this example) for all mentions of "research.local".
 
 ## `research` notes
 
