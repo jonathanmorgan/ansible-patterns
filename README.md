@@ -1,5 +1,7 @@
 # Ansible script patterns
 
+[![DOI](https://zenodo.org/badge/136237046.svg)](https://zenodo.org/badge/latestdoi/136237046)
+
 <!--TOC-->
 
 # Setup
