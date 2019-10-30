@@ -207,6 +207,17 @@
     dest: "{{ django_project_folder_path }}/work/phd_work"
   when: ( include_phd_work is defined ) and ( include_phd_work|bool == True )
 
+# ==> remove requirements we have source for: django-basic-config, django-basic-messages, python-utilities-jsm
+- name: uninstall requirements django-basic-config, django-basic-messages, python-utilities-jsm (we have source for them)
+  pip:
+    virtualenv: "{{ django_virtualenv_path }}"
+    state: absent
+    name:
+      - django-basic-config
+      - django-basic-messages
+      - python-utilities-jsm
+  notify: touch wsgi.py
+
 # ==> update the database
 - name: run `python manage.py migrate`
   django_manage:
