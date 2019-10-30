@@ -44,7 +44,7 @@
 
 Research server playbook is `research.yml`.
 
-To fire up a sourcenet/context server, do the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook.
+To fire up a sourcenet/context server, do the `research.yml` playbook, then the `only_context_dev.yml` playbook.
 
 ## `research` quick start
 
@@ -60,7 +60,7 @@ The following steps will install all services on the server whose DNS name is `r
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
 - run the "research.yml" playbook: in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
-- To also install the `context` set of applications, run the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook: `ansible-playbook only_sourcenet_dev.yml -i ./hosts.yml`
+- To also install the `context` set of applications, run the `research.yml` playbook, then the `only_context_dev.yml` playbook: `ansible-playbook only_context_dev.yml -i ./hosts.yml`
 
 This quick start assumes that you are making a server whose DNS name is "research.local".  If you want a different DNS name, for example "ubuntu.local":
 
