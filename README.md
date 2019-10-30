@@ -23,10 +23,13 @@
 * make sure that python 2 or 3 are installed.  From installation guide:
 
     * By default, Ansible uses the python interpreter located at /usr/bin/python to run its modules. However, some Linux distributions may only have a Python 3 interpreter installed to /usr/bin/python3 by default. On those systems, you may see an error like:
-    * `"module_stdout": "/bin/sh: /usr/bin/python: No such file or directory\r\n"`
+
+        * `"module_stdout": "/bin/sh: /usr/bin/python: No such file or directory\r\n"`
+
     * you can either set the `ansible_python_interpreter` inventory variable (see Working with Inventory) to point at your interpreter or you can install a Python 2 interpreter for modules to use. You will still need to set `ansible_python_interpreter` if the Python 2 interpreter is not installed to `/usr/bin/python`.
 
 - if it is a new installation, also update `/etc/hosts` so that it includes your host name in the entry for “127.0.0.1” (example of having added hostname “research”):
+
     - `127.0.0.1 localhost.localdomain localhost research`
     - NOTE: if your hostname (run `hostname` to see what it is) isn’t a for-real DNS name, if you don’t update `/etc/hosts` to include your server name (example: “research”) in your set of DNS names for 127.0.0.1, sudo will be SLOW: https://ubuntuforums.org/showthread.php?t=1155261
 
@@ -39,7 +42,7 @@
 
 Research server playbook is `research.yml`.
 
-To fire up a sourcenet server, do the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook.
+To fire up a sourcenet/context server, do the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook.
 
 ## `research` quick start
 
