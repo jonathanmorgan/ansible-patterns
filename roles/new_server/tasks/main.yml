@@ -113,6 +113,7 @@
       - acl
       - reptyr
       - mosh
+      - dpkg-sig
     state: present
 
 # ufw - Allow UDP 60000-60010 for mosh
