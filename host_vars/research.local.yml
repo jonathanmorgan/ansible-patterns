@@ -16,8 +16,10 @@ ansible_become_password: !vault |
 server_host_name: research
 server_name: "{{ server_host_name }}.local"
 server_ip_address: 172.16.111.134
-server_ubuntu_version: "18.04"
-server_ubuntu_version_code_name: bionic
+#server_ubuntu_version: "18.04"
+#server_ubuntu_version_code_name: bionic
+server_ubuntu_version: "20.04"
+server_ubuntu_version_code_name: focal
 ansible_user_home_folder: /home/{{ ansible_user }}
 work_folder: "{{ ansible_user_home_folder }}/work"
 log_folder: "{{ ansible_user_home_folder }}/logs"
@@ -34,7 +36,12 @@ virtualenv_folder: "{{ virtualenv_parent_folder }}/.virtualenvs"
 virtualenv_project_folder: "{{ work_folder }}/vew-projects"
 
 # postgresql configuration
-server_pgsql_version: "10"
+# ubuntu 16.04
+#server_pgsql_version: "9.5"
+# ubuntu 18.04
+#server_pgsql_version: "10"
+# ubuntu 20.04
+server_pgsql_version: "12"
 server_pgsql_listen_addresses: "localhost,127.0.0.1,{{ server_ip_address }},{{ server_name }}"
 server_pgsql_admin_user: "{{ ansible_user }}"
 server_pgsql_admin_password: "{{ ansible_become_password }}"
@@ -55,11 +62,17 @@ server_mysql_admin_user: "{{ ansible_user }}"
 server_mysql_admin_password: "{{ ansible_become_password }}"
 
 # R configuration
-#r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran35"
+#r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran{{ r_version_number }}"
 r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
+# R 4.0:
+r_version_number: "40"
+r_marutter_version_number: "4.0"
+# R 3.5:
+#r_version_number: "35"
+#r_marutter_version_number: "3.5"
 
 # RStudio server configuration
-#rstudio_version: 1.1.453
+#rstudio_version: 1.2.5042
 
 # Jupyterhub configuration
 #jupyterhub_config_folder: /etc/jupyterhub

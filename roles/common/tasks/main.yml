@@ -40,6 +40,7 @@
       - libcairo2-dev
       - libgirepository1.0-dev
       - uchardet
+      - aptitude
     state: present
 
 # create work folder "{{ work_folder }}"
@@ -140,6 +141,31 @@
   lineinfile:
     path: '~/.bashrc'
     line: 'source /usr/local/bin/virtualenvwrapper.sh'
+
+# uncomment any commented deb-src lines in /etc/apt/sources.list
+- name: uncomment any commented deb-src lines in /etc/apt/sources.list
+  become: yes
+  become_user: root
+  replace:
+    path: /etc/apt/sources.list
+    regexp: '# deb-src'
+    replace: 'deb-src'
+
+# uncomment any commented deb lines in /etc/apt/sources.list
+- name: uncomment any commented deb lines in /etc/apt/sources.list
+  become: yes
+  become_user: root
+  replace:
+    path: /etc/apt/sources.list
+    regexp: '# deb'
+    replace: 'deb'
+
+# update apt cache
+- name: Update apt cache
+  become: yes
+  become_user: root
+  apt:
+    update_cache: yes
 
 # install build dependencies for pillow python package
 - name: install pillow build dependencies

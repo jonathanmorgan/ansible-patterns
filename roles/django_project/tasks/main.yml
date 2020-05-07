@@ -19,7 +19,7 @@
 
 # create virtualenv for django project
 - name: create virtualenv for django project
-  shell: virtualenv {{ django_virtualenv_name }} --no-site-packages --python {{ python_3_path }}
+  shell: virtualenv {{ django_virtualenv_name }} --python {{ python_3_path }}
   args:
     chdir: "{{ virtualenv_folder }}/"
   when: django_virtualenv.stat.exists == False
