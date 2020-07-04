@@ -118,7 +118,7 @@
   become_user: root
   lineinfile:
     path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
-    line: "c.JupyterHub.proxy_auth_token = '{{jupyterhub_configproxy_auth_token}}'"
+    line: "c.ConfigurableHTTPProxy.auth_token = '{{jupyterhub_configproxy_auth_token}}'"
   when: jupyterhub_configproxy_auth_token != ""
 
 # add admin_users
