@@ -40,7 +40,7 @@ virtualenv_folder_path = "{{ virtualenv_folder }}"
 path_to_django_project_parent = "{{ django_project_parent_folder_path }}"
 virtualenv_python2 = None
 virtualenv_python3 = "{{ django_virtualenv_name }}"
-python_3_version = "3.6"
+python_3_version = "{{ django_virtualenv_python_version }}"
 
 # Add the app's directory to the PYTHONPATH
 temp_path = "{}/{}".format( path_to_django_project_parent, django_project_name )

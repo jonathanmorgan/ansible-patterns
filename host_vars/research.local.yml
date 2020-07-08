@@ -91,6 +91,7 @@ django_virtualenv_name: "{{ django_project_name }}"
 django_virtualenv_python: "{{ python_3_path }}"
 django_virtualenv_path: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}"
 django_virtualenv_bin_path: "{{ django_virtualenv_path }}/bin"
+django_virtualenv_python_version: "3.7"  # major.minor, no worry about part after that (so for 3.7.7, just use 3.7)
 django_db_package: "{{ server_pgsql_python_package }}"
 django_project_parent_folder_path: "{{ work_folder }}/django"
 django_project_folder_path: "{{ django_project_parent_folder_path }}/{{ django_project_name }}"
