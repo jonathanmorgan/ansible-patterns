@@ -307,7 +307,7 @@ This quick start assumes that you are making a server whose DNS name is "researc
         * in config INI-format file (either `/etc/ansible/ansible.cfg` or `~/.ansible.cfg` by default, or provided by the -c option),  create an ansible configuration file that contains the following:
 
                 [defaults]
-                vault_password_file = <absolute_path_to_vault_password_file>:
+                vault_password_file = <absolute_path_to_vault_password_file>
 
     * different password per ID (command line only):
 
