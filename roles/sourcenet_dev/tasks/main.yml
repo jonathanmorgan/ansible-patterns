@@ -97,7 +97,7 @@
     line: urlpatterns.append( path( 'context/', include( 'context.urls' ) ) )
   notify: touch wsgi.py
 
-# install django_config requirements
+# install context requirements
 - name: install context requirements
   pip:
     requirements: "{{ django_project_folder_path }}/context/requirements.txt"
