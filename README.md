@@ -296,15 +296,18 @@ This quick start assumes that you are making a server whose DNS name is "researc
 * ansible-vault command ([https://docs.ansible.com/ansible/latest/cli/ansible-vault.html](https://docs.ansible.com/ansible/latest/cli/ansible-vault.html)) lets you encrypt files or variable values within a value based on a secret encryption password.
 * to start, you need a vault password.  This can be provided on the command line, or stored in a file.
 
+    * create a strong password.
+    * store the password and only the password in the first and only line of a file in your user's home folder named "`.ansible_vault`" (so "`~/.ansible_vault`").
     * all share same password:
 
         * command line (all share same password):
 
             * `ansible-playbook site.yml --vault-id ~/.ansible_vault`
 
-        * in config INI-format file (either `/etc/ansible/ansible.cfg` or `~/.ansible.cfg` by default, or provided by the -c option):
+        * in config INI-format file (either `/etc/ansible/ansible.cfg` or `~/.ansible.cfg` by default, or provided by the -c option),  create an ansible configuration file that contains the following:
 
-            * `vault_password_file=/Users/jonathanmorgan/.ansible_vault`
+                [defaults]
+                vault_password_file = <absolute_path_to_vault_password_file>
 
     * different password per ID (command line only):
 
@@ -315,11 +318,11 @@ This quick start assumes that you are making a server whose DNS name is "researc
     * [https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html](https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html)
     * encrypt a value to include in a YAML file variable:
         * [http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string](http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string)
-        * `ansible-vault encrypt_string --vault-id <path_to_password_file> '<string_to_encrypt>' --name '<variable_name>'`
-        * Example: `ansible-vault encrypt_string --vault-id ~/.ansible_vault 'today123' --name 'the_dev_secret'`
+        * `ansible-vault encrypt_string --vault-password-file <path_to_password_file> --encrypt-vault-id default '<string_to_encrypt>' --name '<variable_name>'`
+        * Example: `ansible-vault encrypt_string --vault-password-file ~/.ansible_vault --encrypt-vault-id default '<password>' --name ansible_become_password`
         * Example output:
 
-                the_dev_secret: !vault |
+                ansible_become_password: !vault |
                 $ANSIBLE_VAULT;1.1;AES256
                 35633331303937613165656461336336343638643562383435383162303662663634366337353730
                 3535666630666130656238313630363662383766303131350a303031613934646339313836393932
@@ -334,8 +337,8 @@ This quick start assumes that you are making a server whose DNS name is "researc
         * id “dev”, from a file “`~/.ansible_vault`": `ansible-playbook research.yaml -i ./hosts.yaml --vault-id dev@~/.ansible_vault`
     * encrypt a value to include in a YAML file variable, using a particular ID:
         * [http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string](http://docs.ansible.com/ansible/latest/cli/ansible-vault.html#ansible-vault-encrypt-string)
-        * `ansible-vault encrypt_string '<string_to_encrypt>' --name '<variable_name>' --vault-id <id_name>@<where_to_get_password> --encrypt-vault-id <id_name>`
-        * example: `ansible-vault encrypt_string 'today123' --name 'the_dev_secret' --vault-id dev@~/.ansible_vault --encrypt-vault-id dev`
+        * `ansible-vault encrypt_string '<string_to_encrypt>' --name '<variable_name>' --vault-password-file <id_name>@<where_to_get_password> --encrypt-vault-id <id_name>`
+        * example: `ansible-vault encrypt_string 'today123' --name 'the_dev_secret' --vault-password-file dev@~/.ansible_vault --encrypt-vault-id dev`
 
 ## Variables
 
