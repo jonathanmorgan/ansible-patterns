@@ -17,11 +17,7 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 
-# django-ajax-selects URLs
-from ajax_select import urls as ajax_select_urls
-
 urlpatterns = [
     path( 'admin/', admin.site.urls ),
     path( 'admin/doc/', include( 'django.contrib.admindocs.urls' ) ),
-    path( 'admin/lookups/', include( ajax_select_urls ) ),
 ]

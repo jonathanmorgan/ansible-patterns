@@ -33,7 +33,7 @@
       - "{{ django_db_package }}"
       - ipython
       - ipykernel
-      - django-ajax-selects
+      - django-autocomplete-light
       - django-taggit
       - beautifulsoup4
       - requests
