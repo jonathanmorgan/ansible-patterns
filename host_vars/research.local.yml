@@ -20,6 +20,8 @@ server_ip_address: 172.16.111.134
 #server_ubuntu_version_code_name: bionic
 server_ubuntu_version: "20.04"
 server_ubuntu_version_code_name: focal
+server_cpu_type: amd64
+#server_cpu_type: arm64 # M1 mac
 ansible_user_home_folder: /home/{{ ansible_user }}
 work_folder: "{{ ansible_user_home_folder }}/work"
 log_folder: "{{ ansible_user_home_folder }}/logs"
@@ -91,7 +93,7 @@ django_virtualenv_name: "{{ django_project_name }}"
 django_virtualenv_python: "{{ python_3_path }}"
 django_virtualenv_path: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}"
 django_virtualenv_bin_path: "{{ django_virtualenv_path }}/bin"
-django_virtualenv_python_version: "3.7"  # major.minor, no worry about part after that (so for 3.7.7, just use 3.7)
+django_virtualenv_python_version: "3.8"  # major.minor, no worry about part after that (so for 3.7.7, just use 3.7)
 django_db_package: "{{ server_pgsql_python_package }}"
 django_project_parent_folder_path: "{{ work_folder }}/django"
 django_project_folder_path: "{{ django_project_parent_folder_path }}/{{ django_project_name }}"

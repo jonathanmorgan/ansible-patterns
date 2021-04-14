@@ -1,0 +1,4 @@
+# new_server defaults
+
+server_cpu_type: amd64
+#server_cpu_type: arm64 # M1 mac

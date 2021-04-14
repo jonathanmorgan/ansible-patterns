@@ -95,7 +95,6 @@
       - subversion
       - links
       - lynx
-      - fdutils
       - linux-tools-generic
       - build-essential
       - libssl-dev
@@ -111,11 +110,21 @@
       - libxml2-dev
       - libffi-dev
       - acl
-      - reptyr
       - mosh
       - dpkg-sig
       - net-tools
     state: present
+
+# Install first set of needed packages - amd64-only
+- name: install lots of packages - amd64 only (not arm64, so not M1 mac)
+  become: yes
+  become_user: root
+  apt:
+    name:
+      - fdutils
+      - reptyr
+    state: present
+  when: ( server_cpu_type != "" ) and ( server_cpu_type == "amd64" )
 
 # ufw - Allow UDP 60000-60010 for mosh
 - name: Allow UDP 60000 for mosh

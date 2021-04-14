@@ -105,18 +105,18 @@
   notify: touch wsgi.py
   
 # add dal_select2 to front of INSTALLED_APPS 
-- name: add dal_select2 to front of INSTALLED_APPS in settings.py
-  lineinfile:
-    path: '{{ django_config_folder_path }}/settings.py'
-    line: INSTALLED_APPS.insert( 0, 'dal_select2' )
-  notify: touch wsgi.py
+#- name: add dal_select2 to front of INSTALLED_APPS in settings.py
+#  lineinfile:
+#    path: '{{ django_config_folder_path }}/settings.py'
+#    line: INSTALLED_APPS.insert( 0, 'dal_select2' )
+#  notify: touch wsgi.py
 
 # add dal to front of INSTALLED_APPS (so you end up with "dal", then "dal_select2").
-- name: add dal to front of INSTALLED_APPS in settings.py
-  lineinfile:
-    path: '{{ django_config_folder_path }}/settings.py'
-    line: INSTALLED_APPS.insert( 0, 'dal' )
-  notify: touch wsgi.py
+#- name: add dal to front of INSTALLED_APPS in settings.py
+#  lineinfile:
+#    path: '{{ django_config_folder_path }}/settings.py'
+#    line: INSTALLED_APPS.insert( 0, 'dal' )
+#  notify: touch wsgi.py
 
 # ==> context_text
 # - https://github.com/jonathanmorgan/context_text.git
@@ -170,11 +170,11 @@
   notify: touch wsgi.py
 
 # install context_analysis requirements
-- name: install context_analysis requirements
-  pip:
-    requirements: "{{ django_project_folder_path }}/context_analysis/requirements.txt"
-    virtualenv: "{{ django_virtualenv_path }}"
-  notify: touch wsgi.py
+#- name: install context_analysis requirements
+#  pip:
+#    requirements: "{{ django_project_folder_path }}/context_analysis/requirements.txt"
+#    virtualenv: "{{ django_virtualenv_path }}"
+#  notify: touch wsgi.py
 
 # ==> context_data
 # - https://github.com/jonathanmorgan/context_data.git
