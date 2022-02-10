@@ -93,7 +93,7 @@
 
 #===============================================================================
 # ==> set up database.
-- include: database_setup.yml
+- import_tasks: database_setup.yml
 
 # create django superuser
 
@@ -151,4 +151,4 @@
 
 #===============================================================================
 # ==> configure the django web app.
-- include: configure_web_app.yml
+- import_tasks: configure_web_app.yml

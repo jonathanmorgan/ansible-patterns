@@ -1,2 +1,2 @@
 ---
-- include: install_apache2.yml
+- import_tasks: install_apache2.yml
