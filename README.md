@@ -57,6 +57,7 @@ The following steps will install all services on the server whose DNS name is `r
     - `ansible_become_password`
     - `server_ip_address`
     - `server_webroot_folder` (defaults to ubuntu default of `/var/www/html`)
+    - `server_cpu_type` ("amd64" for intel, "arm64" for M1 macs)
     - `jupyterhub_configproxy_auth_token` (32 character random hexadecimal number: `openssl rand -hex 32`)
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
