@@ -20,8 +20,10 @@ server_ip_address: 172.16.111.134
 #server_ubuntu_version_code_name: bionic
 server_ubuntu_version: "20.04"
 server_ubuntu_version_code_name: focal
+#server_ubuntu_version: "22.04"
+#server_ubuntu_version_code_name: jammy
 server_cpu_type: amd64
-#server_cpu_type: arm64 # M1 mac
+#server_cpu_type: arm64 # M1 mac VM guest
 ansible_user_home_folder: /home/{{ ansible_user }}
 work_folder: "{{ ansible_user_home_folder }}/work"
 log_folder: "{{ ansible_user_home_folder }}/logs"

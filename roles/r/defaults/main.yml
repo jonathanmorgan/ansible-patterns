@@ -1,0 +1,17 @@
+# server-level variables
+#server_ubuntu_version: "18.04"
+#server_ubuntu_version_code_name: bionic
+server_ubuntu_version: "20.04"
+server_ubuntu_version_code_name: focal
+#server_ubuntu_version: "22.04"
+#server_ubuntu_version_code_name: jammy
+
+# R configuration
+#r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran{{ r_version_number }}"
+r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
+# R 4.0:
+r_version_number: "40"
+r_marutter_version_number: "4.0"
+# R 3.5:
+#r_version_number: "35"
+#r_marutter_version_number: "3.5"
