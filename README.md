@@ -68,10 +68,13 @@ The following steps will install all services on the server whose DNS name is `r
         - new_server (`ansible-playbook only_new_server.yml -i ./hosts.yml`)
         - common (`ansible-playbook only_common.yml -i ./hosts.yml`)
         - apache (`ansible-playbook only_apache.yml -i ./hosts.yml`)
-        - miniconda3 (`ansible-playbook only_miniconda3.yml -i ./hosts.yml`)
-        - mod_wsgi (`ansible-playbook only_mod_wsgi.yml -i ./hosts.yml`)
-        - postgresql_conda (`ansible-playbook only_postgresql_conda.yml -i ./hosts.yml`)
+        - postgresql (`ansible-playbook only_postgresql.yml -i ./hosts.yml`)
         - jupyterhub (`ansible-playbook only_jupyterhub.yml -i ./hosts.yml`)
+        - If not arm64 (so if not M* mac):
+
+            - r (`ansible-playbook only_r.yml -i ./hosts.yml`)
+            - RStudio Server (`ansible-playbook only_rstudio.yml -i ./hosts.yml`)
+
         - django_project (`ansible-playbook only_django_project.yml -i ./hosts.yml`)
 
 - To also install the `context` set of applications, run the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook: `ansible-playbook only_sourcenet_dev.yml -i ./hosts.yml`
