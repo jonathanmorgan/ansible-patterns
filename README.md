@@ -12,6 +12,7 @@
 * For any OS with anaconda Python distribution, I make a separate conda environment named `ansible`, since it requires pip to install, so you keep it separate from other packages installed with conda (mixing conda and pip generally means trouble over time).
 
     * if on catalina, might need to open `bash` from `zsh` shell, and if so, will likely also need to move your anaconda init from `~/.bash_profile` to `~/.bashrc`.
+    * if needed, activate anaconda: `source ~/miniconda3/bin/activate`
     * `conda create --name ansible python=3`
     * `conda activate ansible`
     * `pip install ansible`
