@@ -61,7 +61,34 @@ The following steps will install all services on the server whose DNS name is `r
 
 - set `research.local` to point to the IP address of the server you want to install to in your hosts file (`/etc/hosts` on unix-like machines).
 - run the "research.yml" playbook: in `ansible-patterns` root, run `ansible-playbook research.yml -i ./hosts.yml`
-- To also install the `context` set of applications, run the `research.yml` playbook, then the `only_context_dev.yml` playbook: `ansible-playbook only_context_dev.yml -i ./hosts.yml`
+
+    - for the cautious, here is a list of the roles in research.yml, in order, along with example command to run each separately:
+    
+        - new_server (`ansible-playbook only_new_server.yml -i ./hosts.yml`)
+        - common (`ansible-playbook only_common.yml -i ./hosts.yml`)
+        - apache (`ansible-playbook only_apache.yml -i ./hosts.yml`)
+        - miniconda3 (`ansible-playbook only_miniconda3.yml -i ./hosts.yml`)
+        - mod_wsgi (`ansible-playbook only_mod_wsgi.yml -i ./hosts.yml`)
+        - postgresql_conda (`ansible-playbook only_postgresql_conda.yml -i ./hosts.yml`)
+        - jupyterhub (`ansible-playbook only_jupyterhub.yml -i ./hosts.yml`)
+        - django_project (`ansible-playbook only_django_project.yml -i ./hosts.yml`)
+
+- To also install the `context` set of applications, run the `research.yml` playbook, then the `only_sourcenet_dev.yml` playbook: `ansible-playbook only_sourcenet_dev.yml -i ./hosts.yml`
+- If you just install everything for the django application inside the ansible user's home folder (the default), you'll then need to change permissions so Apache can do what it needs to do to serve the django application:
+    
+        cd /home
+        chmod 755 <ansible_user>
+        cd <ansible_user>
+        chmod 755 work
+        cd work
+        chmod 755 django
+        cd django
+        chmod 777 <django_project_name>
+        cd <django_project_name>
+        find . -type d -exec chmod 777 {} \;
+
+    - _NOTE: DO NOT DO THIS IN A PRODUCTION SYSTEM. Instead, place the django project folder in a shared place you can give the "apache" user and any developers access to._
+    - Also, I tried to put "apache" user into the ansible user's group, then just set permissive group permissions, but that didn't work for some reason...
 
 This quick start assumes that you are making a server whose DNS name is "research.local".  If you want a different DNS name, for example "ubuntu.local":
 
