@@ -47,11 +47,21 @@
   become_user: root
   shell: '{{ django_virtualenv_bin_path }}/python -m ipykernel install --name {{ django_project_name }} --display-name "{{ django_project_name }}_virtualenv"'
 
-# create django project parent folder {{ django_project_parent_folder_path }}
-- name: create django project parent folder {{ django_project_parent_folder_path }}
+# create django project parent folder {{ django_logs_folder_path }}
+- name: create django project logs folder {{ django_logs_folder_path }}
   file:
-    path: "{{ django_project_parent_folder_path }}"
+    path: "{{ django_logs_folder_path }}"
     state: directory
+#  become: yes
+#  become_user: root
+
+# create django project logs folder {{ django_project_base_folder_path }}
+- name: create django project base folder {{ django_project_base_folder_path }}
+  file:
+    path: "{{ django_project_base_folder_path }}"
+    state: directory
+#  become: yes
+#  become_user: root
 
 # check if django project already there.
 - name: check if django project already there.
@@ -61,9 +71,9 @@
 
 # create django project
 - name: create django project
-  shell: "{{ django_virtualenv_bin_path }}/django-admin.py startproject {{ django_project_name }}"
+  shell: "{{ django_virtualenv_bin_path }}/{{ django_admin_command }} startproject {{ django_project_name }}"
   args:
-    chdir: "{{ django_project_parent_folder_path }}/"
+    chdir: "{{ django_project_base_folder_path }}/"
   when: django_project.stat.exists == False
 
 # put settings.py in place

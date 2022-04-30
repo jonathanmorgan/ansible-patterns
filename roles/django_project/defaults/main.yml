@@ -1,0 +1,103 @@
+# related variables
+python_3_path: /usr/bin/python3
+ansible_user_home_folder: "/home/{{ ansible_user }}"
+python_base_version: "3.10"
+virtualenv_parent_folder: "{{ ansible_user_home_folder }}"
+virtualenv_folder: "{{ virtualenv_parent_folder }}/.virtualenvs"
+#work_folder: "{{ ansible_user_home_folder }}/work"
+#log_folder: "{{ ansible_user_home_folder }}/logs"
+server_webroot_folder: /var/www/html
+
+# django project basics
+django_project_name: research
+django_project_base_folder_path: "{{ work_folder }}/django/{{ django_project_name }}"
+#django_project_base_folder_path: "/opt/django/{{ django_project_name }}"
+django_project_folder_path: "{{ django_project_base_folder_path }}/{{ django_project_name }}"
+django_install_version: "3.2"
+django_install_version_filter: "<4.0"
+
+# django project virtualenv
+django_virtualenv_home_path: "{{ virtualenv_folder }}"
+django_virtualenv_name: "{{ django_project_name }}"
+django_virtualenv_python: "{{ python_3_path }}"
+django_virtualenv_path: "{{ django_virtualenv_home_path }}/{{ django_virtualenv_name }}"
+django_virtualenv_bin_path: "{{ django_virtualenv_path }}/bin"
+django_virtualenv_python_version: "{{ python_base_version }}"  # major.minor, no worry about part after that (so for 3.7.7, just use 3.7)
+
+# for older versions of django, it is "django-admin.py". For newer (post-3.2?) it is just "django-admin".
+#django_admin_command: "django-admin.py"
+django_admin_command: "django-admin"
+
+# django project database constants-ish
+# If you get this error:
+#     pg_connect(): Unable to connect to PostgreSQL server: SCRAM authentication requires libpq version 10 or above.
+# Use psycopg2 instead of psycopg2-binary.
+#db_postgresql_python_package: "psycopg2-binary"
+db_postgresql_python_package: "psycopg2"
+db_postgresql_port: "5432"
+db_mysql_python_package: "mysqlclient"
+db_mysql_port: "3306"
+django_db_engine_prefix: "django.db.backends."
+django_db_engine_mysql: "{{ django_db_engine_prefix }}mysql"
+django_db_engine_postgresql: "{{ django_db_engine_prefix }}postgresql"
+django_db_engine_sqlite3: "{{ django_db_engine_prefix }}sqlite3"
+
+# django project database configuration - postgresql
+django_database_type: "postgresql"  # for now, supported: "mysql", "postgresql", "sqlite3"
+django_db_python_package: "{{ db_postgresql_python_package }}"
+#django_db_package: "{{ django_db_python_package }}"
+django_db_engine: "{{ django_db_engine_postgresql }}"
+#django_db_port: "{{ db_postgresql_port }}"  # 5432 for postgresql, 3306 for mysql.
+server_pgsql_admin_user: "{{ ansible_user }}"
+#server_pgsql_admin_user: "{{ ansible_user }}"
+server_pgsql_admin_password: ""
+#server_pgsql_admin_password: "{{ ansible_become_password }}"
+
+# django project database configuration - mysql
+#django_database_type: "mysql"  # for now, supported: "mysql", "postgresql", "sqlite3"
+#django_db_python_package: "{{ db_mysql_python_package }}"
+#django_db_engine: "{{ django_db_engine_mysql }}"
+#django_db_port: "{{ db_mysql_port }}"  # 5432 for postgresql, 3306 for mysql.
+
+# django project database configuration - shared postgresql and mysql
+django_db_package: "{{ django_db_python_package }}"  # "pyscopg2-binary" for postgresql; "mysqlclient" for MySQL
+django_db_name: "{{ django_project_name }}"
+django_db_username: "django_user"
+django_db_password: "{{ ansible_become_password }}"
+django_db_host: "localhost"
+django_db_port: "{{ db_postgresql_port }}"  # 5432 for postgresql, 3306 for mysql.
+
+# django project database configuration - sqlite3
+#django_database_type: "sqlite3"  # for now, supported: "mysql", "postgresql", "sqlite3"
+#django_db_python_package: ""
+#django_db_engine: "{{ django_db_engine_sqlite3 }}"
+#django_db_package: ""  # "pyscopg2-binary" for postgresql; "mysqlclient" for MySQL; empty for sqlite3
+#django_db_name: "{{ django_project_name }}.sqlite"
+#django_db_username: ""  # empty for sqlite3
+#django_db_password: ""  # empty for sqlite3
+#django_db_host: ""  # empty for sqlite3
+#django_db_port: ""  # 5432 for postgresql, 3306 for mysql, empty for sqlite3.
+
+# django project locations configuration
+django_config_folder_path: "{{ django_project_folder_path }}/{{ django_project_name }}"
+# old way - use a user-specific path - new way, keep logs with django project.
+#django_logs_folder_path: "{{ log_folder }}"
+django_logs_folder_path: "{{ django_project_base_folder_path }}/logs"
+django_log_file_path: "{{ django_logs_folder_path }}/django-{{ django_project_name }}.log"
+django_static_folder_path: "{{ server_webroot_folder }}/static"
+django_settings_import: "{{ django_project_name }}.settings"
+
+# if you are running a dev server and place your project in, say, a user folder,
+#     you might need to adjust the permissions.
+#django_project_folder_mode: 0777
+
+# django user setup.
+django_superuser_username: "{{ ansible_user }}"
+django_superuser_password: "{{ ansible_become_password }}"
+django_superuser_email: ""
+
+# django setup control variables
+django_setup_folders: true
+django_install_os_packages: true
+django_configure_apache: true
+django_update_system_jupyter: true

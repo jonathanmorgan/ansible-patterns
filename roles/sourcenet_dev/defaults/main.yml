@@ -1,0 +1,19 @@
+# related variables
+python_3_path: /usr/bin/python3
+ansible_user_home_folder: "/home/{{ ansible_user }}"
+python_base_version: "3.10"
+virtualenv_parent_folder: "{{ ansible_user_home_folder }}"
+virtualenv_folder: "{{ virtualenv_parent_folder }}/.virtualenvs"
+
+# django project basics
+django_project_name: research
+django_project_base_folder_path: "{{ work_folder }}/django/{{ django_project_name }}"
+#django_project_base_folder_path: "/opt/django/{{ django_project_name }}"
+django_project_folder_path: "{{ django_project_base_folder_path }}/{{ django_project_name }}"
+django_config_folder_path: "{{ django_project_folder_path }}/{{ django_project_name }}"
+
+# django virtualenv
+django_virtualenv_home_path: "{{ virtualenv_folder }}"
+django_virtualenv_name: "{{ django_project_name }}"
+django_virtualenv_python: "{{ python_3_path }}"
+django_virtualenv_path: "{{ django_virtualenv_home_path }}/{{ django_virtualenv_name }}"

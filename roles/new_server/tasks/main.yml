@@ -90,7 +90,7 @@
       - git
       - linux-image-generic
       - linux-headers-generic
-      - python
+#      - python
       - python3
       - subversion
       - links
@@ -98,7 +98,7 @@
       - linux-tools-generic
       - build-essential
       - libssl-dev
-      - python-dev
+#      - python-dev
       - python3-dev
       - liblapack-dev
       - libatlas-base-dev

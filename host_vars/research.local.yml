@@ -1,5 +1,6 @@
 # default variables for host research.local
 python_3_path: /usr/bin/python3
+python_base_version: "3.10"
 ansible_user: jonathanmorgan
 ansible_python_interpreter: "{{ python_3_path }}"
 # ansible_become: yes
@@ -18,10 +19,10 @@ server_name: "{{ server_host_name }}.local"
 server_ip_address: 172.16.111.134
 #server_ubuntu_version: "18.04"
 #server_ubuntu_version_code_name: bionic
-server_ubuntu_version: "20.04"
-server_ubuntu_version_code_name: focal
-#server_ubuntu_version: "22.04"
-#server_ubuntu_version_code_name: jammy
+#server_ubuntu_version: "20.04"
+#server_ubuntu_version_code_name: focal
+server_ubuntu_version: "22.04"
+server_ubuntu_version_code_name: jammy
 server_cpu_type: amd64
 #server_cpu_type: arm64 # M1 mac VM guest
 ansible_user_home_folder: /home/{{ ansible_user }}
@@ -45,7 +46,9 @@ virtualenv_project_folder: "{{ work_folder }}/vew-projects"
 # ubuntu 18.04
 #server_pgsql_version: "10"
 # ubuntu 20.04
-server_pgsql_version: "12"
+#server_pgsql_version: "12"
+# ubuntu 22.04
+server_pgsql_version: "14"
 server_pgsql_listen_addresses: "localhost,127.0.0.1,{{ server_ip_address }},{{ server_name }}"
 server_pgsql_admin_user: "{{ ansible_user }}"
 server_pgsql_admin_password: "{{ ansible_become_password }}"
@@ -68,7 +71,7 @@ server_mysql_admin_password: "{{ ansible_become_password }}"
 # R configuration
 #r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}-cran{{ r_version_number }}"
 r_apt_deb_ubuntu_version_path: "{{ server_ubuntu_version_code_name }}"
-# R 4.0:
+# R 4.0+:
 r_version_number: "40"
 r_marutter_version_number: "4.0"
 # R 3.5:
@@ -89,28 +92,51 @@ jupyterhub_ssl_private_key_path: "{{ server_ssl_private_key_path }}"
 
 #jupyterhub_proxy_command_path: "/usr/local/bin/configurable-http-proxy"
 
-# django project configuration
+#=========================================================#
+# django project configuration - defaults in:
+#     - roles/django_project/defaults/main.yml
+#=========================================================#
+
+# django project basics
 django_project_name: research
-django_virtualenv_name: "{{ django_project_name }}"
-django_virtualenv_python: "{{ python_3_path }}"
-django_virtualenv_path: "{{ virtualenv_folder }}/{{ django_virtualenv_name }}"
-django_virtualenv_bin_path: "{{ django_virtualenv_path }}/bin"
-django_virtualenv_python_version: "3.8"  # major.minor, no worry about part after that (so for 3.7.7, just use 3.7)
-django_db_package: "{{ server_pgsql_python_package }}"
-django_project_parent_folder_path: "{{ work_folder }}/django"
-django_project_folder_path: "{{ django_project_parent_folder_path }}/{{ django_project_name }}"
-django_config_folder_path: "{{ django_project_folder_path }}/{{ django_project_name }}"
-django_log_file_path: "{{ log_folder }}/django-{{ django_project_name }}.log"
-django_static_folder_path: "{{ server_webroot_folder }}/static"
-django_settings_import: "{{ django_project_name }}.settings"
-django_db_name: "{{ django_project_name }}"
-django_db_username: "django_user"
-django_db_password: "{{ ansible_become_password }}"
-django_db_host: "localhost"
-django_db_port: "5432"
-django_superuser_username: "{{ ansible_user }}"
-django_superuser_password: "{{ ansible_become_password }}"
-django_superuser_email: ""
+django_project_base_folder_path: "{{ work_folder }}/django/{{ django_project_name }}"
+#django_project_base_folder_path: "/opt/django/{{ django_project_name }}"
+#django_project_folder_path: "{{ django_project_base_folder_path }}/{{ django_project_name }}"
+
+# django project virtualenv
+#django_virtualenv_home_path: "{{ virtualenv_folder }}"
+#django_virtualenv_name: "{{ django_project_name }}"
+#django_virtualenv_python: "{{ python_3_path }}"
+#django_virtualenv_path: "{{ django_virtualenv_home_path }}/{{ django_virtualenv_name }}"
+#django_virtualenv_bin_path: "{{ django_virtualenv_path }}/bin"
+#django_virtualenv_python_version: "{{ python_base_version }}"  # major.minor, no worry about part after that (so for 3.7.7, just use 3.7)
+
+# for older versions of django, it is "django-admin.py". For newer (post-3.2?) it is just "django-admin".
+#django_admin_command: "django-admin.py"
+#django_admin_command: "django-admin"
+
+# django project locations configuration
+#django_config_folder_path: "{{ django_project_folder_path }}/{{ django_project_name }}"
+#django_logs_folder_path: "{{ django_project_base_folder_path }}/logs"
+#django_log_file_path: "{{ django_logs_folder_path }}/django-{{ django_project_name }}.log"
+#django_static_folder_path: "{{ server_webroot_folder }}/static"
+#django_settings_import: "{{ django_project_name }}.settings"
+
+# database configuration
+#db_postgresql_python_package: "psycopg2-binary"
+#django_db_python_package: "{{ db_postgresql_python_package }}"
+#django_db_package: "{{ server_pgsql_python_package }}"
+#django_db_name: "{{ django_project_name }}"
+#django_db_username: "django_user"
+#django_db_password: "{{ ansible_become_password }}"
+#django_db_host: "localhost"
+#db_postgresql_port: "5432"
+#django_db_port: "{{ db_postgresql_port }}"  # 5432 for postgresql, 3306 for mysql.
+
+# django superuser setup
+#django_superuser_username: "{{ ansible_user }}"
+#django_superuser_password: "{{ ansible_become_password }}"
+#django_superuser_email: ""
 
 # phd work
 #include_phd_work: false

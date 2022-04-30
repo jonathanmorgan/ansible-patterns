@@ -18,11 +18,11 @@
   notify: touch wsgi.py
 
 # install python_utilities potgresql-specific requirements
-- name: install python_utilities potgresql-specific requirements
-  pip:
-    requirements: "{{ django_project_folder_path }}/python_utilities/requirements_pgsql.txt"
-    virtualenv: "{{ django_virtualenv_path }}"
-  notify: touch wsgi.py
+#- name: install python_utilities potgresql-specific requirements
+#  pip:
+#    requirements: "{{ django_project_folder_path }}/python_utilities/requirements_pgsql.txt"
+#    virtualenv: "{{ django_virtualenv_path }}"
+#  notify: touch wsgi.py
 
 # ==> prerequisite: django_config
 # - https://github.com/jonathanmorgan/django_config.git
@@ -170,11 +170,11 @@
   notify: touch wsgi.py
 
 # install context_analysis requirements
-#- name: install context_analysis requirements
-#  pip:
-#    requirements: "{{ django_project_folder_path }}/context_analysis/requirements.txt"
-#    virtualenv: "{{ django_virtualenv_path }}"
-#  notify: touch wsgi.py
+- name: install context_analysis requirements
+  pip:
+    requirements: "{{ django_project_folder_path }}/context_analysis/requirements.txt"
+    virtualenv: "{{ django_virtualenv_path }}"
+  notify: touch wsgi.py
 
 # ==> context_data
 # - https://github.com/jonathanmorgan/context_data.git
@@ -230,7 +230,10 @@
       - django-basic-config
       - django-basic-messages
       - python-utilities-jsm
+#      - pyscopg2-binary
   notify: touch wsgi.py
+# includes psycopg2-binary, since it has an error when used with postgresql > 12 (compiled with too old a version o lipq):
+# django.db.utils.OperationalError: SCRAM authentication requires libpq version 10 or above
 
 # ==> update the database
 - name: run `python manage.py migrate`
