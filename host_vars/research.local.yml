@@ -133,6 +133,10 @@ django_project_base_folder_path: "{{ work_folder }}/django/{{ django_project_nam
 #db_postgresql_port: "5432"
 #django_db_port: "{{ db_postgresql_port }}"  # 5432 for postgresql, 3306 for mysql.
 
+# create database things?
+#django_db_create_db_user: false
+#django_db_create_database: false
+
 # django superuser setup
 #django_superuser_username: "{{ ansible_user }}"
 #django_superuser_password: "{{ ansible_become_password }}"
