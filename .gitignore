@@ -44,7 +44,9 @@ nosetests.xml
 *.retry
 
 # host settings files
-research.local
+host_vars/*.local
+hosts-*.yml
+
 # General
 .DS_Store
 .AppleDouble
