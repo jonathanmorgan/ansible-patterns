@@ -87,10 +87,11 @@ The following steps will install all services on the server whose DNS name is `r
         cd work
         chmod 755 django
         cd django
-        chmod 777 <django_project_name>
+        chmod 775 <django_project_name>
         cd <django_project_name>
-        find . -type d -exec chmod 777 {} \;
+        find . -type d -exec chmod 775 {} \;
 
+    - I altered the lines above with 775 to that, from 777, to see if that breaks things. If so, re-run the two commands above that contain "775", but replace "775" with "777".
     - _NOTE: DO NOT DO THIS IN A PRODUCTION SYSTEM. Instead, place the django project folder in a shared place you can give the "apache" user and any developers access to._
     - Also, I tried to put "apache" user into the ansible user's group, then just set permissive group permissions, but that didn't work for some reason...
 

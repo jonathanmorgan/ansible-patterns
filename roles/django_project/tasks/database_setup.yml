@@ -11,6 +11,11 @@
     password: '{{ django_db_password }}'
     encrypted: yes
     role_attr_flags: LOGIN
+  when:
+    - django_db_username is defined
+    - django_db_username != ""
+    - django_db_create_db_user is defined
+    - django_db_create_db_user == true
 
 # create database for django app in postgres
 - name: create postgresql database for django_project named {{ django_db_name }}
@@ -19,6 +24,11 @@
     login_password: "{{ server_pgsql_admin_password }}"
     name: "{{ django_db_name }}"
     owner: "{{ django_db_username }}"
+  when:
+    - django_db_name is defined
+    - django_db_name != ""
+    - django_db_create_database is defined
+    - django_db_create_database == true
 
 # run `python manage.py migrate`
 #- name: run `python manage.py migrate`

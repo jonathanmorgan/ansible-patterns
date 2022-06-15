@@ -40,6 +40,7 @@
       - libgirepository1.0-dev
       - uchardet
       - aptitude
+      - libcurl4-openssl-dev
     state: present
 
 # Install first set of needed packages - amd64-only
