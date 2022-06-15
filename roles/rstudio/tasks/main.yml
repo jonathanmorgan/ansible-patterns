@@ -17,6 +17,7 @@
       - gdebi-core
       - libapparmor1
       - libjpeg62
+      - libssl-dev
     state: present
 
 # download RStudio server (version number configured in handlers/main.yml)

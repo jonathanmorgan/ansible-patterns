@@ -79,7 +79,8 @@ r_marutter_version_number: "4.0"
 #r_marutter_version_number: "3.5"
 
 # RStudio server configuration
-#rstudio_version: 1.3.959
+#rstudio_ubuntu_codename: {{ server_ubuntu_version_code_name }}
+#rstudio_version: 2022.02.3-492
 
 # Jupyterhub configuration
 #jupyterhub_config_folder: /etc/jupyterhub

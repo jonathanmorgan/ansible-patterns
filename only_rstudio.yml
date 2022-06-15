@@ -1,0 +1,7 @@
+---
+# This playbook deploys the whole research application stack.
+
+- name: deploy RStudio Server Open Source
+  hosts: rstudio_servers
+  roles:
+    - rstudio
