@@ -91,6 +91,10 @@ django_log_file_path: "{{ django_logs_folder_path }}/django-{{ django_project_na
 django_static_folder_path: "{{ server_webroot_folder }}/static"
 django_settings_import: "{{ django_project_name }}.settings"
 
+# django security setup
+# generate random secret key: openssl rand -base64 64
+django_secret_key: "changemeplease"
+
 # if you are running a dev server and place your project in, say, a user folder,
 #     you might need to adjust the permissions.
 #django_project_folder_mode: 0777
