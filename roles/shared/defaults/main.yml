@@ -1,0 +1,8 @@
+# common defaults
+
+server_cpu_type: amd64
+#server_cpu_type: arm64 # M1 mac
+
+# python defaults
+python_3_path: /usr/bin/python3
+python_base_version: "3.10"

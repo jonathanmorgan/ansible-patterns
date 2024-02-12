@@ -4,9 +4,9 @@ After=syslog.target network.target
 
 [Service]
 User=root
-ExecStart=/usr/local/bin/jupyterhub -f {{jupyterhub_config_folder}}/jupyterhub_config.py
+ExecStart={{jupyterhub_bin_path}} -f {{jupyterhub_config_file_path}}
 WorkingDirectory={{jupyterhub_config_folder}}
-EnvironmentFile={{jupyterhub_config_folder}}/jupyterhub_environment
+EnvironmentFile={{jupyterhub_env_file_path}}
 
 [Install]
 WantedBy=multi-user.target

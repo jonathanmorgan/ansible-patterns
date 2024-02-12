@@ -1,4 +1,5 @@
 # common defaults
 
-server_cpu_type: amd64
+# ==> moved to common/defaults/main.yml
+#server_cpu_type: amd64
 #server_cpu_type: arm64 # M1 mac

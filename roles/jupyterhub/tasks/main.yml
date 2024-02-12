@@ -39,13 +39,43 @@
     global: yes
     state: latest
 
+# create jupyterhub install folder (defauts to /opt/jupyterhub)
+- name: create jupyterhub install folder
+  become: yes
+  become_user: root
+  file:
+    path: "{{ jupyterhub_install_folder_path }}"
+    state: directory
+
+# check if virtualenv already there.
+- name: check if virtualenv exists ({{ jupyterhub_venv_folder_path }})
+  stat:
+    path: '{{ jupyterhub_venv_folder_path }}'
+  register: jupyter_venv
+
+# create virtualenv for jupyter project (the django way - can you specify a folder?)
+#- name: create virtualenv for jupyterhub project in {{ jupyterhub_venv_folder_path }}
+#  shell: virtualenv jupyterhub --python {{ python_3_path }}
+#  args:
+#    chdir: "{{ virtualenv_folder }}/"
+#  when: jupyter_venv.stat.exists == False
+
+# create virtualenv for jupyterhub
+- name: Create venv for jupyterhub
+  become: yes
+  become_user: root
+  pip:
+     virtualenv: "{{ jupyterhub_venv_folder_path }}"
+     virtualenv_command: "{{ python_3_path }} -m venv"
+  when: jupyter_venv.stat.exists == False
+
 # cython in python 3.
 - name: install cython
   become: yes
   become_user: root
   pip:
-    executable: pip3
     name: cython
+    virtualenv: "{{ jupyterhub_venv_folder_path }}"
     state: latest
 
 # pyOpenSSL in python 3.
@@ -53,8 +83,8 @@
   become: yes
   become_user: root
   pip:
-    executable: pip3
     name: pyOpenSSL
+    virtualenv: "{{ jupyterhub_venv_folder_path }}"
     state: latest
 
 # install jupyterhub and ipython notebook in python 3.
@@ -62,7 +92,6 @@
   become: yes
   become_user: root
   pip:
-    executable: pip3
     name:
       - jupyterhub
       - ipython[notebook]
@@ -70,6 +99,7 @@
       - jupyter_contrib_nbextensions
       - jupyter_nbextensions_configurator
       - jupyterlab
+    virtualenv: "{{ jupyterhub_venv_folder_path }}"
     state: latest
 
 # ==> configuration
@@ -79,13 +109,13 @@
   become: yes
   become_user: root
   file:
-    path: "{{jupyterhub_config_folder}}"
+    path: "{{ jupyterhub_config_folder }}"
     state: directory
 
 # check if configuration file already there.
 - name: check if jupyterhub_config.py exists
   stat:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
   register: jupyterhub_config
 
 # initialize jupyterhub configuration if not already there.
@@ -100,7 +130,7 @@
 # check if environment file already there.
 - name: check if jupyterhub_environment exists
   stat:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_environment'
+    path: '{{ jupyterhub_env_file_path }}'
   register: jupyterhub_environment
 
 # Create jupyterhub_environment if not already there.
@@ -109,7 +139,7 @@
   become_user: root
   template:
     src: jupyterhub_environment.j2
-    dest: /etc/jupyterhub/jupyterhub_environment
+    dest: '{{ jupyterhub_env_file_path }}'
   when: jupyterhub_environment.stat.exists == False
 
 # add a token (no default - have to set this yourself)
@@ -117,25 +147,25 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.ConfigurableHTTPProxy.auth_token = '{{jupyterhub_configproxy_auth_token}}'"
   when: jupyterhub_configproxy_auth_token != ""
 
 # add admin_users
-- name: Add proxy token value.
+- name: Add users to jupyterhub admin users list.
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.Authenticator.admin_users = [ {{jupyterhub_admin_user_list}} ]"
   when: jupyterhub_admin_user_list != ""
 
 # add white list if one specified.
-- name: Add proxy token value.
+- name: Add jupyterhub white list.
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.Authenticator.whitelist = [ {{jupyterhub_whitelist_list}} ]"
   when: jupyterhub_whitelist_list != ""
 
@@ -144,7 +174,7 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.ssl_cert = '{{ jupyterhub_ssl_certificate_path }}'"
   when: jupyterhub_ssl_certificate_path != ""
   
@@ -153,7 +183,7 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.ssl_key = '{{ jupyterhub_ssl_private_key_path }}'"
   when: jupyterhub_ssl_private_key_path != ""
 
@@ -213,7 +243,7 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.ssl_cert = '{{jupyterhub_config_folder}}/jupyterhub_cert.pem'"
   when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
@@ -222,7 +252,7 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.ssl_key = '{{jupyterhub_config_folder}}/jupyterhub_key.pem'"
   when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
@@ -231,7 +261,7 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'"
 
 # FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'
@@ -251,19 +281,19 @@
   become: yes
   become_user: root
   lineinfile:
-    path: '{{jupyterhub_config_folder}}/jupyterhub_config.py'
+    path: '{{ jupyterhub_config_file_path }}'
     line: "#c.ConfigurableHTTPProxy.command = '{{jupyterhub_proxy_command_path}}'"
   when: jupyterhub_proxy_command_path != ""
 
 # ==> systemd service
 
-# Create systemd service for jupyterhub.
-- name: Create systemd service for jupyterhub
+# Create systemd service for jupyterhub in /etc/systemd/system/jupyterhub.service.
+- name: Create systemd service for jupyterhub in {{ jupyterhub_systemd_service_path }}
   become: yes
   become_user: root
   template:
     src: jupyterhub.service.j2
-    dest: /etc/systemd/system/jupyterhub.service
+    dest: "{{ jupyterhub_systemd_service_path }}"
 
 # Enable jupyterhub service
 - name: Enable jupyterhub service
@@ -298,21 +328,21 @@
 - name: install juptyer nbextensions
   become: yes
   become_user: root
-  shell: jupyter contrib nbextension install --system --symlink
+  shell: source {{ jupyterhub_venv_activate_path }} && jupyter contrib nbextension install --system --symlink
 
 # enable nbextensions_configurator.
 # (sudo -H) jupyter nbextensions_configurator enable --system
 - name: enable nbextensions_configurator
   become: yes
   become_user: root
-  shell: jupyter nbextensions_configurator enable --system
+  shell: source {{ jupyterhub_venv_activate_path }} && jupyter nbextensions_configurator enable --system
 
 # and install table of contents in jupyterlab.
 # (sudo -H) jupyter labextension install jupyterlab-toc
 #- name: install jupyterlab extension jupyterlab-toc
 #  become: yes
 #  become_user: root
-#  shell: jupyter labextension install jupyterlab-toc
+#  shell: source {{ jupyterhub_venv_activate_path }} && jupyter labextension install jupyterlab-toc
 
 # if R installed, should also install R jupyter kernel.
 
