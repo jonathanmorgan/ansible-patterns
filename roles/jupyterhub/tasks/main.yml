@@ -65,8 +65,9 @@
   become: yes
   become_user: root
   pip:
-     virtualenv: "{{ jupyterhub_venv_folder_path }}"
-     virtualenv_command: "{{ python_3_path }} -m venv"
+    name: cython
+    virtualenv: "{{ jupyterhub_venv_folder_path }}"
+    virtualenv_command: "{{ python_3_path }} -m venv"
   when: jupyter_venv.stat.exists == False
 
 # cython in python 3.
@@ -113,28 +114,28 @@
     state: directory
 
 # check if configuration file already there.
-- name: check if jupyterhub_config.py exists
+- name: check if jupyterhub_config.py exists at {{ jupyterhub_config_file_path }}
   stat:
     path: '{{ jupyterhub_config_file_path }}'
   register: jupyterhub_config
 
 # initialize jupyterhub configuration if not already there.
-- name: initialize jupyterhub configuration
+- name: initialize jupyterhub configuration in {{ jupyterhub_config_folder }}
   become: yes
   become_user: root
-  shell: jupyterhub --generate-config
+  shell: . {{ jupyterhub_venv_activate_path }} && jupyterhub --generate-config
   args:
-    chdir: "{{jupyterhub_config_folder}}"
+    chdir: "{{ jupyterhub_config_folder }}"
   when: jupyterhub_config.stat.exists == False
 
 # check if environment file already there.
-- name: check if jupyterhub_environment exists
+- name: check if jupyterhub_environment exists at {{ jupyterhub_env_file_path }}
   stat:
     path: '{{ jupyterhub_env_file_path }}'
   register: jupyterhub_environment
 
 # Create jupyterhub_environment if not already there.
-- name:  Create jupyterhub_environment if not already there
+- name:  Create jupyterhub_environment if not already there at {{ jupyterhub_env_file_path }}
   become: yes
   become_user: root
   template:
@@ -320,29 +321,6 @@
   ufw:
     rule: allow
     port: 8000
-
-# add turning on nbextensions
-
-# install juptyer nbextensions
-# (sudo -H) jupyter contrib nbextension install --system --symlink
-- name: install juptyer nbextensions
-  become: yes
-  become_user: root
-  shell: source {{ jupyterhub_venv_activate_path }} && jupyter contrib nbextension install --system --symlink
-
-# enable nbextensions_configurator.
-# (sudo -H) jupyter nbextensions_configurator enable --system
-- name: enable nbextensions_configurator
-  become: yes
-  become_user: root
-  shell: source {{ jupyterhub_venv_activate_path }} && jupyter nbextensions_configurator enable --system
-
-# and install table of contents in jupyterlab.
-# (sudo -H) jupyter labextension install jupyterlab-toc
-#- name: install jupyterlab extension jupyterlab-toc
-#  become: yes
-#  become_user: root
-#  shell: source {{ jupyterhub_venv_activate_path }} && jupyter labextension install jupyterlab-toc
 
 # if R installed, should also install R jupyter kernel.
 

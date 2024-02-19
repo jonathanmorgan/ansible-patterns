@@ -1,10 +1,10 @@
 # jupyterhub installation defaults
-jupyterhub_name: jupyerhub
+jupyterhub_name: jupyterhub
 
 # jupyterhub installation
 jupyterhub_install_folder_path: /opt/{{ jupyterhub_name }}
 jupyterhub_venv_folder_path: "{{ jupyterhub_install_folder_path }}/venv"
-jupyterhub_venv_bin_folder_path: "{{ jupyterhub_install_folder_path }}/bin"
+jupyterhub_venv_bin_folder_path: "{{ jupyterhub_venv_folder_path }}/bin"
 jupyterhub_venv_activate_path: "{{ jupyterhub_venv_bin_folder_path }}/activate"
 jupyterhub_bin_folder_path: "{{ jupyterhub_venv_bin_folder_path }}"
 jupyterhub_bin_path: "{{ jupyterhub_bin_folder_path }}/{{ jupyterhub_name }}"
