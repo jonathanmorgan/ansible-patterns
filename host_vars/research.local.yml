@@ -1,7 +1,7 @@
 # default variables for host research.local
 python_3_path: /usr/bin/python3
 python_base_version: "3.10"
-ansible_user: jonathanmorgan
+ansible_user: research
 ansible_python_interpreter: "{{ python_3_path }}"
 # ansible_become: yes
 ansible_become_user: root
