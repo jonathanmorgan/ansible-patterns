@@ -1,6 +1,9 @@
 ---
 # This role will download and install jupyterhub server.
 
+#==============================================================================#
+# ==> OS package dependencies
+
 # update apt cache
 - name: Update apt cache
   become: yes
@@ -38,6 +41,9 @@
     name: configurable-http-proxy
     global: yes
     state: latest
+
+#==============================================================================#
+# ==> Installation virtual env
 
 # create jupyterhub install folder (defauts to /opt/jupyterhub)
 - name: create jupyterhub install folder
@@ -103,6 +109,7 @@
     virtualenv: "{{ jupyterhub_venv_folder_path }}"
     state: latest
 
+#==============================================================================#
 # ==> configuration
 
 # create jupyterhub config folder (defauts to /etc/jupyterhub)
@@ -170,6 +177,9 @@
     line: "c.Authenticator.whitelist = [ {{jupyterhub_whitelist_list}} ]"
   when: jupyterhub_whitelist_list != ""
 
+#==============================================================================#
+# ==> EXISTING SSL certificates
+
 # add certificate to jupyterhub config.
 - name: add certificate to jupyterhub config.
   become: yes
@@ -187,6 +197,9 @@
     path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.ssl_key = '{{ jupyterhub_ssl_private_key_path }}'"
   when: jupyterhub_ssl_private_key_path != ""
+
+#==============================================================================#
+# ==> NEW SSL certificates
 
 # copy default SSL cert and key to jupyterhub config folder.
 #- name: initialize jupyterhub configuration
@@ -257,6 +270,9 @@
     line: "c.JupyterHub.ssl_key = '{{jupyterhub_config_folder}}/jupyterhub_key.pem'"
   when: jupyterhub_ssl_certificate_path == "" and jupyterhub_ssl_private_key_path == ""
 
+#==============================================================================#
+# ==> systemd spawner
+
 # configure jupyterhub to use systemd spawner.
 - name: configure jupyterhub to use systemd spawner.
   become: yes
@@ -264,6 +280,17 @@
   lineinfile:
     path: '{{ jupyterhub_config_file_path }}'
     line: "c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'"
+
+# configure jupyterhub to spawn user servers from venv, not system python.
+- name: configure jupyterhub to spawn user servers with `{{ jupyterhub_spawner_cmd }}` from venv ({{ jupyterhub_venv_folder_path }}), not system python.
+  become: yes
+  become_user: root
+  lineinfile:
+    path: '{{ jupyterhub_config_file_path }}'
+    line: "c.Spawner.cmd = ['{{ jupyterhub_venv_bin_folder_path }}/{{ jupyterhub_spawner_cmd }}']"
+
+#==============================================================================#
+# ==> configurable-http-proxy
 
 # FileNotFoundError: [Errno 2] No such file or directory: 'configurable-http-proxy': 'configurable-http-proxy'
 # If you run jupyterhub on startup with systemd, and it won't start, and you encounter the following error when you run "sudo service jupyterhub status":
@@ -286,6 +313,7 @@
     line: "#c.ConfigurableHTTPProxy.command = '{{jupyterhub_proxy_command_path}}'"
   when: jupyterhub_proxy_command_path != ""
 
+#==============================================================================#
 # ==> systemd service
 
 # Create systemd service for jupyterhub in /etc/systemd/system/jupyterhub.service.
@@ -321,6 +349,9 @@
   ufw:
     rule: allow
     port: 8000
+
+#==============================================================================#
+# ==> R jupyter kernel support
 
 # if R installed, should also install R jupyter kernel.
 

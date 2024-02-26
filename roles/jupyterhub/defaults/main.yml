@@ -28,5 +28,8 @@ jupyterhub_ssl_certificate_path: "{{ server_ssl_certificate_path }}"
 jupyterhub_ssl_private_key_path: "{{ server_ssl_private_key_path }}"
 jupyterhub_proxy_command_path: "/usr/local/bin/configurable-http-proxy"
 
+# start single-user servers
+jupyterhub_spawner_cmd: jupyterhub-singleuser
+
 # systemd service
 jupyterhub_systemd_service_path: "/etc/systemd/system/jupyterhub.service"
